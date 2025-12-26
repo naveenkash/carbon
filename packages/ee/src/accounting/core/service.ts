@@ -1,6 +1,5 @@
 import type { Database } from "@carbon/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import z from "zod";
 import { QuickBooksProvider, XeroProvider } from "../providers";
 import {
   ProviderCredentials,
@@ -36,7 +35,7 @@ export const getAccountingIntegration = async <T extends ProviderID>(
   return {
     id: provider as T,
     config: config.data
-  };
+  } as const;
 };
 
 export const getProviderIntegration = (

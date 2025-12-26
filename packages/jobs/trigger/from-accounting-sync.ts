@@ -1,3 +1,4 @@
+import { getCarbonServiceRole } from "@carbon/auth";
 import {
   AccountingEntity,
   AccountingSyncSchema,
@@ -8,7 +9,6 @@ import {
 } from "@carbon/ee/accounting";
 import { task } from "@trigger.dev/sdk";
 import z from "zod";
-import { getCarbonServiceRole } from "@carbon/auth";
 
 const PayloadSchema = AccountingSyncSchema.extend({
   syncDirection: AccountingSyncSchema.shape.syncDirection.exclude([
