@@ -1,13 +1,20 @@
+/**
+ * Task to sync entities from accounting providers to Carbon
+ */
 import { getCarbonServiceRole } from "@carbon/auth";
 import {
   AccountingEntity,
   AccountingSyncSchema,
   EntityMap,
   getAccountingIntegration,
+  getEntityWithExternalId,
   getProviderIntegration,
   SyncFn,
+  upsertAccountingContact,
+  upsertAccountingCustomer,
 } from "@carbon/ee/accounting";
-import { task } from "@trigger.dev/sdk";
+import { getLocalTimeZone, today } from "@internationalized/date";
+import { logger, task } from "@trigger.dev/sdk";
 import z from "zod";
 
 const PayloadSchema = AccountingSyncSchema.extend({
@@ -20,38 +27,101 @@ type Payload = z.infer<typeof PayloadSchema>;
 
 const UPSERT_MAP: Record<keyof EntityMap, SyncFn> = {
   async customer({ client, entity, payload, provider }) {
-    // Fetch customer from Carbon
-    const customer = await client
-      .from("customer")
-      .select("*, customerLocation(*, address(*))")
-      .eq("id", entity.data.companyId)
-      .eq("companyId", payload.companyId)
-      .single();
+    const customer = await getEntityWithExternalId(
+      client,
+      "customer",
+      payload.companyId,
+      provider.id,
+      { externalId: entity.entityId }
+    );
 
-    if (customer.error || !customer.data) {
-      throw new Error(`Customer ${entity.entityId} not found`);
+    if (!customer && customer) {
+      logger.info(`Customer ${entity.entityId} found, updating...`);
+
+      const id = customer.externalId[provider.id].id;
+
+      const remote = await provider.contacts.get(id);
+
+      const c = await upsertAccountingCustomer(client, remote, payload);
+      logger.info(`Updating contact for customer id: ${c.id}`, c);
+      
+      const contact = await upsertAccountingContact(
+        client,
+        remote,
+        c.id,
+        payload
+      );
+
+      logger.info(`Updated customer with contact id: ${remote.id}`, {
+        contacts: contact,
+      });
+
+      return {
+        id: entity.entityId,
+        message: "Updated successfully",
+      };
     }
 
-    return {};
+    logger.info(`Customer ${entity.entityId} not found, creating...`);
+
+    // If not found, fetch from provider and create a new customer
+    const remote = await provider.contacts.get(entity.entityId);
+
+    if (!remote.isCustomer) {
+      return {
+        id: entity.entityId,
+        message: "Skipped: Contact is not a customer",
+      };
+    }
+
+    logger.info(`Inserting customer with contact id: ${remote.id}`, remote);
+
+    try {
+      const contact = await upsertAccountingCustomer(client, remote, payload);
+      await upsertAccountingContact(client, remote, contact.id, payload);
+    } catch (error) {
+      logger.error(
+        `Failed to create customer for contact id: ${remote.id} ${error.message}`
+      );
+
+      return {
+        id: entity.entityId,
+        message: `Failed to create customer: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      };
+    }
+
+    return {
+      id: entity.entityId,
+      message: "Created successfully",
+    };
   },
   async vendor({ client, entity, payload, provider }) {},
 };
 
 const DELETE_MAP: Record<keyof EntityMap, SyncFn> = {
   async customer({ client, entity, payload, provider }) {
-    // Fetch customer from Carbon
-    const customer = await client
-      .from("customer")
-      .select("*, customerLocation(*, address(*))")
-      .eq("id", entity.data.companyId)
-      .eq("companyId", payload.companyId)
-      .single();
+    const customer = await getEntityWithExternalId(
+      client,
+      "customer",
+      payload.companyId,
+      provider.id,
+      { id: entity.entityId }
+    );
 
     if (customer.error || !customer.data) {
       throw new Error(`Customer ${entity.entityId} not found`);
     }
 
-    return {};
+    const externalId = customer.data.externalId[provider.id];
+
+    console.log("Deleting customer in carbon with id:", externalId.id);
+
+    return {
+      id: entity.entityId,
+      message: "Deleted successfully",
+    };
   },
   async vendor({ client, entity, payload, provider }) {},
 };
