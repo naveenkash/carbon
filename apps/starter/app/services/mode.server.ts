@@ -19,8 +19,7 @@ export function setMode(mode: Mode | "system") {
   } else {
     return cookie.serialize(cookieName, mode, {
       path: "/",
-      maxAge: 31536000,
-      domain: DOMAIN
+      maxAge: 31536000
     });
   }
 }
