@@ -8275,6 +8275,9 @@ export default {
             $ref: "#/parameters/rowFilter.nonConformanceRequiredAction.updatedBy",
           },
           {
+            $ref: "#/parameters/rowFilter.nonConformanceRequiredAction.systemType",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -8358,6 +8361,9 @@ export default {
             $ref: "#/parameters/rowFilter.nonConformanceRequiredAction.updatedBy",
           },
           {
+            $ref: "#/parameters/rowFilter.nonConformanceRequiredAction.systemType",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -8393,6 +8399,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.nonConformanceRequiredAction.updatedBy",
+          },
+          {
+            $ref: "#/parameters/rowFilter.nonConformanceRequiredAction.systemType",
           },
           {
             $ref: "#/parameters/body.nonConformanceRequiredAction",
@@ -10850,6 +10859,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.issues.items",
+          },
+          {
+            $ref: "#/parameters/rowFilter.issues.ContainmentStatus",
           },
           {
             $ref: "#/parameters/select",
@@ -62644,6 +62656,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.supplierApproval",
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -62799,6 +62814,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.supplierApproval",
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -62906,6 +62924,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.companySettings.supplierApproval",
+          },
+          {
+            $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget",
           },
           {
             $ref: "#/parameters/body.companySettings",
@@ -73079,6 +73100,17 @@ export default {
           format: "text",
           type: "string",
         },
+        systemType: {
+          enum: [
+            "Containment",
+            "Corrective",
+            "Preventive",
+            "Verification",
+            "Communication",
+          ],
+          format: 'public."nonConformanceSystemActionType"',
+          type: "string",
+        },
       },
       type: "object",
     },
@@ -74398,6 +74430,10 @@ export default {
             type: "string",
           },
           type: "array",
+        },
+        ContainmentStatus: {
+          format: "text",
+          type: "string",
         },
       },
       type: "object",
@@ -99052,6 +99088,7 @@ export default {
         "includeThumbnailsOnPurchasingPdfs",
         "jobTravelerIncludeWorkInstructions",
         "supplierApproval",
+        "qualityIssueTarget",
       ],
       properties: {
         id: {
@@ -99236,6 +99273,11 @@ export default {
           default: false,
           format: "boolean",
           type: "boolean",
+        },
+        qualityIssueTarget: {
+          default: 20,
+          format: "integer",
+          type: "integer",
         },
       },
       type: "object",
@@ -103990,6 +104032,12 @@ export default {
       in: "query",
       type: "string",
     },
+    "rowFilter.nonConformanceRequiredAction.systemType": {
+      name: "systemType",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "body.invite": {
       name: "invite",
       description: "invite",
@@ -105567,6 +105615,12 @@ export default {
     },
     "rowFilter.issues.items": {
       name: "items",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.issues.ContainmentStatus": {
+      name: "ContainmentStatus",
       required: false,
       in: "query",
       type: "string",
@@ -133502,6 +133556,12 @@ export default {
     },
     "rowFilter.companySettings.supplierApproval": {
       name: "supplierApproval",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.companySettings.qualityIssueTarget": {
+      name: "qualityIssueTarget",
       required: false,
       in: "query",
       type: "string",

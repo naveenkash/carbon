@@ -2944,6 +2944,7 @@ export type Database = {
           productLabelSize: string | null
           purchasePriceUpdateTiming: Database["public"]["Enums"]["purchasePriceUpdateTiming"]
           qualityDispatchNotificationGroup: string[] | null
+          qualityIssueTarget: number
           quoteLineCategoryMarkups: Json | null
           rfqReadyNotificationGroup: string[]
           salesJobCompletedNotificationGroup: string[]
@@ -2978,6 +2979,7 @@ export type Database = {
           productLabelSize?: string | null
           purchasePriceUpdateTiming?: Database["public"]["Enums"]["purchasePriceUpdateTiming"]
           qualityDispatchNotificationGroup?: string[] | null
+          qualityIssueTarget?: number
           quoteLineCategoryMarkups?: Json | null
           rfqReadyNotificationGroup?: string[]
           salesJobCompletedNotificationGroup?: string[]
@@ -3012,6 +3014,7 @@ export type Database = {
           productLabelSize?: string | null
           purchasePriceUpdateTiming?: Database["public"]["Enums"]["purchasePriceUpdateTiming"]
           qualityDispatchNotificationGroup?: string[] | null
+          qualityIssueTarget?: number
           quoteLineCategoryMarkups?: Json | null
           rfqReadyNotificationGroup?: string[]
           salesJobCompletedNotificationGroup?: string[]
@@ -19181,6 +19184,9 @@ export type Database = {
           createdBy: string
           id: string
           name: string
+          systemType:
+            | Database["public"]["Enums"]["nonConformanceSystemActionType"]
+            | null
           updatedAt: string | null
           updatedBy: string | null
         }
@@ -19191,6 +19197,9 @@ export type Database = {
           createdBy: string
           id?: string
           name: string
+          systemType?:
+            | Database["public"]["Enums"]["nonConformanceSystemActionType"]
+            | null
           updatedAt?: string | null
           updatedBy?: string | null
         }
@@ -19201,6 +19210,9 @@ export type Database = {
           createdBy?: string
           id?: string
           name?: string
+          systemType?:
+            | Database["public"]["Enums"]["nonConformanceSystemActionType"]
+            | null
           updatedAt?: string | null
           updatedBy?: string | null
         }
@@ -44754,6 +44766,7 @@ export type Database = {
           assignee: string | null
           closeDate: string | null
           companyId: string | null
+          ContainmentStatus: string | null
           content: Json | null
           createdAt: string | null
           createdBy: string | null
@@ -56256,6 +56269,7 @@ export type Database = {
           daysRemaining: number
           demandAccumulationPeriod: number
           demandAccumulationSafetyStock: number
+          demandForecast: number
           dimension: string
           dimensionId: string
           finish: string
@@ -56286,7 +56300,6 @@ export type Database = {
           reorderPoint: number
           reorderQuantity: number
           replenishmentSystem: Database["public"]["Enums"]["itemReplenishmentSystem"]
-          tags: string[]
           thumbnailPath: string
           type: Database["public"]["Enums"]["itemType"]
           unitOfMeasureCode: string
@@ -57784,6 +57797,12 @@ export type Database = {
       nonConformancePriority: "Low" | "Medium" | "High" | "Critical"
       nonConformanceSource: "Internal" | "External"
       nonConformanceStatus: "Registered" | "In Progress" | "Closed"
+      nonConformanceSystemActionType:
+        | "Containment"
+        | "Corrective"
+        | "Preventive"
+        | "Verification"
+        | "Communication"
       nonConformanceTaskStatus:
         | "Pending"
         | "In Progress"
@@ -58923,6 +58942,13 @@ export const Constants = {
       nonConformancePriority: ["Low", "Medium", "High", "Critical"],
       nonConformanceSource: ["Internal", "External"],
       nonConformanceStatus: ["Registered", "In Progress", "Closed"],
+      nonConformanceSystemActionType: [
+        "Containment",
+        "Corrective",
+        "Preventive",
+        "Verification",
+        "Communication",
+      ],
       nonConformanceTaskStatus: [
         "Pending",
         "In Progress",
