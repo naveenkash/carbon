@@ -33,10 +33,10 @@ import {
   ScrollRestoration,
   useLoaderData
 } from "react-router";
+import SonnerStyle from "sonner/dist/styles.css?url";
 import { getMode, setMode } from "~/services/mode.server";
 import Background from "~/styles/background.css?url";
 import NProgress from "~/styles/nprogress.css?url";
-import SonnerStyle from "~/styles/sonner.css?url";
 import Tailwind from "~/styles/tailwind.css?url";
 import type { Route } from "./+types/root";
 import "./polyfill";
