@@ -36,6 +36,7 @@ import {
 import { getMode, setMode } from "~/services/mode.server";
 import Background from "~/styles/background.css?url";
 import NProgress from "~/styles/nprogress.css?url";
+import SonnerStyle from "~/styles/sonner.css?url";
 import Tailwind from "~/styles/tailwind.css?url";
 import type { Route } from "./+types/root";
 import "./polyfill";
@@ -45,7 +46,8 @@ export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: Tailwind },
     { rel: "stylesheet", href: Background },
-    { rel: "stylesheet", href: NProgress }
+    { rel: "stylesheet", href: NProgress },
+    { rel: "stylesheet", href: SonnerStyle }
   ];
 };
 
