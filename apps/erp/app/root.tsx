@@ -33,6 +33,7 @@ import {
   ScrollRestoration,
   useLoaderData
 } from "react-router";
+import SonnerStyle from "sonner/dist/styles.css?url";
 import { getMode, setMode } from "~/services/mode.server";
 import Background from "~/styles/background.css?url";
 import NProgress from "~/styles/nprogress.css?url";
@@ -45,7 +46,8 @@ export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: Tailwind },
     { rel: "stylesheet", href: Background },
-    { rel: "stylesheet", href: NProgress }
+    { rel: "stylesheet", href: NProgress },
+    { rel: "stylesheet", href: SonnerStyle }
   ];
 };
 
