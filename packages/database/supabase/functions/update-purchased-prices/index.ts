@@ -32,6 +32,11 @@ interface PurchaseLineData {
   purchaseUnitOfMeasureCode: string | null;
 }
 
+interface LeadTimeStats {
+  quantity: number;
+  weightedLeadTime: number;
+}
+
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -40,32 +45,20 @@ serve(async (req: Request) => {
   const payload = await req.json();
   const { source, companyId } = payloadValidator.parse(payload);
 
-  console.log({
-    function: "update-purchased-prices",
-    source,
-    companyId,
-  });
-
   try {
     const client = await getSupabaseServiceRole(
       req.headers.get("Authorization"),
       req.headers.get("carbon-key"),
-      companyId
+      companyId,
     );
 
     let supplierId: string;
     let lines: PurchaseLineData[];
+    let orderDate: string;
 
     switch (source) {
       case "purchaseOrder": {
         const { purchaseOrderId } = payload;
-
-        console.log({
-          function: "update-purchased-prices",
-          source,
-          purchaseOrderId,
-          companyId,
-        });
 
         const [purchaseOrder, purchaseOrderLines] = await Promise.all([
           client
@@ -87,6 +80,7 @@ serve(async (req: Request) => {
           throw new Error("Purchase order has no supplier");
 
         supplierId = purchaseOrder.data.supplierId;
+        orderDate = purchaseOrder.data.createdAt;
         lines = purchaseOrderLines.data
           .map((line) => ({
             itemId: line.itemId,
@@ -98,9 +92,16 @@ serve(async (req: Request) => {
           }))
           .filter((line) => line.unitPrice !== 0 && line.quantity > 0);
 
-        // Delete any existing cost ledger entries for this PO (handles re-finalization)
+        // Delete any existing ledger entries for this PO (handles re-finalization)
         await db
           .deleteFrom("costLedger")
+          .where("documentType", "=", "Purchase Order")
+          .where("documentId", "=", purchaseOrderId)
+          .where("companyId", "=", companyId)
+          .execute();
+
+        await db
+          .deleteFrom("leadTimeLedger")
           .where("documentType", "=", "Purchase Order")
           .where("documentId", "=", purchaseOrderId)
           .where("companyId", "=", companyId)
@@ -122,8 +123,39 @@ serve(async (req: Request) => {
             companyId,
           }));
 
+      const receiptDate = new Date().toISOString();
+
+      let leadTimeDays =
+        (new Date(receiptDate).getTime() - new Date(orderDate).getTime()) /
+        (1000 * 60 * 60 * 24); // milliseconds in day
+
+      if (!isFinite(leadTimeDays) || leadTimeDays < 0) {
+        leadTimeDays = 0;
+      }
+      const leadTimeLedgerInserts = lines
+      .filter((line) => line.itemId)
+      .map((line) => ({
+        itemId: line.itemId,
+        supplierId,
+        companyId,
+        documentType:
+          source === "purchaseOrder" ? "Purchase Order" : "Purchase Invoice",
+        documentId:
+          source === "purchaseOrder"
+            ? payload.purchaseOrderId
+            : payload.invoiceId,
+        orderDate,
+        receiptDate,
+        quantity: line.quantity,
+        leadTimeDays,
+        createdBy: "system",
+      }));
+
         if (costLedgerInserts.length > 0) {
           await db.insertInto("costLedger").values(costLedgerInserts).execute();
+        }
+        if (leadTimeLedgerInserts.length > 0) {
+          await db.insertInto("leadTimeLedger").values(leadTimeLedgerInserts).execute();
         }
 
         break;
@@ -131,13 +163,6 @@ serve(async (req: Request) => {
 
       case "purchaseInvoice": {
         const { invoiceId } = payload;
-
-        console.log({
-          function: "update-purchased-prices",
-          source,
-          invoiceId,
-          companyId,
-        });
 
         const [purchaseInvoice, purchaseInvoiceLines] = await Promise.all([
           client
@@ -159,6 +184,7 @@ serve(async (req: Request) => {
           throw new Error("Purchase invoice has no supplier");
 
         supplierId = purchaseInvoice.data.supplierId;
+        orderDate = purchaseInvoice.data.createdAt;
         lines = purchaseInvoiceLines.data
           .map((line) => ({
             itemId: line.itemId,
@@ -168,7 +194,7 @@ serve(async (req: Request) => {
             conversionFactor: line.conversionFactor,
             purchaseUnitOfMeasureCode: line.purchaseUnitOfMeasureCode,
           }))
-          .filter((line) => line.unitPrice !== 0);
+          .filter((line) => line.unitPrice !== 0 && line.quantity > 0);
         break;
       }
     }
@@ -182,7 +208,7 @@ serve(async (req: Request) => {
       "yyyy-MM-dd"
     );
 
-    const [costLedgers, supplierParts] = await Promise.all([
+    const [costLedgers, supplierParts, leadTimeLedgers] = await Promise.all([
       client
         .from("costLedger")
         .select("*")
@@ -195,6 +221,14 @@ serve(async (req: Request) => {
         .eq("supplierId", supplierId)
         .in("itemId", itemIds)
         .eq("companyId", companyId),
+
+      client
+        .from("leadTimeLedger")
+        .select("*")
+        .in("itemId", itemIds)
+        .eq("supplierId", supplierId)
+        .eq("companyId", companyId)
+        .gte("receiptDate", dateOneYearAgo),
     ]);
 
     const itemCostUpdates: Database["public"]["Tables"]["itemCost"]["Update"][] =
@@ -214,57 +248,78 @@ serve(async (req: Request) => {
       { quantity: number; cost: number }
     > = {};
 
-    costLedgers.data?.forEach((ledger) => {
-      if (ledger.itemId) {
-        if (!historicalPartCosts[ledger.itemId]) {
-          historicalPartCosts[ledger.itemId] = {
-            quantity: 0,
-            cost: 0,
-          };
-        }
+    const historicalLeadTimeStats: Record<string, LeadTimeStats> = {};
 
-        historicalPartCosts[ledger.itemId].quantity += ledger.quantity;
-        historicalPartCosts[ledger.itemId].cost += ledger.cost;
+    costLedgers.data?.forEach((ledger) => {
+      if (!ledger.itemId) return;
+
+      if (!historicalPartCosts[ledger.itemId]) {
+        historicalPartCosts[ledger.itemId] = { quantity: 0,cost: 0 };
       }
+
+      historicalPartCosts[ledger.itemId].quantity += ledger.quantity;
+      historicalPartCosts[ledger.itemId].cost += ledger.cost;
     });
 
+    // lead time aggregation
+    leadTimeLedgers.data?.forEach((ledger) => {
+      if (!ledger.itemId) return;
+
+      if (!historicalLeadTimeStats[ledger.itemId]) {
+        historicalLeadTimeStats[ledger.itemId] = {
+          quantity: 0,
+          weightedLeadTime: 0,
+        };
+      }
+
+      historicalLeadTimeStats[ledger.itemId].quantity += ledger.quantity;
+      historicalLeadTimeStats[ledger.itemId].weightedLeadTime +=
+        ledger.leadTimeDays * ledger.quantity;
+    });
+
+
     lines.forEach((line) => {
-      if (
-        line.itemId &&
-        !line.jobOperationId &&
-        historicalPartCosts[line.itemId]
-      ) {
-        itemCostUpdates.push({
-          itemId: line.itemId,
-          unitCost:
-            historicalPartCosts[line.itemId].cost /
-            historicalPartCosts[line.itemId].quantity,
+      if (!line.itemId || !line.jobOperationId  || !historicalPartCosts[line.itemId]) return;
+      itemCostUpdates.push({
+        itemId: line.itemId,
+        unitCost:
+          historicalPartCosts[line.itemId].cost /
+          historicalPartCosts[line.itemId].quantity,
+        updatedBy: "system",
+      });
+
+      const supplierPart = supplierParts.data?.find(
+        (sp) => sp.itemId === line.itemId && sp.supplierId === supplierId,
+      );
+
+      const leadStats = historicalLeadTimeStats[line.itemId];
+
+      let avgLeadTime: number | null = null;
+
+      if (leadStats && leadStats.quantity > 0) {
+        avgLeadTime = leadStats.weightedLeadTime / leadStats.quantity;
+      }
+      if (supplierPart  && supplierPart.id) {
+        supplierPartUpdates.push({
+          id: supplierPart.id,
+          unitPrice: line.unitPrice,
+          conversionFactor: line.conversionFactor ?? 1,
+          supplierUnitOfMeasureCode: line.purchaseUnitOfMeasureCode,
+          leadTimeDays: avgLeadTime ?? supplierPart.leadTimeDays ?? 0,
           updatedBy: "system",
         });
-
-        const supplierPart = supplierParts.data?.find(
-          (sp) => sp.itemId === line.itemId && sp.supplierId === supplierId
-        );
-
-        if (supplierPart && supplierPart.id) {
-          supplierPartUpdates.push({
-            id: supplierPart.id,
-            unitPrice: line.unitPrice,
-            conversionFactor: line.conversionFactor ?? 1,
-            supplierUnitOfMeasureCode: line.purchaseUnitOfMeasureCode,
-            updatedBy: "system",
-          });
-        } else {
-          supplierPartInserts.push({
-            itemId: line.itemId,
-            supplierId: supplierId,
-            unitPrice: line.unitPrice,
-            conversionFactor: line.conversionFactor ?? 1,
-            supplierUnitOfMeasureCode: line.purchaseUnitOfMeasureCode,
-            createdBy: "system",
-            companyId,
-          });
-        }
+      } else {
+        supplierPartInserts.push({
+          itemId: line.itemId,
+          supplierId,
+          unitPrice: line.unitPrice,
+          conversionFactor: line.conversionFactor ?? 1,
+          supplierUnitOfMeasureCode: line.purchaseUnitOfMeasureCode,
+          leadTimeDays: avgLeadTime ?? 0,
+          createdBy: "system",
+          companyId,
+        });
+      }
 
         itemReplenishmentUpdates.push({
           itemId: line.itemId,
@@ -273,7 +328,6 @@ serve(async (req: Request) => {
           conversionFactor: line.conversionFactor ?? 1,
           updatedBy: "system",
         });
-      }
 
       if (line.jobOperationId) {
         jobOperationUpdates.push({
@@ -295,7 +349,6 @@ serve(async (req: Request) => {
             .where("companyId", "=", companyId)
             .execute();
         }
-      }
 
       if (jobOperationUpdates.length > 0) {
         for await (const jobOperationUpdate of jobOperationUpdates) {
@@ -343,7 +396,8 @@ serve(async (req: Request) => {
             .execute();
         }
       }
-    });
+    }
+   }); 
 
     return new Response(
       JSON.stringify({
