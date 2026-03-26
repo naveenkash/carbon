@@ -186,6 +186,35 @@ export async function deleteTemplate(
   return (client as any).from("templates").delete().eq("id", id);
 }
 
+export async function duplicateTemplate(
+  client: SupabaseClient<Database>,
+  id: string,
+  companyId: string,
+  createdBy: string
+) {
+  const source = await (client as any)
+    .from("templates")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (source.error || !source.data) return source;
+
+  const { id: _id, ...rest } = source.data;
+
+  return (client as any)
+    .from("templates")
+    .insert({
+      ...rest,
+      name: `${rest.name} (Copy)`,
+      isDefault: false,
+      companyId,
+      createdBy
+    })
+    .select("id")
+    .single();
+}
+
 export async function getCompanies(
   client: SupabaseClient<Database>,
   userId: string

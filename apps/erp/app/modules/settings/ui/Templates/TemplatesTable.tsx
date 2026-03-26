@@ -2,6 +2,7 @@ import { Badge, HStack, MenuIcon, MenuItem, SplitButton } from "@carbon/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { memo, useCallback, useMemo } from "react";
 import {
+  LuCopy,
   LuFileText,
   LuLayers,
   LuPencil,
@@ -11,7 +12,7 @@ import {
   LuTrash,
   LuUser
 } from "react-icons/lu";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useFetcher, useNavigate } from "react-router";
 import { EmployeeAvatar, Hyperlink, Table } from "~/components";
 import { usePermissions, useUrlParams } from "~/hooks";
 import type { Template } from "~/modules/settings";
@@ -29,6 +30,7 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
   const [params] = useUrlParams();
   const permissions = usePermissions();
   const [people] = usePeople();
+  const fetcher = useFetcher();
 
   const columns = useMemo<ColumnDef<Template>[]>(() => {
     return [
@@ -102,11 +104,20 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
           Edit template
         </MenuItem>
         <MenuItem
+          onClick={() =>
+            fetcher.submit(
+              {},
+              { method: "post", action: path.to.duplicateTemplate(row.id!) }
+            )
+          }
+        >
+          <MenuIcon icon={<LuCopy />} />
+          Duplicate template
+        </MenuItem>
+        <MenuItem
           destructive
           onClick={() =>
-            navigate(
-              `${path.to.template(row.id!)}/delete?${params?.toString()}`
-            )
+            navigate(`${path.to.deleteTemplate(row.id!)}?${params?.toString()}`)
           }
         >
           <MenuIcon icon={<LuTrash />} />
@@ -114,7 +125,7 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         </MenuItem>
       </>
     ),
-    [navigate, params, permissions]
+    [navigate, params, permissions, fetcher]
   );
 
   return (

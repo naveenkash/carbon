@@ -556,6 +556,9 @@ export const path = {
       generatePath(
         `${x}/inventory/batch-property/${itemId}/property/delete/${id}`
       ),
+    deleteTemplate: (id: string) => generatePath(`${x}/template/delete/${id}`),
+    duplicateTemplate: (id: string) =>
+      generatePath(`${x}/template/duplicate/${id}`),
     deleteConfigurationParameter: (itemId: string, id: string) =>
       generatePath(`${x}/part/${itemId}/parameter/delete/${id}`),
     deleteConfigurationParameterGroup: (itemId: string, id: string) =>
