@@ -1,31 +1,31 @@
 import { Checkbox, Heading, HStack, VStack } from "@carbon/react";
 import {
   type FieldDefinition,
-  getFieldsForModule,
-  type ModuleFields
-} from "~/utils/export-fields";
+  getFieldsForModuleCategory
+} from "~/utils/field-registry";
 
 type Props = {
-  module: keyof ModuleFields;
+  module: string;
+  category?: string | null;
   selectedFields: string[];
   onToggleField: (fieldKey: string) => void;
 };
 
 export default function FieldPicker({
   module,
+  category,
   selectedFields,
   onToggleField
 }: Props) {
-  const fields = getFieldsForModule(module);
+  const fields = getFieldsForModuleCategory(module, category);
+  const coreFields = fields.filter((f) => !f.group);
 
-  const coreFields = fields.filter((f) => !f.is_nested);
-
-  const nestedGroups = fields
-    .filter((f) => f.is_nested && f.parent_entity)
+  const groups = fields
+    .filter((f) => f.group)
     .reduce<Record<string, FieldDefinition[]>>((acc, field) => {
-      const group = field.parent_entity!;
-      if (!acc[group]) acc[group] = [];
-      acc[group].push(field);
+      const g = field.group!;
+      if (!acc[g]) acc[g] = [];
+      acc[g].push(field);
       return acc;
     }, {});
 
@@ -36,38 +36,29 @@ export default function FieldPicker({
       </Heading>
       <VStack className="space-y-2">
         {groupFields.map((field) => (
-          <HStack
-            key={field.field_key}
-            onClick={() => onToggleField(field.field_key)}
-          >
-            <Checkbox checked={selectedFields.includes(field.field_key)} />
-            <label htmlFor={field.field_key}>
-              <VStack spacing={0}>
-                <span>{field.display_name}</span>
-              </VStack>
-            </label>
+          <HStack key={field.key} onClick={() => onToggleField(field.key)}>
+            <Checkbox checked={selectedFields.includes(field.key)} />
+            <label htmlFor={field.key}>{field.label}</label>
           </HStack>
         ))}
       </VStack>
     </div>
   );
 
+  if (fields.length === 0) {
+    return (
+      <p className="text-muted-foreground text-sm py-8 text-center">
+        No fields defined for {module}
+        {category ? ` › ${category}` : ""}.
+      </p>
+    );
+  }
+
   return (
     <HStack className="items-start space-x-6">
-      {fields.length === 0 ? (
-        <p className="text-gray-500 text-sm py-8 text-center">
-          No fields defined for this module yet.
-        </p>
-      ) : (
-        <>
-          {renderGroup("Core Fields", coreFields)}
-          {Object.entries(nestedGroups).map(([entity, groupFields]) =>
-            renderGroup(
-              `${entity.charAt(0).toUpperCase() + entity.slice(1)} Information`,
-              groupFields
-            )
-          )}
-        </>
+      {coreFields.length > 0 && renderGroup("Core Fields", coreFields)}
+      {Object.entries(groups).map(([groupName, groupFields]) =>
+        renderGroup(groupName, groupFields)
       )}
     </HStack>
   );

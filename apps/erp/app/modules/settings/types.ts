@@ -5,6 +5,7 @@ import type {
   getCustomFieldsTables,
   getIntegrations,
   getSequences,
+  getTemplates,
   getWebhooks
 } from "./settings.service";
 
@@ -35,3 +36,74 @@ export type Sequence = NonNullable<
 export type Webhook = NonNullable<
   Awaited<ReturnType<typeof getWebhooks>>["data"]
 >[number];
+
+export type Template = NonNullable<
+  Awaited<ReturnType<typeof getTemplates>>["data"]
+>[number];
+
+export type TemplateConfig = {
+  colorTheme: string;
+  margins: string;
+  templateFont: string;
+  templateStyle: string;
+  isDecorator: boolean;
+  isUppercase: boolean;
+  fontSize: string;
+  documentLogo: {
+    link: string;
+    name: string;
+    fileName: string;
+    fileId: string;
+    fileUrl: string;
+    fileType: string;
+  }[];
+  pdfTitleConfigs: {
+    title: string;
+    isUppercase: boolean;
+    layout: string;
+    headline: string;
+    dateTitle: string;
+  };
+  pageFooterConfigs: {
+    enablePageNumber: boolean;
+    enableGeneratedBy: boolean;
+    enableDatestamp: boolean;
+    enableTimeStamp: boolean;
+  };
+  sortConfigs: {
+    type: string;
+    primarySortBy: string;
+    secondarySortBy: string;
+    order: string | null;
+  };
+};
+
+export const DEFAULT_TEMPLATE_CONFIG: TemplateConfig = {
+  colorTheme: "default",
+  margins: "default",
+  templateFont: "Inter",
+  templateStyle: "REPORT_TEMPLATE_CLASSIC",
+  isDecorator: true,
+  isUppercase: false,
+  fontSize: "default",
+  documentLogo: [],
+  pdfTitleConfigs: {
+    title: "",
+    isUppercase: false,
+    layout: "left_aligned",
+    headline: "HEADLINE_COMPANY_NAME",
+    dateTitle: ""
+  },
+  pageFooterConfigs: {
+    enablePageNumber: true,
+    enableGeneratedBy: false,
+    enableDatestamp: false,
+    enableTimeStamp: false
+  },
+  sortConfigs: {
+    type: "FIXED",
+    primarySortBy: "NAME_ASC",
+    secondarySortBy: "CODE_ASC",
+    order: null
+  }
+};

@@ -7,33 +7,54 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import {
   data,
   redirect,
+  useLoaderData,
   useNavigate,
-  useOutletContext,
-  useSearchParams
+  useOutletContext
 } from "react-router";
 import {
+  getTemplate,
   TemplateManager,
   templateValidator,
   upsertTemplate
 } from "~/modules/settings";
+import {
+  DEFAULT_TEMPLATE_CONFIG,
+  type TemplateConfig
+} from "~/modules/settings/types";
 import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
 import { path } from "~/utils/path";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  await requirePermissions(request, { create: "settings" });
-  return null;
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  const { client } = await requirePermissions(request, {
+    update: "settings"
+  });
+
+  const { id } = params;
+  if (!id) throw new Response("Not found", { status: 404 });
+
+  const result = await getTemplate(client, id);
+  if (result.error || !result.data) {
+    throw new Response("Template not found", { status: 404 });
+  }
+
+  return { template: result.data };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
   assertIsPost(request);
   const { client, companyId, userId } = await requirePermissions(request, {
-    create: "settings"
+    update: "settings"
   });
+
+  const { id } = params;
+  if (!id) throw new Response("Not found", { status: 404 });
 
   const formData = await request.formData();
   const validation = await validator(templateValidator).validate(formData);
 
-  if (validation.error) return validationError(validation.error);
+  if (validation.error) {
+    return validationError(validation.error);
+  }
 
   const {
     id: _id,
@@ -93,29 +114,26 @@ export async function action({ request }: ActionFunctionArgs) {
   };
 
   const result = await upsertTemplate(client, {
+    id,
     ...rest,
     templateConfiguration,
     companyId,
-    createdBy: userId
+    updatedBy: userId
   });
 
   if (result.error) {
     return data(
       {},
-      await flash(request, error(result.error, "Failed to create template"))
+      await flash(request, error(result.error, "Failed to update template"))
     );
   }
 
   return redirect(path.to.templates);
 }
 
-export default function NewTemplateRoute() {
+export default function EditTemplateRoute() {
+  const { template } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-
-  // These are DB enum values passed from the calling context (e.g. ?module=Purchasing&category=Orders)
-  const module = searchParams.get("module") ?? "Purchasing";
-  const category = searchParams.get("category");
 
   const {
     selectedFields,
@@ -123,17 +141,27 @@ export default function NewTemplateRoute() {
     setModule,
     setCategory,
     setAction,
-    setInitialName
+    setInitialName,
+    setInitialConfig
   } = useOutletContext<TemplateOutletContext>();
+
+  const raw = template.templateConfiguration as
+    | (Partial<TemplateConfig> & { fields?: string[] })
+    | null;
+  const initialFields = raw?.fields ?? [];
+  // module and category are stored as DB enum values
+  const module = template.module ?? "Purchasing";
+  const category = template.category ?? null;
 
   useEffect(() => {
     setModule(module);
     setCategory(category);
-    setAction(path.to.newTemplate);
-    setInitialName("");
-    setSelectedFields([]);
+    setAction(path.to.template(template.id));
+    setInitialName(template.name);
+    setSelectedFields(initialFields);
+    setInitialConfig({ ...DEFAULT_TEMPLATE_CONFIG, ...raw });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [module, category, setAction]);
+  }, [template.id]);
 
   const handleToggleField = (fieldKey: string) => {
     setSelectedFields((prev) =>

@@ -1566,7 +1566,7 @@ export const path = {
     tags: `${x}/settings/tags`,
     theme: `${x}/account/theme`,
     timecards: `${x}/timecards`,
-    template: (id: string) => generatePath(`${x}/settings/templates/${id}`),
+    template: (id: string) => generatePath(`${x}/template/${id}`),
     templates: `${x}/settings/templates`,
     tool: (id: string) => generatePath(`${x}/tool/${id}`),
     toolCosting: (id: string) => generatePath(`${x}/tool/${id}/costing`),

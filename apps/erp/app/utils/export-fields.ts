@@ -137,3 +137,20 @@ export const getFieldsForModule = (
 ): FieldDefinition[] => {
   return MODULE_FIELDS[module as keyof ModuleFields] || [];
 };
+
+// Maps export-field module keys to the DB module enum values
+export const MODULE_ENUM_MAP: Record<keyof ModuleFields, string> = {
+  orders: "Sales",
+  purchase_orders: "Purchasing",
+  inventory: "Inventory",
+  suppliers: "Purchasing",
+  jobs: "Production"
+};
+
+// Reverse map: DB module enum value → export-field module key
+export const ENUM_TO_MODULE: Partial<Record<string, keyof ModuleFields>> = {
+  Sales: "orders",
+  Purchasing: "purchase_orders",
+  Inventory: "inventory",
+  Production: "jobs"
+};

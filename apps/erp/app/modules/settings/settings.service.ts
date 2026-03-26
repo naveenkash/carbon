@@ -134,6 +134,58 @@ export async function getTemplates(
   return query;
 }
 
+export async function getTemplate(
+  client: SupabaseClient<Database>,
+  id: string
+) {
+  return (client as any).from("templates").select("*").eq("id", id).single();
+}
+
+export async function upsertTemplate(
+  client: SupabaseClient<Database>,
+  template:
+    | {
+        id?: undefined;
+        name: string;
+        module: string;
+        category?: string;
+        templateConfiguration: Record<string, unknown>;
+        isDefault?: boolean;
+        companyId: string;
+        createdBy: string;
+      }
+    | {
+        id: string;
+        name: string;
+        module: string;
+        category?: string;
+        templateConfiguration: Record<string, unknown>;
+        isDefault?: boolean;
+        companyId: string;
+        updatedBy: string;
+      }
+) {
+  const { id, ...rest } = template;
+
+  if (id) {
+    return (client as any)
+      .from("templates")
+      .update(sanitize(rest))
+      .eq("id", id)
+      .select("id")
+      .single();
+  }
+
+  return (client as any).from("templates").insert(rest).select("id").single();
+}
+
+export async function deleteTemplate(
+  client: SupabaseClient<Database>,
+  id: string
+) {
+  return (client as any).from("templates").delete().eq("id", id);
+}
+
 export async function getCompanies(
   client: SupabaseClient<Database>,
   userId: string

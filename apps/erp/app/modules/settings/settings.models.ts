@@ -50,6 +50,39 @@ export const apiKeyValidator = z.object({
   expiresAt: zfd.text(z.string().optional())
 });
 
+export const templateValidator = z.object({
+  id: zfd.text(z.string().optional()),
+  name: z.string().min(1, { message: "Name is required" }),
+  module: z.string().min(1, { message: "Module is required" }),
+  category: zfd.text(z.string().optional()),
+  fields: zfd.text(z.string().optional()),
+  isDefault: zfd.checkbox().optional(),
+  // General config
+  colorTheme: zfd.text(z.string().optional()),
+  margins: zfd.text(z.string().optional()),
+  templateFont: zfd.text(z.string().optional()),
+  templateStyle: zfd.text(z.string().optional()),
+  isDecorator: zfd.text(z.string().optional()),
+  isUppercase: zfd.text(z.string().optional()),
+  fontSize: zfd.text(z.string().optional()),
+  // pdfTitleConfigs
+  pdfTitle: zfd.text(z.string().optional()),
+  pdfIsUppercase: zfd.text(z.string().optional()),
+  pdfLayout: zfd.text(z.string().optional()),
+  pdfHeadline: zfd.text(z.string().optional()),
+  pdfDateTitle: zfd.text(z.string().optional()),
+  // pageFooterConfigs
+  enablePageNumber: zfd.text(z.string().optional()),
+  enableGeneratedBy: zfd.text(z.string().optional()),
+  enableDatestamp: zfd.text(z.string().optional()),
+  enableTimeStamp: zfd.text(z.string().optional()),
+  // sortConfigs
+  sortType: zfd.text(z.string().optional()),
+  primarySortBy: zfd.text(z.string().optional()),
+  secondarySortBy: zfd.text(z.string().optional()),
+  sortOrder: zfd.text(z.string().optional())
+});
+
 const company = {
   name: z.string().min(1, { message: "Name is required" }),
   taxId: zfd.text(z.string().optional()),

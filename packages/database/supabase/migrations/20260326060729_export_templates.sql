@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS public."templates" (
 
     "companyId" TEXT NOT NULL,
 
-    "module" module NOT NULL,      -- e.g., 'orders', 'inventory'
-    "category" category,             -- e.g., 'operations', 'finance'
+    "module" module NOT NULL,        -- e.g., 'Purchasing', 'Inventory'
+    "category" category,             -- e.g., 'Orders', 'Invoices'
 
     "templateConfiguration" JSONB NOT NULL DEFAULT '{}'::jsonb,
 
