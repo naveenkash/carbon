@@ -111,6 +111,29 @@ export async function getApiKeys(
   return query;
 }
 
+export async function getTemplates(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  args?: GenericQueryFilters & { search: string | null }
+) {
+  let query = client
+    .from("templates")
+    .select("*", { count: "exact" })
+    .eq("companyId", companyId);
+
+  if (args?.search) {
+    query = query.ilike("name", `%${args.search}%`);
+  }
+
+  if (args) {
+    query = setGenericQueryFilters(query, args, [
+      { column: "createdAt", ascending: true }
+    ]);
+  }
+
+  return query;
+}
+
 export async function getCompanies(
   client: SupabaseClient<Database>,
   userId: string

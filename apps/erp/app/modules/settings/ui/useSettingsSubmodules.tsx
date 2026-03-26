@@ -10,6 +10,7 @@ import {
   LuImage,
   LuKey,
   LuLayoutDashboard,
+  LuLayoutTemplate,
   LuSheet,
   LuShoppingCart,
   LuSquareStack,
@@ -155,6 +156,12 @@ const settingsRoutes: AuthenticatedRouteGroup<{
         to: path.to.webhooks,
         role: "employee",
         icon: <LuWebhook />
+      },
+      {
+        name: "Templates",
+        to: path.to.templates,
+        role: "employee",
+        icon: <LuLayoutTemplate />
       }
     ]
   }

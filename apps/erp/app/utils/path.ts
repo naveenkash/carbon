@@ -1154,6 +1154,7 @@ export const path = {
     newSupplierType: `${x}/purchasing/supplier-types/new`,
     newTag: `${x}/settings/tags/new`,
     newTool: `${x}/tool/new`,
+    newTemplate: `${x}/template/new`,
     newToolSupplier: (id: string) =>
       generatePath(`${x}/tool/${id}/purchasing/new`),
     newTraining: `${x}/resources/training/new`,
@@ -1565,6 +1566,8 @@ export const path = {
     tags: `${x}/settings/tags`,
     theme: `${x}/account/theme`,
     timecards: `${x}/timecards`,
+    template: (id: string) => generatePath(`${x}/settings/templates/${id}`),
+    templates: `${x}/settings/templates`,
     tool: (id: string) => generatePath(`${x}/tool/${id}`),
     toolCosting: (id: string) => generatePath(`${x}/tool/${id}/costing`),
     toolDetails: (id: string) => generatePath(`${x}/tool/${id}/details`),
