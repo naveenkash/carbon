@@ -9,6 +9,7 @@ import {
   useMount
 } from "@carbon/react";
 import { LuChevronDown, LuEye, LuPanelRight } from "react-icons/lu";
+import { Link } from "react-router";
 
 import { usePanels } from "~/components/Layout";
 
@@ -36,7 +37,22 @@ const TemplateHeader = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem asChild>PDF</DropdownMenuItem>
+                <DropdownMenuItem
+                // onClick={() => downloadModel(modelUpload)}
+                >
+                  Download
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                  // to={
+                  //   modelUpload.modelId
+                  //     ? path.to.file.cadModel(modelUpload.modelId)
+                  //     : ""
+                  // }
+                  >
+                    View
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 

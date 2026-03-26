@@ -46,9 +46,8 @@ export type TemplateConfig = {
   margins: string;
   templateFont: string;
   templateStyle: string;
-  isDecorator: boolean;
-  isUppercase: boolean;
   fontSize: string;
+  fields: [];
   documentLogo: {
     link: string;
     name: string;
@@ -61,8 +60,6 @@ export type TemplateConfig = {
     title: string;
     isUppercase: boolean;
     layout: string;
-    headline: string;
-    dateTitle: string;
   };
   pageFooterConfigs: {
     enablePageNumber: boolean;
@@ -73,7 +70,6 @@ export type TemplateConfig = {
   sortConfigs: {
     type: string;
     primarySortBy: string;
-    secondarySortBy: string;
     order: string | null;
   };
 };
@@ -81,18 +77,15 @@ export type TemplateConfig = {
 export const DEFAULT_TEMPLATE_CONFIG: TemplateConfig = {
   colorTheme: "default",
   margins: "default",
-  templateFont: "Inter",
-  templateStyle: "REPORT_TEMPLATE_CLASSIC",
-  isDecorator: true,
-  isUppercase: false,
+  templateFont: "Inter", // inter,lato,roboto
+  templateStyle: "REPORT_TEMPLATE_CLASSIC", // classic, modern, balanced
   fontSize: "default",
   documentLogo: [],
+  fields: [],
   pdfTitleConfigs: {
     title: "",
     isUppercase: false,
-    layout: "left_aligned",
-    headline: "HEADLINE_COMPANY_NAME",
-    dateTitle: ""
+    layout: "left_aligned"
   },
   pageFooterConfigs: {
     enablePageNumber: true,
@@ -103,7 +96,6 @@ export const DEFAULT_TEMPLATE_CONFIG: TemplateConfig = {
   sortConfigs: {
     type: "FIXED",
     primarySortBy: "NAME_ASC",
-    secondarySortBy: "CODE_ASC",
     order: null
   }
 };

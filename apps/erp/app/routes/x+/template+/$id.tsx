@@ -63,41 +63,32 @@ export async function action({ request, params }: ActionFunctionArgs) {
     margins,
     templateFont,
     templateStyle,
-    isDecorator,
-    isUppercase,
     fontSize,
     pdfTitle,
     pdfIsUppercase,
     pdfLayout,
-    pdfHeadline,
-    pdfDateTitle,
     enablePageNumber,
     enableGeneratedBy,
     enableDatestamp,
     enableTimeStamp,
     sortType,
     primarySortBy,
-    secondarySortBy,
     sortOrder,
     ...rest
   } = validation.data;
   const fields: string[] = fieldsJson ? JSON.parse(fieldsJson) : [];
 
-  const templateConfiguration = {
+  const templateConfiguration: TemplateConfig = {
     fields,
     colorTheme: colorTheme ?? "default",
     margins: margins ?? "default",
     templateFont: templateFont ?? "Inter",
     templateStyle: templateStyle ?? "REPORT_TEMPLATE_CLASSIC",
-    isDecorator: isDecorator === "true",
-    isUppercase: isUppercase === "true",
     fontSize: fontSize ?? "default",
     pdfTitleConfigs: {
       title: pdfTitle ?? "",
       isUppercase: pdfIsUppercase === "true",
-      layout: pdfLayout ?? "left_aligned",
-      headline: pdfHeadline ?? "HEADLINE_COMPANY_NAME",
-      dateTitle: pdfDateTitle ?? ""
+      layout: pdfLayout ?? "left_aligned"
     },
     pageFooterConfigs: {
       enablePageNumber: enablePageNumber === "true",
@@ -108,7 +99,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
     sortConfigs: {
       type: sortType ?? "FIXED",
       primarySortBy: primarySortBy ?? "NAME_ASC",
-      secondarySortBy: secondarySortBy ?? "CODE_ASC",
       order: sortOrder || null
     }
   };
