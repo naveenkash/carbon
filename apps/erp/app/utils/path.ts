@@ -560,7 +560,7 @@ export const path = {
       generatePath(
         `${x}/inventory/batch-property/${itemId}/property/delete/${id}`
       ),
-    deleteTemplate: (id: string) => generatePath(`${x}/template/${id}/delete`),
+    deleteTemplate: (id: string) => generatePath(`${x}/template/delete/${id}`),
     duplicateTemplate: (id: string) =>
       generatePath(`${x}/template/duplicate/${id}`),
     setDefaultTemplate: (id: string) =>

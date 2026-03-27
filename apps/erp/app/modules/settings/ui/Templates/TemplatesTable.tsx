@@ -1,6 +1,13 @@
-import { Badge, HStack, MenuIcon, MenuItem, SplitButton } from "@carbon/react";
+import {
+  Badge,
+  HStack,
+  MenuIcon,
+  MenuItem,
+  SplitButton,
+  useDisclosure
+} from "@carbon/react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import {
   LuCheck,
   LuCopy,
@@ -15,6 +22,7 @@ import {
 } from "react-icons/lu";
 import { Outlet, useFetcher, useNavigate } from "react-router";
 import { EmployeeAvatar, Hyperlink, Table } from "~/components";
+import { ConfirmDelete } from "~/components/Modals";
 import { usePermissions, useUrlParams } from "~/hooks";
 import type { Template } from "~/modules/settings";
 import { usePeople } from "~/stores";
@@ -32,6 +40,11 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
   const permissions = usePermissions();
   const [people] = usePeople();
   const fetcher = useFetcher();
+
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
+    null
+  );
+  const deleteTemplateModal = useDisclosure();
 
   const columns = useMemo<ColumnDef<Template>[]>(() => {
     return [
@@ -130,16 +143,17 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         </MenuItem>
         <MenuItem
           destructive
-          onClick={() =>
-            navigate(`${path.to.deleteTemplate(row.id!)}?${params?.toString()}`)
-          }
+          onClick={() => {
+            setSelectedTemplate(row);
+            deleteTemplateModal.onOpen();
+          }}
         >
           <MenuIcon icon={<LuTrash />} />
           Delete template
         </MenuItem>
       </>
     ),
-    [navigate, params, permissions, fetcher]
+    [navigate, params, permissions, fetcher, deleteTemplateModal]
   );
 
   return (
@@ -174,6 +188,22 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         title="Templates"
       />
       <Outlet />
+      {selectedTemplate && selectedTemplate.id && (
+        <ConfirmDelete
+          action={path.to.deleteTemplate(selectedTemplate.id)}
+          isOpen={deleteTemplateModal.isOpen}
+          name={selectedTemplate.name}
+          text={`Are you sure you want to permanently delete ${selectedTemplate.name}?`}
+          onCancel={() => {
+            deleteTemplateModal.onClose();
+            setSelectedTemplate(null);
+          }}
+          onSubmit={() => {
+            deleteTemplateModal.onClose();
+            setSelectedTemplate(null);
+          }}
+        />
+      )}
     </>
   );
 });
