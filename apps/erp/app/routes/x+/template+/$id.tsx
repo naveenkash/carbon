@@ -1,4 +1,4 @@
-import { assertIsPost, error } from "@carbon/auth";
+import { assertIsPost, error, success } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
@@ -25,14 +25,14 @@ import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
 import { path } from "~/utils/path";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { client } = await requirePermissions(request, {
+  const { client, companyId } = await requirePermissions(request, {
     update: "settings"
   });
 
   const { id } = params;
   if (!id) throw new Response("Not found", { status: 404 });
 
-  const result = await getTemplate(client, id);
+  const result = await getTemplate(client, id, companyId);
   if (result.error || !result.data) {
     throw new Response("Template not found", { status: 404 });
   }
@@ -103,13 +103,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
   };
 
-  const result = await upsertTemplate(client, {
-    id,
-    ...rest,
-    templateConfiguration,
-    companyId,
-    updatedBy: userId
-  });
+  const result = await upsertTemplate(
+    client,
+    {
+      id,
+      ...rest,
+      templateConfiguration,
+      companyId,
+      updatedBy: userId
+    },
+    companyId
+  );
 
   if (result.error) {
     return data(
@@ -118,7 +122,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     );
   }
 
-  return redirect(path.to.templates);
+  throw redirect(
+    path.to.templates,
+    await flash(request, success("Template updated"))
+  );
 }
 
 export default function EditTemplateRoute() {

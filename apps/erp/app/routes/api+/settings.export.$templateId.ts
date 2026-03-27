@@ -14,7 +14,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!templateId) throw new Response("Not found", { status: 404 });
 
   // Load the template
-  const result = await getTemplate(client, templateId);
+  const result = await getTemplate(client, templateId, companyId);
   if (result.error || !result.data) {
     throw new Response("Template not found", { status: 404 });
   }
@@ -38,7 +38,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     fieldKeys,
     companyId
   });
-  console.log(queryResult.error);
 
   if (queryResult.error) {
     throw new Response(queryResult.error.message, { status: 500 });

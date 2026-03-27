@@ -8,14 +8,14 @@ import { deleteTemplate, getTemplate } from "~/modules/settings";
 import { path } from "~/utils/path";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { client } = await requirePermissions(request, {
+  const { client, companyId } = await requirePermissions(request, {
     delete: "settings"
   });
 
   const { id } = params;
   if (!id) throw new Response("Not found", { status: 404 });
 
-  const result = await getTemplate(client, id);
+  const result = await getTemplate(client, id, companyId);
   if (result.error || !result.data) {
     throw redirect(
       path.to.templates,
@@ -28,14 +28,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 export async function action({ request, params }: ActionFunctionArgs) {
   assertIsPost(request);
-  const { client } = await requirePermissions(request, {
+  const { client, companyId } = await requirePermissions(request, {
     delete: "settings"
   });
 
   const { id } = params;
   if (!id) throw new Response("Not found", { status: 404 });
 
-  const result = await deleteTemplate(client, id);
+  const result = await deleteTemplate(client, id, companyId);
 
   if (result.error) {
     return data(

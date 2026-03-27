@@ -2,6 +2,7 @@ import { Badge, HStack, MenuIcon, MenuItem, SplitButton } from "@carbon/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { memo, useCallback, useMemo } from "react";
 import {
+  LuCheck,
   LuCopy,
   LuFileText,
   LuLayers,
@@ -113,6 +114,19 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         >
           <MenuIcon icon={<LuCopy />} />
           Duplicate template
+        </MenuItem>
+        <MenuItem
+          disabled={row.isDefault}
+          onClick={() => {
+            console.log(row.id);
+            fetcher.submit(
+              {},
+              { method: "post", action: path.to.setDefaultTemplate(row.id!) }
+            );
+          }}
+        >
+          <MenuIcon icon={<LuCheck />} />
+          {row.isDefault ? "Default" : "Set as default"}
         </MenuItem>
         <MenuItem
           destructive

@@ -42,37 +42,11 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       column: "supplierReference"
     },
     { key: "closedAt", label: "Closed At", type: "date", column: "closedAt" },
-    // Delivery (1-to-1 join on id)
-    {
-      key: "receiptRequestedDate",
-      label: "Receipt Requested",
-      type: "date",
-      column: "receiptRequestedDate",
-      group: "Delivery",
-      relation: { table: "purchaseOrderDelivery", fk: "id", alias: "delivery" }
-    },
-    {
-      key: "receiptPromisedDate",
-      label: "Receipt Promised",
-      type: "date",
-      column: "receiptPromisedDate",
-      group: "Delivery",
-      relation: { table: "purchaseOrderDelivery", fk: "id", alias: "delivery" }
-    },
-    // Lines (1-to-many join on purchaseOrderId)
     {
       key: "line.purchaseOrderLineType",
       label: "Line Type",
       type: "text",
       column: "purchaseOrderLineType",
-      group: "Lines",
-      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
-    },
-    {
-      key: "line.itemReadableId",
-      label: "Item Code",
-      type: "text",
-      column: "itemReadableId",
       group: "Lines",
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
@@ -101,10 +75,10 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
     {
-      key: "line.unitPrice",
+      key: "line.supplierUnitPrice",
       label: "Unit Price",
       type: "currency",
-      column: "unitPrice",
+      column: "supplierUnitPrice",
       group: "Lines",
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     }
@@ -371,184 +345,6 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       group: "Lines",
       relation: { table: "salesInvoiceLine", fk: "invoiceId" }
     }
-  ],
-
-  // ─── Inventory ────────────────────────────────────────────────────────────
-  Inventory: [
-    {
-      key: "readableId",
-      label: "Item Code",
-      type: "text",
-      column: "readableId"
-    },
-    { key: "name", label: "Item Name", type: "text", column: "name" },
-    {
-      key: "description",
-      label: "Description",
-      type: "text",
-      column: "description"
-    },
-    { key: "type", label: "Item Type", type: "text", column: "type" },
-    {
-      key: "unitOfMeasureCode",
-      label: "Unit of Measure",
-      type: "text",
-      column: "unitOfMeasureCode"
-    },
-    { key: "active", label: "Active", type: "boolean", column: "active" },
-    // Stock levels (1-to-many by location, treated as lines)
-    {
-      key: "stock.quantityOnHand",
-      label: "Qty on Hand",
-      type: "number",
-      column: "quantityOnHand",
-      group: "Stock",
-      relation: { table: "itemInventory", fk: "itemId", alias: "stock" }
-    },
-    {
-      key: "stock.quantityOnPurchase",
-      label: "Qty on Purchase",
-      type: "number",
-      column: "quantityOnPurchase",
-      group: "Stock",
-      relation: { table: "itemInventory", fk: "itemId", alias: "stock" }
-    },
-    {
-      key: "stock.quantityOnSalesOrder",
-      label: "Qty on Sales Order",
-      type: "number",
-      column: "quantityOnSalesOrder",
-      group: "Stock",
-      relation: { table: "itemInventory", fk: "itemId", alias: "stock" }
-    },
-    {
-      key: "stock.quantityOnProductionOrder",
-      label: "Qty on Production",
-      type: "number",
-      column: "quantityOnProductionOrder",
-      group: "Stock",
-      relation: { table: "itemInventory", fk: "itemId", alias: "stock" }
-    }
-  ],
-
-  // ─── Production → Operations ──────────────────────────────────────────────
-  "Production:Operations": [
-    { key: "jobId", label: "Job Number", type: "text", column: "jobId" },
-    { key: "status", label: "Status", type: "status", column: "status" },
-    { key: "dueDate", label: "Due Date", type: "date", column: "dueDate" },
-    {
-      key: "quantity",
-      label: "Qty Ordered",
-      type: "number",
-      column: "quantity"
-    },
-    {
-      key: "quantityComplete",
-      label: "Qty Complete",
-      type: "number",
-      column: "quantityComplete"
-    },
-    // Operations
-    {
-      key: "operation.order",
-      label: "Op Sequence",
-      type: "number",
-      column: "order",
-      group: "Operations",
-      relation: { table: "jobOperation", fk: "jobId", alias: "operations" }
-    },
-    {
-      key: "operation.description",
-      label: "Op Description",
-      type: "text",
-      column: "description",
-      group: "Operations",
-      relation: { table: "jobOperation", fk: "jobId", alias: "operations" }
-    },
-    {
-      key: "operation.setupTime",
-      label: "Setup Time",
-      type: "number",
-      column: "setupTime",
-      group: "Operations",
-      relation: { table: "jobOperation", fk: "jobId", alias: "operations" }
-    },
-    {
-      key: "operation.laborTime",
-      label: "Labor Time",
-      type: "number",
-      column: "laborTime",
-      group: "Operations",
-      relation: { table: "jobOperation", fk: "jobId", alias: "operations" }
-    },
-    {
-      key: "operation.machineTime",
-      label: "Machine Time",
-      type: "number",
-      column: "machineTime",
-      group: "Operations",
-      relation: { table: "jobOperation", fk: "jobId", alias: "operations" }
-    }
-  ],
-
-  // ─── Production → Materials ───────────────────────────────────────────────
-  "Production:Materials": [
-    { key: "jobId", label: "Job Number", type: "text", column: "jobId" },
-    { key: "status", label: "Status", type: "status", column: "status" },
-    { key: "dueDate", label: "Due Date", type: "date", column: "dueDate" },
-    {
-      key: "quantity",
-      label: "Qty Ordered",
-      type: "number",
-      column: "quantity"
-    },
-    {
-      key: "quantityComplete",
-      label: "Qty Complete",
-      type: "number",
-      column: "quantityComplete"
-    },
-    // Materials
-    {
-      key: "material.order",
-      label: "Seq",
-      type: "number",
-      column: "order",
-      group: "Materials",
-      relation: { table: "jobMaterial", fk: "jobId", alias: "materials" }
-    },
-    {
-      key: "material.itemReadableId",
-      label: "Item Code",
-      type: "text",
-      column: "itemReadableId",
-      group: "Materials",
-      relation: { table: "jobMaterial", fk: "jobId", alias: "materials" }
-    },
-    {
-      key: "material.description",
-      label: "Description",
-      type: "text",
-      column: "description",
-      group: "Materials",
-      relation: { table: "jobMaterial", fk: "jobId", alias: "materials" }
-    },
-    {
-      key: "material.quantity",
-      label: "Quantity",
-      type: "number",
-      column: "quantity",
-      group: "Materials",
-      relation: { table: "jobMaterial", fk: "jobId", alias: "materials" }
-    },
-    {
-      key: "material.unitCost",
-      label: "Unit Cost",
-      type: "currency",
-      column: "unitCost",
-      group: "Materials",
-      relation: { table: "jobMaterial", fk: "jobId", alias: "materials" }
-    }
   ]
 };
 
@@ -558,10 +354,7 @@ export const MODULE_PRIMARY_TABLE: Record<string, string> = {
   "Purchasing:Orders": "purchaseOrder",
   "Purchasing:Invoices": "purchaseInvoice",
   "Sales:Orders": "salesOrder",
-  "Sales:Invoices": "salesInvoice",
-  Inventory: "item",
-  "Production:Operations": "job",
-  "Production:Materials": "job"
+  "Sales:Invoices": "salesInvoice"
 };
 
 // ─── Public helpers ────────────────────────────────────────────────────────────

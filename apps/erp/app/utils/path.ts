@@ -562,7 +562,9 @@ export const path = {
       ),
     deleteTemplate: (id: string) => generatePath(`${x}/template/${id}/delete`),
     duplicateTemplate: (id: string) =>
-      generatePath(`${x}/template/${id}/duplicate`),
+      generatePath(`${x}/template/duplicate/${id}`),
+    setDefaultTemplate: (id: string) =>
+      generatePath(`${x}/template/set-default/${id}`),
     deleteConfigurationParameter: (itemId: string, id: string) =>
       generatePath(`${x}/part/${itemId}/parameter/delete/${id}`),
     deleteConfigurationParameterGroup: (itemId: string, id: string) =>

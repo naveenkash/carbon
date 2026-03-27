@@ -120,7 +120,7 @@ export async function getTemplates(
     category: string | null;
   }
 ) {
-  let query = client
+  let query = (client as any)
     .from("templates")
     .select("*", { count: "exact" })
     .eq("companyId", companyId);
@@ -143,9 +143,15 @@ export async function getTemplates(
 
 export async function getTemplate(
   client: SupabaseClient<Database>,
-  id: string
+  id: string,
+  companyId: string
 ) {
-  return (client as any).from("templates").select("*").eq("id", id).single();
+  return (client as any)
+    .from("templates")
+    .select("*")
+    .eq("id", id)
+    .single()
+    .eq("companyId", companyId);
 }
 
 export async function upsertTemplate(
@@ -170,7 +176,8 @@ export async function upsertTemplate(
         isDefault?: boolean;
         companyId: string;
         updatedBy: string;
-      }
+      },
+  companyId: string
 ) {
   const { id, ...rest } = template;
 
@@ -179,18 +186,29 @@ export async function upsertTemplate(
       .from("templates")
       .update(sanitize(rest))
       .eq("id", id)
+      .eq("companyId", companyId)
       .select("id")
       .single();
   }
 
-  return (client as any).from("templates").insert(rest).select("id").single();
+  return (client as any)
+    .from("templates")
+    .insert(rest)
+    .eq("companyId", companyId)
+    .select("id")
+    .single();
 }
 
 export async function deleteTemplate(
   client: SupabaseClient<Database>,
-  id: string
+  id: string,
+  companyId: string
 ) {
-  return (client as any).from("templates").delete().eq("id", id);
+  return (client as any)
+    .from("templates")
+    .delete()
+    .eq("id", id)
+    .eq("companyId", companyId);
 }
 
 export async function duplicateTemplate(
@@ -202,6 +220,7 @@ export async function duplicateTemplate(
   const source = await (client as any)
     .from("templates")
     .select("*")
+    .eq("companyId", companyId)
     .eq("id", id)
     .single();
 
@@ -218,6 +237,46 @@ export async function duplicateTemplate(
       companyId,
       createdBy
     })
+    .select("id")
+    .single();
+}
+
+export async function setDefaultTemplate(
+  client: SupabaseClient<Database>,
+  id: string,
+  companyId: string
+) {
+  const { data: template, error } = await (client as any)
+    .from("templates")
+    .select("module, category")
+    .eq("companyId", companyId)
+    .eq("id", id)
+    .single();
+
+  if (error || !template) return { data: null, error: error ?? "Not found" };
+
+  // Clear existing default for this module+category
+  let clearQuery = (client as any)
+    .from("templates")
+    .update({ isDefault: false })
+    .eq("companyId", companyId)
+    .eq("module", template.module)
+    .eq("isDefault", true);
+
+  if (template.category) {
+    clearQuery = clearQuery.eq("category", template.category);
+  } else {
+    clearQuery = clearQuery.is("category", null);
+  }
+
+  await clearQuery;
+
+  // Set the new default
+  return (client as any)
+    .from("templates")
+    .update({ isDefault: true })
+    .eq("id", id)
+    .eq("companyId", companyId)
     .select("id")
     .single();
 }

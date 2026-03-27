@@ -158,6 +158,8 @@ export async function runExportQuery(
 
   const selectStr = buildSelectString(fields);
 
+  console.log(selectStr, "--selectStr--");
+
   // biome-ignore lint/suspicious/noExplicitAny: Supabase types not generated for new tables
   let query = (client as any)
     .from(primaryTable)

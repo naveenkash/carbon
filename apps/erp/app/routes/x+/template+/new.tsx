@@ -1,4 +1,4 @@
-import { assertIsPost, error } from "@carbon/auth";
+import { assertIsPost, error, success } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
@@ -92,12 +92,16 @@ export async function action({ request }: ActionFunctionArgs) {
     }
   };
 
-  const result = await upsertTemplate(client, {
-    ...rest,
-    templateConfiguration,
-    companyId,
-    createdBy: userId
-  });
+  const result = await upsertTemplate(
+    client,
+    {
+      ...rest,
+      templateConfiguration,
+      companyId,
+      createdBy: userId
+    },
+    companyId
+  );
 
   if (result.error) {
     return data(
@@ -106,7 +110,10 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 
-  return redirect(path.to.templates);
+  throw redirect(
+    path.to.templates,
+    await flash(request, success("New template created"))
+  );
 }
 
 export default function NewTemplateRoute() {
