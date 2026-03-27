@@ -157,3 +157,8 @@ export const materialTypesQuery = (
   queryKey: ["materialTypes", substanceId, formId, companyId ?? "null"],
   staleTime: RefreshRate.Low
 });
+
+export const templateTablesQuery = () => ({
+  queryKey: ["templateTables"],
+  staleTime: RefreshRate.Never
+});

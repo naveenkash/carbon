@@ -32,6 +32,7 @@ import {
 import { useFetcher } from "react-router";
 import {
   EmployeeAvatar,
+  ExportDropdown,
   Hyperlink,
   ItemThumbnail,
   New,
@@ -445,9 +446,12 @@ const PurchaseOrdersTable = memo(
             updatedAt: false
           }}
           primaryAction={
-            permissions.can("create", "purchasing") && (
-              <New label="Purchase Order" to={path.to.newPurchaseOrder} />
-            )
+            <>
+              <ExportDropdown module="Purchasing" category="Orders" />
+              {permissions.can("create", "purchasing") && (
+                <New label="Purchase Order" to={path.to.newPurchaseOrder} />
+              )}
+            </>
           }
           renderContextMenu={renderContextMenu}
           renderActions={renderActions}

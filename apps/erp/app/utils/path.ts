@@ -48,6 +48,10 @@ export const path = {
       digitalSupplierQuote: (id: string) =>
         generatePath(`${api}/purchasing/digital-quote/${id}`),
       docs: `${api}/docs`,
+      exportTemplate: (id: string, type: string) =>
+        generatePath(`${api}/settings/export/${id}?type=${type}`),
+      templates: (module: string, category?: string | null) =>
+        `${api}/settings/templates?module=${module}${category ? `&category=${category}` : ""}`,
       employeeTypes: `${api}/users/employee-types`,
       emptyPermissions: `${api}/users/empty-permissions`,
       failureModes: `${api}/resources/failure-modes`,
@@ -556,9 +560,9 @@ export const path = {
       generatePath(
         `${x}/inventory/batch-property/${itemId}/property/delete/${id}`
       ),
-    deleteTemplate: (id: string) => generatePath(`${x}/template/delete/${id}`),
+    deleteTemplate: (id: string) => generatePath(`${x}/template/${id}/delete`),
     duplicateTemplate: (id: string) =>
-      generatePath(`${x}/template/duplicate/${id}`),
+      generatePath(`${x}/template/${id}/duplicate`),
     deleteConfigurationParameter: (itemId: string, id: string) =>
       generatePath(`${x}/part/${itemId}/parameter/delete/${id}`),
     deleteConfigurationParameterGroup: (itemId: string, id: string) =>

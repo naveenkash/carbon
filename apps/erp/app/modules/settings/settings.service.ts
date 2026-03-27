@@ -114,7 +114,11 @@ export async function getApiKeys(
 export async function getTemplates(
   client: SupabaseClient<Database>,
   companyId: string,
-  args?: GenericQueryFilters & { search: string | null }
+  args?: GenericQueryFilters & {
+    search: string | null;
+    module: string | null;
+    category: string | null;
+  }
 ) {
   let query = client
     .from("templates")
@@ -124,6 +128,9 @@ export async function getTemplates(
   if (args?.search) {
     query = query.ilike("name", `%${args.search}%`);
   }
+
+  if (args?.module) query = query.eq("module", args?.module);
+  if (args?.category) query = query.eq("category", args?.category);
 
   if (args) {
     query = setGenericQueryFilters(query, args, [
