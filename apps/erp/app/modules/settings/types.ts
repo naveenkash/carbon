@@ -74,7 +74,7 @@ export type TemplateConfig = {
 };
 
 export const DEFAULT_TEMPLATE_CONFIG: TemplateConfig = {
-  colorTheme: "default",
+  colorTheme: "zinc",
   margins: "default",
   templateFont: "Inter", // inter,lato,roboto
   templateStyle: "REPORT_TEMPLATE_CLASSIC", // classic, modern, balanced

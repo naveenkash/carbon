@@ -8,6 +8,7 @@ import {
   TabsTrigger,
   VStack
 } from "@carbon/react";
+import { themes } from "@carbon/utils";
 import type React from "react";
 import { useFetcher, useParams, useSearchParams } from "react-router";
 import { Hidden, Input } from "~/components/Form";
@@ -26,12 +27,10 @@ interface SettingsPanelProps {
 
 export const TEMPLATE_FORM_ID = "template-settings-form";
 
-const COLOR_THEME_OPTIONS = [
-  { value: "default", label: "Default" },
-  { value: "blue", label: "Blue" },
-  { value: "green", label: "Green" },
-  { value: "red", label: "Red" }
-];
+const COLOR_THEME_OPTIONS = themes.map((t) => ({
+  label: t.label,
+  value: t.name
+}));
 
 const FONT_OPTIONS = [{ value: "Inter", label: "Inter" }];
 
@@ -61,11 +60,7 @@ const LAYOUT_OPTIONS = [
 
 const SORT_BY_OPTIONS = [
   { value: "NAME_ASC", label: "Name (A–Z)" },
-  { value: "NAME_DESC", label: "Name (Z–A)" },
-  { value: "CODE_ASC", label: "Code (A–Z)" },
-  { value: "CODE_DESC", label: "Code (Z–A)" },
-  { value: "DATE_ASC", label: "Date (Oldest)" },
-  { value: "DATE_DESC", label: "Date (Newest)" }
+  { value: "NAME_DESC", label: "Name (Z–A)" }
 ];
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
@@ -156,7 +151,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
               value="general"
               className="min-h-[120px] pt-4 data-[state=inactive]:hidden"
             >
-              <VStack spacing={4}>
+              <VStack spacing={4} className="border-b mb-5">
                 <Input
                   name="name"
                   placeholder="Template name"
@@ -188,6 +183,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
                   options={FONT_SIZE_OPTIONS}
                 />
               </VStack>
+
+              <Heading size="h4">Sort</Heading>
+              <Select
+                name="primarySortBy"
+                label="Primary Sort By"
+                options={SORT_BY_OPTIONS}
+              />
             </TabsContent>
 
             <TabsContent
@@ -197,21 +199,22 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
             >
               <VStack spacing={4}>
                 <VStack className="border-b pb-5">
-                  <Heading size="h4">Title</Heading>
+                  <Select
+                    className="mb-3"
+                    name="pdfLayout"
+                    label="Layout"
+                    options={LAYOUT_OPTIONS}
+                  />
+                  <Heading size="h4">Header Details</Heading>
                   <Input
                     placeholder="PDF Title"
                     name="pdfTitle"
                     label="Title"
                   />
                   <Boolean name="pdfIsUppercase" label="Title Uppercase" />
-                  <Select
-                    name="pdfLayout"
-                    label="Layout"
-                    options={LAYOUT_OPTIONS}
-                  />
                 </VStack>
 
-                <VStack className="border-b pb-5">
+                <VStack className="pb-5">
                   <Heading size="h4">Footer</Heading>
                   <HStack className="space-x-2 justify-between w-full">
                     <Boolean
@@ -227,13 +230,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
                     <Boolean name="enableTimeStamp" label="Enable Timestamp" />
                   </HStack>{" "}
                 </VStack>
-
-                <Heading size="h4">Sort</Heading>
-                <Select
-                  name="primarySortBy"
-                  label="Primary Sort By"
-                  options={SORT_BY_OPTIONS}
-                />
               </VStack>
             </TabsContent>
           </Tabs>

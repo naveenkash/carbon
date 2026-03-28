@@ -6,6 +6,7 @@ import {
   Text,
   View
 } from "@react-pdf/renderer";
+import { themes } from "../../../utils/src/themes";
 import type { Company } from "../types";
 import ExportTemplateTable, {
   type ExportField,
@@ -15,13 +16,6 @@ import ExportTemplateTable, {
 import Footer from "./components/Footer";
 
 export type { ExportField, ExportRow };
-
-const THEME_HEADER_COLORS: Record<string, string> = {
-  default: "#1f2937",
-  blue: "#1d4ed8",
-  green: "#15803d",
-  red: "#dc2626"
-};
 
 const MARGIN_PADDING: Record<string, string> = {
   default: "20px 40px 50px 40px",
@@ -96,15 +90,14 @@ const ExportTemplatePDF = ({
   });
 
   const resolvedFont = fontFamily;
-
-  const headerBg =
-    THEME_HEADER_COLORS[config.colorTheme] ?? THEME_HEADER_COLORS.default;
+  const colorTheme = themes.find((theme) => theme.name === config.colorTheme);
+  const headerBg = `hsl(${colorTheme?.activeColor.light})`;
   const padding = MARGIN_PADDING[config.margins] ?? MARGIN_PADDING.default;
   const isModern = config.templateStyle === "REPORT_TEMPLATE_MODERN";
   const isMinimal = config.templateStyle === "REPORT_TEMPLATE_MINIMAL";
 
   const tableStyle: TableStyleConfig = {
-    headerBg: isMinimal ? "#f3f4f6" : headerBg,
+    headerBg: isMinimal ? "#f3f4f6" : `hsl(${colorTheme?.activeColor.light})`,
     headerText: isMinimal ? "#374151" : "#ffffff",
     evenRowBg: "#ffffff",
     oddRowBg: isMinimal ? "#ffffff" : "#f9fafb",

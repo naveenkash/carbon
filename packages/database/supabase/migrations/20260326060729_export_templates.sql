@@ -8,7 +8,7 @@ CREATE VIEW "categories" AS
     SELECT unnest(enum_range(NULL::category)) AS name;
 
 
-CREATE TABLE IF NOT EXISTS public."templates" (
+CREATE TABLE "templates" (
     "id" TEXT NOT NULL DEFAULT xid(),
 
     "name" TEXT NOT NULL CHECK (length(trim("name")) > 0),
@@ -40,6 +40,41 @@ CREATE TABLE IF NOT EXISTS public."templates" (
     CONSTRAINT "templates_companyId_fkey"
         FOREIGN KEY ("companyId") REFERENCES "company"("id") ON DELETE CASCADE
 );
+
+ALTER TABLE "templates" ENABLE ROW LEVEL SECURITY;                                                                              
+                                                                                                                                  
+CREATE POLICY "SELECT" ON "public"."templates"                                                                                  
+FOR SELECT                                                                                                                      
+USING (                                                                                                                         
+"companyId" = ANY (                                                                                                           
+    (SELECT get_companies_with_employee_permission('settings_view'))::text[]                                                    
+)                                                                                                                             
+);
+                                                                                                                                
+CREATE POLICY "INSERT" ON "public"."templates"                                                                                
+FOR INSERT
+WITH CHECK (
+"companyId" = ANY (
+    (SELECT get_companies_with_employee_permission('settings_create'))::text[]
+)                                                                                                                             
+);
+                                                                                                                                
+CREATE POLICY "UPDATE" ON "public"."templates"                                                                                
+FOR UPDATE
+USING (
+"companyId" = ANY (
+    (SELECT get_companies_with_employee_permission('settings_update'))::text[]
+)                                                                                                                             
+);
+                                                                                                                                
+CREATE POLICY "DELETE" ON "public"."templates"                                                                                
+FOR DELETE
+USING (
+"companyId" = ANY (
+    (SELECT get_companies_with_employee_permission('settings_delete'))::text[]
+)
+);                                                                                                                              
+
 
 
 CREATE INDEX idx_templates_created_by ON public."templates"("createdBy");
