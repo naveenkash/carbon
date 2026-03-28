@@ -26,12 +26,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const [templateResult, companyResult, userResult] = await Promise.all([
     getTemplate(client, templateId, companyId),
     getCompany(client, companyId),
-    client
-      .from("user")
-      .select("fullName")
-      .eq("id", userId)
-      .eq("companyId", companyId)
-      .single()
+    client.from("user").select("fullName").eq("id", userId).single()
   ]);
 
   if (templateResult.error || !templateResult.data) {
