@@ -59,7 +59,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   });
 
   if (exportResult.error) {
-    throw new Response("Failed to load export data", { status: 500 });
+    throw new Response(exportResult.error.message, { status: 500 });
   }
 
   rows = exportResult.data ?? [];
