@@ -64,7 +64,6 @@ export type TemplateConfig = {
   pageFooterConfigs: {
     enablePageNumber: boolean;
     enableGeneratedBy: boolean;
-    enableDatestamp: boolean;
     enableTimeStamp: boolean;
   };
   sortConfigs: {
@@ -90,7 +89,6 @@ export const DEFAULT_TEMPLATE_CONFIG: TemplateConfig = {
   pageFooterConfigs: {
     enablePageNumber: true,
     enableGeneratedBy: false,
-    enableDatestamp: false,
     enableTimeStamp: false
   },
   sortConfigs: {

@@ -2,16 +2,15 @@ import { assertIsPost, error, success } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
-import { useEffect } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import {
   data,
   redirect,
-  useNavigate,
   useOutletContext,
   useSearchParams
 } from "react-router";
 import {
+  type TemplateConfig,
   TemplateManager,
   templateValidator,
   upsertTemplate
@@ -48,21 +47,17 @@ export async function action({ request }: ActionFunctionArgs) {
     pdfTitle,
     pdfIsUppercase,
     pdfLayout,
-    pdfHeadline,
-    pdfDateTitle,
     enablePageNumber,
     enableGeneratedBy,
-    enableDatestamp,
     enableTimeStamp,
     sortType,
     primarySortBy,
-    secondarySortBy,
     sortOrder,
     ...rest
   } = validation.data;
   const fields: string[] = fieldsJson ? JSON.parse(fieldsJson) : [];
 
-  const templateConfiguration = {
+  const templateConfiguration: TemplateConfig = {
     fields,
     colorTheme: colorTheme ?? "default",
     margins: margins ?? "default",
@@ -73,21 +68,17 @@ export async function action({ request }: ActionFunctionArgs) {
     fontSize: fontSize ?? "default",
     pdfTitleConfigs: {
       title: pdfTitle ?? "",
-      isUppercase: pdfIsUppercase === "true",
-      layout: pdfLayout ?? "left_aligned",
-      headline: pdfHeadline ?? "HEADLINE_COMPANY_NAME",
-      dateTitle: pdfDateTitle ?? ""
+      isUppercase: pdfIsUppercase,
+      layout: pdfLayout ?? "left_aligned"
     },
     pageFooterConfigs: {
-      enablePageNumber: enablePageNumber === "true",
-      enableGeneratedBy: enableGeneratedBy === "true",
-      enableDatestamp: enableDatestamp === "true",
-      enableTimeStamp: enableTimeStamp === "true"
+      enablePageNumber,
+      enableGeneratedBy,
+      enableTimeStamp
     },
     sortConfigs: {
       type: sortType ?? "FIXED",
       primarySortBy: primarySortBy ?? "NAME_ASC",
-      secondarySortBy: secondarySortBy ?? "CODE_ASC",
       order: sortOrder || null
     }
   };
@@ -117,30 +108,13 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function NewTemplateRoute() {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // These are DB enum values passed from the calling context (e.g. ?module=Purchasing&category=Orders)
   const module = searchParams.get("module") ?? "Purchasing";
   const category = searchParams.get("category");
 
-  const {
-    selectedFields,
-    setSelectedFields,
-    setModule,
-    setCategory,
-    setAction,
-    setInitialName
-  } = useOutletContext<TemplateOutletContext>();
-
-  useEffect(() => {
-    setModule(module);
-    setCategory(category);
-    setAction(path.to.newTemplate);
-    setInitialName("");
-    setSelectedFields([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [module, category, setAction]);
+  const { selectedFields, setSelectedFields } =
+    useOutletContext<TemplateOutletContext>();
 
   const handleToggleField = (fieldKey: string) => {
     setSelectedFields((prev) =>
@@ -156,7 +130,6 @@ export default function NewTemplateRoute() {
       category={category}
       selectedFields={selectedFields}
       onToggleField={handleToggleField}
-      onClose={() => navigate(-1)}
     />
   );
 }

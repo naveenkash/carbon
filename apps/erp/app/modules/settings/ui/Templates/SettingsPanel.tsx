@@ -1,9 +1,7 @@
-import { Select, ValidatedForm } from "@carbon/form";
+import { Boolean, Select, ValidatedForm } from "@carbon/form";
 import {
-  Checkbox,
   Heading,
   HStack,
-  Label,
   Tabs,
   TabsContent,
   TabsList,
@@ -11,22 +9,19 @@ import {
   VStack
 } from "@carbon/react";
 import type React from "react";
-import { useEffect, useState } from "react";
-import { useFetcher } from "react-router";
+import { useFetcher, useParams, useSearchParams } from "react-router";
 import { Hidden, Input } from "~/components/Form";
+import { useRouteData } from "~/hooks";
 import { templateValidator } from "~/modules/settings/settings.models";
 import {
   DEFAULT_TEMPLATE_CONFIG,
+  type Template,
   type TemplateConfig
 } from "~/modules/settings/types";
+import { path } from "~/utils/path";
 
 interface SettingsPanelProps {
-  action: string;
-  module: string;
-  category?: string | null;
   selectedFields: string[];
-  initialName?: string;
-  initialConfig?: Partial<TemplateConfig>;
 }
 
 export const TEMPLATE_FORM_ID = "template-settings-form";
@@ -77,16 +72,34 @@ const SORT_BY_OPTIONS = [
   { value: "DATE_DESC", label: "Date (Newest)" }
 ];
 
-const SettingsPanel: React.FC<SettingsPanelProps> = ({
-  action,
-  module,
-  category,
-  selectedFields,
-  initialName = "",
-  initialConfig
-}) => {
+const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
   const fetcher = useFetcher();
-  const cfg = { ...DEFAULT_TEMPLATE_CONFIG, ...initialConfig };
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+
+  const routeData = useRouteData<{ template: Template }>(
+    id ? path.to.template(id) : ""
+  );
+
+  const isEditing = !!id;
+  const template = routeData?.template ?? null;
+
+  const module = isEditing
+    ? (template?.module ?? "")
+    : (searchParams.get("module") ?? "");
+  const category = isEditing
+    ? (template?.category ?? null)
+    : searchParams.get("category");
+  const action = isEditing ? path.to.template(id!) : path.to.newTemplate;
+  const initialName = template?.name ?? "";
+  const rawConfig = template?.templateConfiguration as
+    | (Partial<TemplateConfig> & { fields?: string[] })
+    | null;
+  const initialConfig: Partial<TemplateConfig> = rawConfig
+    ? { ...DEFAULT_TEMPLATE_CONFIG, ...rawConfig }
+    : DEFAULT_TEMPLATE_CONFIG;
+
+  const cfg = initialConfig;
   const pdf = {
     ...DEFAULT_TEMPLATE_CONFIG.pdfTitleConfigs,
     ...initialConfig?.pdfTitleConfigs
@@ -99,30 +112,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     ...DEFAULT_TEMPLATE_CONFIG.sortConfigs,
     ...initialConfig?.sortConfigs
   };
-
-  const [pdfIsUppercase, setPdfIsUppercase] = useState(pdf.isUppercase);
-  const [enablePageNumber, setEnablePageNumber] = useState(
-    footer.enablePageNumber
-  );
-  const [enableGeneratedBy, setEnableGeneratedBy] = useState(
-    footer.enableGeneratedBy
-  );
-  const [enableDatestamp, setEnableDatestamp] = useState(
-    footer.enableDatestamp
-  );
-  const [enableTimeStamp, setEnableTimeStamp] = useState(
-    footer.enableTimeStamp
-  );
-
-  // Re-sync checkbox state when initialConfig changes (e.g. after edit template loads)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional reset on action change
-  useEffect(() => {
-    setPdfIsUppercase(pdf.isUppercase);
-    setEnablePageNumber(footer.enablePageNumber);
-    setEnableGeneratedBy(footer.enableGeneratedBy);
-    setEnableDatestamp(footer.enableDatestamp);
-    setEnableTimeStamp(footer.enableTimeStamp);
-  }, [action, initialName]);
 
   return (
     <VStack className="w-4/12 bg-card h-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent border-l border-border px-4 py-2 text-sm">
@@ -144,6 +133,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             fontSize: cfg.fontSize,
             pdfTitle: pdf.title,
             pdfLayout: pdf.layout,
+            pdfIsUppercase: pdf.isUppercase,
+            enablePageNumber: footer.enablePageNumber,
+            enableGeneratedBy: footer.enableGeneratedBy,
+            enableTimeStamp: footer.enableTimeStamp,
             sortType: sort.type,
             primarySortBy: sort.primarySortBy,
             sortOrder: sort.order ?? ""
@@ -153,11 +146,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           <Hidden name="module" value={module} />
           {category && <Hidden name="category" value={category} />}
           <Hidden name="fields" value={JSON.stringify(selectedFields)} />
-          <Hidden name="pdfIsUppercase" value={String(pdfIsUppercase)} />
-          <Hidden name="enablePageNumber" value={String(enablePageNumber)} />
-          <Hidden name="enableGeneratedBy" value={String(enableGeneratedBy)} />
-          <Hidden name="enableDatestamp" value={String(enableDatestamp)} />
-          <Hidden name="enableTimeStamp" value={String(enableTimeStamp)} />
 
           <Tabs defaultValue="general">
             <HStack>
@@ -214,23 +202,12 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               <VStack spacing={4}>
                 <VStack className="border-b pb-5">
                   <Heading size="h4">Title</Heading>
-
-                  <HStack className="items-center gap-2">
-                    <Input
-                      placeholder="PDF Title"
-                      name="pdfTitle"
-                      label="Title"
-                    />
-                    <HStack className="items-center gap-2 mt-5">
-                      <Checkbox
-                        id="isUppercase"
-                        checked={pdfIsUppercase}
-                        onCheckedChange={(v) => setPdfIsUppercase(!!v)}
-                      />
-                      <Label htmlFor="isUppercase">Uppercase</Label>
-                    </HStack>
-                  </HStack>
-
+                  <Input
+                    placeholder="PDF Title"
+                    name="pdfTitle"
+                    label="Title"
+                  />
+                  <Boolean name="pdfIsUppercase" label="Uppercase" />
                   <Select
                     name="pdfLayout"
                     label="Layout"
@@ -241,55 +218,26 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 <VStack className="border-b pb-5">
                   <Heading size="h4">Footer</Heading>
                   <HStack className="space-x-2 justify-between w-full">
-                    <HStack className="items-center gap-2">
-                      <Checkbox
-                        id="enablePageNumber"
-                        checked={enablePageNumber}
-                        onCheckedChange={(v) => setEnablePageNumber(!!v)}
-                      />
-                      <Label htmlFor="enablePageNumber">
-                        Enable Page Number
-                      </Label>
-                    </HStack>
-                    <HStack className="items-center gap-2">
-                      <Checkbox
-                        id="enableGeneratedBy"
-                        checked={enableGeneratedBy}
-                        onCheckedChange={(v) => setEnableGeneratedBy(!!v)}
-                      />
-                      <Label htmlFor="enableGeneratedBy">
-                        Enable Generated By
-                      </Label>
-                    </HStack>
+                    <Boolean
+                      name="enablePageNumber"
+                      label="Enable Page Number"
+                    />
+                    <Boolean
+                      name="enableGeneratedBy"
+                      label="Enable Generated By"
+                    />
                   </HStack>
                   <HStack className="space-x-2 justify-between w-full">
-                    <HStack className="items-center gap-2">
-                      <Checkbox
-                        id="enableDatestamp"
-                        checked={enableDatestamp}
-                        onCheckedChange={(v) => setEnableDatestamp(!!v)}
-                      />
-                      <Label htmlFor="enableDatestamp">Enable Datestamp</Label>
-                    </HStack>
-                    <HStack className="items-center gap-2">
-                      <Checkbox
-                        id="enableTimeStamp"
-                        checked={enableTimeStamp}
-                        onCheckedChange={(v) => setEnableTimeStamp(!!v)}
-                      />
-                      <Label htmlFor="enableTimeStamp">Enable Timestamp</Label>
-                    </HStack>
-                  </HStack>
+                    <Boolean name="enableTimeStamp" label="Enable Timestamp" />
+                  </HStack>{" "}
                 </VStack>
 
                 <Heading size="h4">Sort</Heading>
-                {/* <Select name="sortType" label="Sort Type" options={SORT_TYPE_OPTIONS} /> */}
                 <Select
                   name="primarySortBy"
                   label="Primary Sort By"
                   options={SORT_BY_OPTIONS}
                 />
-                {/* <Input name="sortOrder" label="Sort Order" /> */}
               </VStack>
             </TabsContent>
           </Tabs>

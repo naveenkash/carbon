@@ -4,23 +4,14 @@ import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
 import { useEffect } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import {
-  data,
-  redirect,
-  useLoaderData,
-  useNavigate,
-  useOutletContext
-} from "react-router";
+import { data, redirect, useLoaderData, useOutletContext } from "react-router";
 import {
   getTemplate,
   TemplateManager,
   templateValidator,
   upsertTemplate
 } from "~/modules/settings";
-import {
-  DEFAULT_TEMPLATE_CONFIG,
-  type TemplateConfig
-} from "~/modules/settings/types";
+import type { TemplateConfig } from "~/modules/settings/types";
 import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
 import { path } from "~/utils/path";
 
@@ -69,7 +60,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfLayout,
     enablePageNumber,
     enableGeneratedBy,
-    enableDatestamp,
     enableTimeStamp,
     sortType,
     primarySortBy,
@@ -87,14 +77,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
     fontSize: fontSize ?? "default",
     pdfTitleConfigs: {
       title: pdfTitle ?? "",
-      isUppercase: pdfIsUppercase === "true",
+      isUppercase: pdfIsUppercase,
       layout: pdfLayout ?? "left_aligned"
     },
     pageFooterConfigs: {
-      enablePageNumber: enablePageNumber === "true",
-      enableGeneratedBy: enableGeneratedBy === "true",
-      enableDatestamp: enableDatestamp === "true",
-      enableTimeStamp: enableTimeStamp === "true"
+      enablePageNumber,
+      enableGeneratedBy,
+      enableTimeStamp
     },
     sortConfigs: {
       type: sortType ?? "FIXED",
@@ -130,35 +119,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function EditTemplateRoute() {
   const { template } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
 
-  const {
-    selectedFields,
-    setSelectedFields,
-    setModule,
-    setCategory,
-    setAction,
-    setInitialName,
-    setInitialConfig
-  } = useOutletContext<TemplateOutletContext>();
+  const { selectedFields, setSelectedFields } =
+    useOutletContext<TemplateOutletContext>();
 
   const raw = template.templateConfiguration as
     | (Partial<TemplateConfig> & { fields?: string[] })
     | null;
   const initialFields = raw?.fields ?? [];
-  // module and category are stored as DB enum values
   const module = template.module ?? "Purchasing";
   const category = template.category ?? null;
 
   useEffect(() => {
-    setModule(module);
-    setCategory(category);
-    setAction(path.to.template(template.id));
-    setInitialName(template.name);
     setSelectedFields(initialFields);
-    setInitialConfig({ ...DEFAULT_TEMPLATE_CONFIG, ...raw });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [template.id]);
+  }, [initialFields, setSelectedFields]);
 
   const handleToggleField = (fieldKey: string) => {
     setSelectedFields((prev) =>
@@ -174,7 +148,6 @@ export default function EditTemplateRoute() {
       category={category}
       selectedFields={selectedFields}
       onToggleField={handleToggleField}
-      onClose={() => navigate(-1)}
     />
   );
 }

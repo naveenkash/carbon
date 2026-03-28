@@ -67,15 +67,14 @@ export const templateValidator = z.object({
   fontSize: zfd.text(z.string().optional()),
   // pdfTitleConfigs
   pdfTitle: zfd.text(z.string().optional()),
-  pdfIsUppercase: zfd.text(z.string().optional()),
+  pdfIsUppercase: zfd.checkbox(),
   pdfLayout: zfd.text(z.string().optional()),
   pdfHeadline: zfd.text(z.string().optional()),
   pdfDateTitle: zfd.text(z.string().optional()),
   // pageFooterConfigs
-  enablePageNumber: zfd.text(z.string().optional()),
-  enableGeneratedBy: zfd.text(z.string().optional()),
-  enableDatestamp: zfd.text(z.string().optional()),
-  enableTimeStamp: zfd.text(z.string().optional()),
+  enablePageNumber: zfd.checkbox(),
+  enableGeneratedBy: zfd.checkbox(),
+  enableTimeStamp: zfd.checkbox(),
   // sortConfigs
   sortType: zfd.text(z.string().optional()),
   primarySortBy: zfd.text(z.string().optional()),

@@ -47,7 +47,7 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       label: "Line Type",
       type: "text",
       column: "purchaseOrderLineType",
-      group: "Lines",
+      group: "Order Lines",
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
     {
@@ -55,7 +55,7 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       label: "Description",
       type: "text",
       column: "description",
-      group: "Lines",
+      group: "Order Lines",
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
     {
@@ -63,7 +63,7 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       label: "Purchase Qty",
       type: "number",
       column: "purchaseQuantity",
-      group: "Lines",
+      group: "Order Lines",
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
     {
@@ -71,7 +71,7 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       label: "Qty Received",
       type: "number",
       column: "quantityReceived",
-      group: "Lines",
+      group: "Order Lines",
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
     {
@@ -79,7 +79,7 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       label: "Unit Price",
       type: "currency",
       column: "supplierUnitPrice",
-      group: "Lines",
+      group: "Order Lines",
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     }
   ],

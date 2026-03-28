@@ -4,10 +4,6 @@ import { useState } from "react";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { Outlet } from "react-router";
 import { PanelProvider, ResizablePanels } from "~/components/Layout";
-import {
-  DEFAULT_TEMPLATE_CONFIG,
-  type TemplateConfig
-} from "~/modules/settings/types";
 import SettingsPanel from "~/modules/settings/ui/Templates/SettingsPanel";
 import TemplateHeader from "~/modules/settings/ui/Templates/TemplateHeader";
 import type { Handle } from "~/utils/handle";
@@ -31,35 +27,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export type TemplateOutletContext = {
   selectedFields: string[];
   setSelectedFields: React.Dispatch<React.SetStateAction<string[]>>;
-  module: string;
-  category: string | null;
-  setModule: (module: string) => void;
-  setCategory: (category: string | null) => void;
-  setAction: (action: string) => void;
-  setInitialName: (name: string) => void;
-  setInitialConfig: (config: Partial<TemplateConfig>) => void;
 };
 
 export default function TemplateRoute() {
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
-  const [module, setModule] = useState("Purchasing");
-  const [category, setCategory] = useState<string | null>("Orders");
-  const [action, setAction] = useState(path.to.newTemplate);
-  const [initialName, setInitialName] = useState("");
-  const [initialConfig, setInitialConfig] = useState<Partial<TemplateConfig>>(
-    DEFAULT_TEMPLATE_CONFIG
-  );
 
   const outletContext: TemplateOutletContext = {
     selectedFields,
-    setSelectedFields,
-    module,
-    category,
-    setModule,
-    setCategory,
-    setAction,
-    setInitialName,
-    setInitialConfig
+    setSelectedFields
   };
 
   return (
@@ -77,16 +52,7 @@ export default function TemplateRoute() {
                   </VStack>
                 </div>
               }
-              properties={
-                <SettingsPanel
-                  action={action}
-                  module={module}
-                  category={category}
-                  selectedFields={selectedFields}
-                  initialName={initialName}
-                  initialConfig={initialConfig}
-                />
-              }
+              properties={<SettingsPanel selectedFields={selectedFields} />}
             />
           </div>
         </div>
