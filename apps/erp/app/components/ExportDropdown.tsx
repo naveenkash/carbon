@@ -47,9 +47,8 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
       <DropdownMenuContent align="end" className="min-w-[200px]">
         <DropdownMenuItem
           onClick={() => {
-            window.location.href = path.to.api.exportTemplate(
-              defaultTemplate?.id,
-              "csv"
+            window.location.href = path.to.api.exportTemplateAsCsv(
+              defaultTemplate?.id
             );
           }}
         >
@@ -61,9 +60,8 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
             <DropdownMenuItem
               key={template.id}
               onClick={() => {
-                window.location.href = path.to.api.exportTemplate(
-                  template.id,
-                  "pdf"
+                window.location.href = path.to.file.exportTemplatePdf(
+                  template.id
                 );
               }}
             >

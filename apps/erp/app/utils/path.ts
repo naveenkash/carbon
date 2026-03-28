@@ -48,8 +48,8 @@ export const path = {
       digitalSupplierQuote: (id: string) =>
         generatePath(`${api}/purchasing/digital-quote/${id}`),
       docs: `${api}/docs`,
-      exportTemplate: (id: string, type: string) =>
-        generatePath(`${api}/settings/export/${id}?type=${type}`),
+      exportTemplateAsCsv: (id: string) =>
+        generatePath(`${api}/settings/export/${id}`),
       templates: (module: string, category?: string | null) =>
         `${api}/settings/templates?module=${module}${category ? `&category=${category}` : ""}`,
       employeeTypes: `${api}/users/employee-types`,
@@ -357,7 +357,9 @@ export const path = {
       },
       stockTransfer: (id: string) =>
         generatePath(`${file}/stock-transfer/${id}.pdf`),
-      quote: (id: string) => generatePath(`${file}/quote/${id}.pdf`)
+      quote: (id: string) => generatePath(`${file}/quote/${id}.pdf`),
+      exportTemplatePdf: (id: string) =>
+        generatePath(`${file}/template/${id}.pdf`)
     },
     legal: {
       termsAndConditions: "https://carbon.ms/terms",

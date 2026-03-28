@@ -33,11 +33,7 @@ const COLOR_THEME_OPTIONS = [
   { value: "red", label: "Red" }
 ];
 
-const FONT_OPTIONS = [
-  { value: "Inter", label: "Inter" },
-  { value: "Roboto", label: "Roboto" },
-  { value: "Helvetica", label: "Helvetica" }
-];
+const FONT_OPTIONS = [{ value: "Inter", label: "Inter" }];
 
 const TEMPLATE_STYLE_OPTIONS = [
   { value: "REPORT_TEMPLATE_CLASSIC", label: "Classic" },
@@ -207,7 +203,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
                     name="pdfTitle"
                     label="Title"
                   />
-                  <Boolean name="pdfIsUppercase" label="Uppercase" />
+                  <Boolean name="pdfIsUppercase" label="Title Uppercase" />
                   <Select
                     name="pdfLayout"
                     label="Layout"

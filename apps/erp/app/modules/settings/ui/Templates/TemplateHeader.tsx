@@ -1,5 +1,5 @@
 import { Button, Heading, HStack, IconButton, useMount } from "@carbon/react";
-import { LuEye, LuPanelRight } from "react-icons/lu";
+import { LuPanelRight } from "react-icons/lu";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 
 import { usePanels } from "~/components/Layout";
@@ -41,9 +41,6 @@ const TemplateHeader = () => {
           <span>{label}</span>
         </Heading>
         <HStack>
-          <Button leftIcon={<LuEye />} variant="outline">
-            Preview
-          </Button>
           <Button
             type="button"
             variant="secondary"
