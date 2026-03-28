@@ -46,12 +46,6 @@ import {
 import type { Result } from "~/types";
 import { path } from "~/utils/path";
 
-const ratelimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(RATE_LIMIT, "1 h"),
-  analytics: true
-});
-
 export const meta: MetaFunction = () => {
   return [{ title: "Carbon | Login" }];
 };
@@ -68,6 +62,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     providers
   };
 }
+
+const ratelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(RATE_LIMIT, "1 h"),
+  analytics: true
+});
 
 export async function action({ request }: ActionFunctionArgs) {
   assertIsPost(request);
