@@ -7,7 +7,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   HStack,
-  Status
+  Status,
+  toast
 } from "@carbon/react";
 import { useEffect } from "react";
 import { LuChevronDown, LuDownload } from "react-icons/lu";
@@ -31,7 +32,27 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
 
   if (templates.length === 0) return null;
 
-  const defaultTemplate = templates.find((each) => !!each.isDefault);
+  const defaultTemplate: Template = templates.find((each) => !!each.isDefault);
+
+  // // biome-ignore lint/correctness/useHookAtTopLevel: suppressed due to migration
+  const download = async (url: string) => {
+    // const url = path.to.file.exportTemplateCsv(url);
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      a.href = blobUrl;
+      a.download = defaultTemplate.name;
+      a.click();
+      window.URL.revokeObjectURL(blobUrl);
+      document.body.removeChild(a);
+    } catch (error) {
+      toast.error("Error downloading file");
+      console.error(error);
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -46,11 +67,9 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[200px]">
         <DropdownMenuItem
-          onClick={() => {
-            window.location.href = path.to.file.exportTemplateCsv(
-              defaultTemplate?.id
-            );
-          }}
+          onClick={() =>
+            download(path.to.file.exportTemplateCsv(defaultTemplate.id))
+          }
         >
           Download as CSV
         </DropdownMenuItem>
@@ -59,11 +78,9 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
           {templates.map((template) => (
             <DropdownMenuItem
               key={template.id}
-              onClick={() => {
-                window.location.href = path.to.file.exportTemplatePdf(
-                  template.id
-                );
-              }}
+              onClick={() =>
+                download(path.to.file.exportTemplatePdf(template.id))
+              }
             >
               <HStack className="justify-between items-center w-full">
                 {template.name}{" "}

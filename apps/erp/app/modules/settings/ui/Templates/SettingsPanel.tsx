@@ -69,11 +69,6 @@ const LAYOUT_OPTIONS = [
   { value: "right_aligned", label: "Right Aligned" }
 ];
 
-const SORT_BY_OPTIONS = [
-  { value: "NAME_ASC", label: "Name (A–Z)" },
-  { value: "NAME_DESC", label: "Name (Z–A)" }
-];
-
 type LocalConfig = {
   colorTheme: string;
   margins: string;
@@ -268,7 +263,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               value="general"
               className="min-h-[120px] pt-4 data-[state=inactive]:hidden"
             >
-              <VStack spacing={4} className="border-b mb-5">
+              <VStack spacing={4} className="pb-5">
                 <Input
                   name="name"
                   placeholder="Template name"
@@ -331,24 +326,26 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 />
               </VStack>
 
-              <Heading size="h4">Sort</Heading>
-              <Select
-                name="primarySortBy"
-                label="Primary Sort By"
-                options={SORT_BY_OPTIONS}
-                onChange={(v) =>
-                  setLocalConfig((p) => ({
-                    ...p,
-                    primarySortBy: v?.value ?? p.primarySortBy
-                  }))
-                }
-              />
+              {/* <VStack>
+                  <Heading size="h4">Sort</Heading>
+                  <Select
+                    name="primarySortBy"
+                    label="Primary Sort By"
+                    options={SORT_BY_OPTIONS}
+                    onChange={(v) =>
+                      setLocalConfig((p) => ({
+                        ...p,
+                        primarySortBy: v?.value ?? p.primarySortBy
+                      }))
+                    }
+                  />
+                </VStack> */}
             </TabsContent>
 
             <TabsContent
               forceMount
               value="pdf"
-              className="min-h-[120px] pt-4 data-[state=inactive]:hidden"
+              className="min-h-[120px] pt-5 data-[state=inactive]:hidden"
             >
               <VStack spacing={4}>
                 <VStack className="border-b pb-5">

@@ -43,7 +43,7 @@ const TemplateManager: React.FC<Props> = ({
     });
     if (category) params.set("category", category);
 
-    return `${path.to.file.previewTemplatePdf}?${params.toString()}`;
+    return `${path.to.file.previewTemplatePdf}?${params.toString()}#toolbar=0`;
   }, [module, category, selectedFields, computedFields, previewConfig]);
 
   const debouncedUrl = useDebounced(previewUrl, 300);
