@@ -7,8 +7,7 @@ import {
   Input,
   VStack
 } from "@carbon/react";
-import { Reorder, useDragControls } from "framer-motion";
-import { LuGripVertical, LuX } from "react-icons/lu";
+import { LuX } from "react-icons/lu";
 import Select from "~/components/Select";
 import {
   type ConditionalConfig,
@@ -26,63 +25,56 @@ function ConditionalRuleRow({
   onChange: (r: ConditionalRule) => void;
   onRemove: () => void;
 }) {
-  const dragControls = useDragControls();
   return (
-    <Reorder.Item
-      value={rule}
-      dragListener={false}
-      dragControls={dragControls}
-      className="flex items-center gap-1 bg-background border border-border rounded px-2 py-1.5"
-    >
-      <span
-        className="cursor-grab text-muted-foreground"
-        onPointerDown={(e) => dragControls.start(e)}
-      >
-        <LuGripVertical size={12} />
-      </span>
+    <>
+      <VStack className="w-full items-end">
+        <IconButton
+          aria-label="Remove rule"
+          icon={<LuX size={12} />}
+          variant="ghost"
+          onClick={onRemove}
+        />
+      </VStack>
       <Select
         value={rule.operator}
+        className="w-full"
         onChange={(v) =>
           onChange({ ...rule, operator: v as ConditionalOperator })
         }
         options={CONDITION_OPERATORS}
         size="md"
       />
-      {rule.operator !== ConditionalOperator.IsNull && (
+      <HStack>
+        {rule.operator !== ConditionalOperator.IsNull && (
+          <Input
+            type={
+              rule.operator === ConditionalOperator.Between ? "number" : "text"
+            }
+            value={String(rule.value ?? "")}
+            onChange={(e) => onChange({ ...rule, value: e.target.value })}
+            placeholder="value"
+            className="w-16"
+          />
+        )}
+        {rule.operator === ConditionalOperator.Between && (
+          <Input
+            type="number"
+            value={String(rule.valueTo ?? "")}
+            onChange={(e) =>
+              onChange({ ...rule, valueTo: parseFloat(e.target.value) })
+            }
+            placeholder="to"
+            className="w-16"
+          />
+        )}
+        <span className="text-muted-foreground text-xs shrink-0">→</span>
         <Input
-          type={
-            rule.operator === ConditionalOperator.Between ? "number" : "text"
-          }
-          value={String(rule.value ?? "")}
-          onChange={(e) => onChange({ ...rule, value: e.target.value })}
-          placeholder="value"
-          className="w-16"
+          value={rule.output}
+          onChange={(e) => onChange({ ...rule, output: e.target.value })}
+          placeholder="label"
         />
-      )}
-      {rule.operator === ConditionalOperator.Between && (
-        <Input
-          type="number"
-          value={String(rule.valueTo ?? "")}
-          onChange={(e) =>
-            onChange({ ...rule, valueTo: parseFloat(e.target.value) })
-          }
-          placeholder="to"
-          className="w-16"
-        />
-      )}
-      <span className="text-muted-foreground text-xs shrink-0">→</span>
-      <Input
-        value={rule.output}
-        onChange={(e) => onChange({ ...rule, output: e.target.value })}
-        placeholder="label"
-      />
-      <IconButton
-        aria-label="Remove rule"
-        icon={<LuX size={12} />}
-        variant="ghost"
-        onClick={onRemove}
-      />
-    </Reorder.Item>
+      </HStack>
+    </>
   );
 }
 
@@ -136,12 +128,7 @@ export function ConditionalForm({
             Add
           </button>
         </HStack>
-        <Reorder.Group
-          axis="y"
-          values={config.rules}
-          onReorder={(rules) => onChange({ ...config, rules })}
-          className="flex flex-col gap-1"
-        >
+        <VStack className="flex flex-col gap-1 mb-2">
           {config.rules.map((rule, i) => (
             <ConditionalRuleRow
               key={i}
@@ -159,7 +146,7 @@ export function ConditionalForm({
               }
             />
           ))}
-        </Reorder.Group>
+        </VStack>
         {errors.rules && <FormErrorMessage>{errors.rules}</FormErrorMessage>}
       </FormControl>
       <FormControl>

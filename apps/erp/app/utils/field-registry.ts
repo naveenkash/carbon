@@ -42,6 +42,7 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       column: "supplierReference"
     },
     { key: "closedAt", label: "Closed At", type: "date", column: "closedAt" },
+    // Line fields
     {
       key: "line.purchaseOrderLineType",
       label: "Line Type",
@@ -75,275 +76,77 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
     {
+      key: "line.quantityToReceive",
+      label: "Qty To Receive",
+      type: "number",
+      column: "quantityToReceive",
+      group: "Order Lines",
+      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
+    },
+    {
+      key: "line.quantityInvoiced",
+      label: "Qty Invoiced",
+      type: "number",
+      column: "quantityInvoiced",
+      group: "Order Lines",
+      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
+    },
+    {
+      key: "line.quantityToInvoice",
+      label: "Qty To Invoice",
+      type: "number",
+      column: "quantityToInvoice",
+      group: "Order Lines",
+      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
+    },
+    {
       key: "line.supplierUnitPrice",
-      label: "Unit Price",
+      label: "Supplier Unit Price",
       type: "currency",
       column: "supplierUnitPrice",
       group: "Order Lines",
       relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
-    }
-  ],
-
-  // ─── Purchasing → Invoices ────────────────────────────────────────────────
-  "Purchasing:Invoices": [
-    {
-      key: "invoiceId",
-      label: "Invoice Number",
-      type: "text",
-      column: "invoiceId"
-    },
-    { key: "status", label: "Status", type: "status", column: "status" },
-    {
-      key: "dateIssued",
-      label: "Issue Date",
-      type: "date",
-      column: "dateIssued"
-    },
-    { key: "dateDue", label: "Due Date", type: "date", column: "dateDue" },
-    { key: "datePaid", label: "Paid Date", type: "date", column: "datePaid" },
-    {
-      key: "subtotal",
-      label: "Subtotal",
-      type: "currency",
-      column: "subtotal"
-    },
-    {
-      key: "totalDiscount",
-      label: "Discount",
-      type: "currency",
-      column: "totalDiscount"
-    },
-    { key: "totalTax", label: "Tax", type: "currency", column: "totalTax" },
-    {
-      key: "totalAmount",
-      label: "Total Amount",
-      type: "currency",
-      column: "totalAmount"
-    },
-    { key: "balance", label: "Balance", type: "currency", column: "balance" },
-    {
-      key: "currencyCode",
-      label: "Currency",
-      type: "text",
-      column: "currencyCode"
-    },
-    {
-      key: "supplierReference",
-      label: "Supplier Reference",
-      type: "text",
-      column: "supplierReference"
-    },
-    // Lines
-    {
-      key: "line.itemReadableId",
-      label: "Item Code",
-      type: "text",
-      column: "itemReadableId",
-      group: "Lines",
-      relation: { table: "purchaseInvoiceLine", fk: "invoiceId" }
-    },
-    {
-      key: "line.description",
-      label: "Description",
-      type: "text",
-      column: "description",
-      group: "Lines",
-      relation: { table: "purchaseInvoiceLine", fk: "invoiceId" }
-    },
-    {
-      key: "line.quantity",
-      label: "Quantity",
-      type: "number",
-      column: "quantity",
-      group: "Lines",
-      relation: { table: "purchaseInvoiceLine", fk: "invoiceId" }
     },
     {
       key: "line.unitPrice",
       label: "Unit Price",
       type: "currency",
       column: "unitPrice",
-      group: "Lines",
-      relation: { table: "purchaseInvoiceLine", fk: "invoiceId" }
+      group: "Order Lines",
+      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
     {
-      key: "line.totalAmount",
-      label: "Line Total",
+      key: "line.supplierExtendedPrice",
+      label: "Supplier Extended Price",
       type: "currency",
-      column: "totalAmount",
-      group: "Lines",
-      relation: { table: "purchaseInvoiceLine", fk: "invoiceId" }
-    }
-  ],
+      column: "supplierExtendedPrice",
+      group: "Order Lines",
+      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
+    },
+    {
+      key: "line.extendedPrice",
+      label: "Extended Price",
+      type: "currency",
+      column: "extendedPrice",
+      group: "Order Lines",
+      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
+    },
 
-  // ─── Sales → Orders ───────────────────────────────────────────────────────
-  "Sales:Orders": [
     {
-      key: "salesOrderId",
-      label: "Order Number",
-      type: "text",
-      column: "salesOrderId"
-    },
-    {
-      key: "orderDate",
-      label: "Order Date",
+      key: "line.requestedDate",
+      label: "Requested Date",
       type: "date",
-      column: "orderDate"
-    },
-    { key: "status", label: "Status", type: "status", column: "status" },
-    {
-      key: "customerReference",
-      label: "Customer Reference",
-      type: "text",
-      column: "customerReference"
+      column: "requestedDate",
+      group: "Order Lines",
+      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     },
     {
-      key: "currencyCode",
-      label: "Currency",
-      type: "text",
-      column: "currencyCode"
-    },
-    { key: "closedAt", label: "Closed At", type: "date", column: "closedAt" },
-    // Lines
-    {
-      key: "line.salesOrderLineType",
-      label: "Line Type",
-      type: "text",
-      column: "salesOrderLineType",
-      group: "Lines",
-      relation: { table: "salesOrderLine", fk: "salesOrderId" }
-    },
-    {
-      key: "line.itemReadableId",
-      label: "Item Code",
-      type: "text",
-      column: "itemReadableId",
-      group: "Lines",
-      relation: { table: "salesOrderLine", fk: "salesOrderId" }
-    },
-    {
-      key: "line.description",
-      label: "Description",
-      type: "text",
-      column: "description",
-      group: "Lines",
-      relation: { table: "salesOrderLine", fk: "salesOrderId" }
-    },
-    {
-      key: "line.saleQuantity",
-      label: "Sale Qty",
-      type: "number",
-      column: "saleQuantity",
-      group: "Lines",
-      relation: { table: "salesOrderLine", fk: "salesOrderId" }
-    },
-    {
-      key: "line.quantitySent",
-      label: "Qty Sent",
-      type: "number",
-      column: "quantitySent",
-      group: "Lines",
-      relation: { table: "salesOrderLine", fk: "salesOrderId" }
-    },
-    {
-      key: "line.unitPrice",
-      label: "Unit Price",
-      type: "currency",
-      column: "unitPrice",
-      group: "Lines",
-      relation: { table: "salesOrderLine", fk: "salesOrderId" }
-    }
-  ],
-
-  // ─── Sales → Invoices ─────────────────────────────────────────────────────
-  "Sales:Invoices": [
-    {
-      key: "invoiceId",
-      label: "Invoice Number",
-      type: "text",
-      column: "invoiceId"
-    },
-    { key: "status", label: "Status", type: "status", column: "status" },
-    {
-      key: "dateIssued",
-      label: "Issue Date",
+      key: "line.receivedDate",
+      label: "Received Date",
       type: "date",
-      column: "dateIssued"
-    },
-    { key: "dateDue", label: "Due Date", type: "date", column: "dateDue" },
-    { key: "datePaid", label: "Paid Date", type: "date", column: "datePaid" },
-    {
-      key: "subtotal",
-      label: "Subtotal",
-      type: "currency",
-      column: "subtotal"
-    },
-    {
-      key: "totalDiscount",
-      label: "Discount",
-      type: "currency",
-      column: "totalDiscount"
-    },
-    { key: "totalTax", label: "Tax", type: "currency", column: "totalTax" },
-    {
-      key: "totalAmount",
-      label: "Total Amount",
-      type: "currency",
-      column: "totalAmount"
-    },
-    { key: "balance", label: "Balance", type: "currency", column: "balance" },
-    {
-      key: "currencyCode",
-      label: "Currency",
-      type: "text",
-      column: "currencyCode"
-    },
-    {
-      key: "customerReference",
-      label: "Customer Reference",
-      type: "text",
-      column: "customerReference"
-    },
-    // Lines
-    {
-      key: "line.itemReadableId",
-      label: "Item Code",
-      type: "text",
-      column: "itemReadableId",
-      group: "Lines",
-      relation: { table: "salesInvoiceLine", fk: "invoiceId" }
-    },
-    {
-      key: "line.description",
-      label: "Description",
-      type: "text",
-      column: "description",
-      group: "Lines",
-      relation: { table: "salesInvoiceLine", fk: "invoiceId" }
-    },
-    {
-      key: "line.quantity",
-      label: "Quantity",
-      type: "number",
-      column: "quantity",
-      group: "Lines",
-      relation: { table: "salesInvoiceLine", fk: "invoiceId" }
-    },
-    {
-      key: "line.unitPrice",
-      label: "Unit Price",
-      type: "currency",
-      column: "unitPrice",
-      group: "Lines",
-      relation: { table: "salesInvoiceLine", fk: "invoiceId" }
-    },
-    {
-      key: "line.totalAmount",
-      label: "Line Total",
-      type: "currency",
-      column: "totalAmount",
-      group: "Lines",
-      relation: { table: "salesInvoiceLine", fk: "invoiceId" }
+      column: "receivedDate",
+      group: "Order Lines",
+      relation: { table: "purchaseOrderLine", fk: "purchaseOrderId" }
     }
   ]
 };
@@ -351,10 +154,7 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
 // ─── Primary table per module:category ────────────────────────────────────────
 
 export const MODULE_PRIMARY_TABLE: Record<string, string> = {
-  "Purchasing:Orders": "purchaseOrder",
-  "Purchasing:Invoices": "purchaseInvoice",
-  "Sales:Orders": "salesOrder",
-  "Sales:Invoices": "salesInvoice"
+  "Purchasing:Orders": "purchaseOrder"
 };
 
 // ─── Public helpers ────────────────────────────────────────────────────────────

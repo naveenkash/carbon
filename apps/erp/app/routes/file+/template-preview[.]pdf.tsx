@@ -46,7 +46,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       ? Array.from({ length: 5 }, (_, i) => {
           const row: Record<string, unknown> = {};
           for (const f of activeDefs) {
-            row[f.key] = "-"; // dummyValue
+            row[f.key] = "";
           }
           return row;
         })

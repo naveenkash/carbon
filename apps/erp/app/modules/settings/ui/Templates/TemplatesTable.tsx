@@ -1,15 +1,20 @@
 import {
   Badge,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   HStack,
   MenuIcon,
   MenuItem,
-  SplitButton,
   useDisclosure
 } from "@carbon/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { memo, useCallback, useMemo, useState } from "react";
 import {
   LuCheck,
+  LuChevronDown,
   LuCopy,
   LuFileText,
   LuLayers,
@@ -20,7 +25,7 @@ import {
   LuTrash,
   LuUser
 } from "react-icons/lu";
-import { Outlet, useFetcher, useNavigate } from "react-router";
+import { Link, Outlet, useFetcher, useNavigate } from "react-router";
 import { EmployeeAvatar, Hyperlink, Table } from "~/components";
 import { ConfirmDelete } from "~/components/Modals";
 import { usePermissions, useUrlParams } from "~/hooks";
@@ -164,22 +169,30 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         primaryAction={
           <HStack>
             {permissions.can("create", "settings") && (
-              <SplitButton
-                leftIcon={<LuPlus />}
-                variant="primary"
-                dropdownItems={REGISTERED_TEMPLATES.map(
-                  ({ module, category, label }) => ({
-                    label,
-                    onClick: () => {
-                      const qs = new URLSearchParams({ module });
-                      if (category) qs.set("category", category);
-                      navigate(`${path.to.newTemplate}?${qs.toString()}`);
-                    }
-                  })
-                )}
-              >
-                New Template
-              </SplitButton>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    leftIcon={<LuPlus />}
+                    variant="primary"
+                    rightIcon={<LuChevronDown />}
+                  >
+                    New Template
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {REGISTERED_TEMPLATES.map(({ module, category, label }) => {
+                    const qs = new URLSearchParams({ module });
+                    if (category) qs.set("category", category);
+                    return (
+                      <DropdownMenuItem key={label} asChild>
+                        <Link to={`${path.to.newTemplate}?${qs.toString()}`}>
+                          {label}
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </HStack>
         }

@@ -4,14 +4,14 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-  HStack,
-  Status,
   toast
 } from "@carbon/react";
 import { useEffect } from "react";
-import { LuChevronDown, LuDownload } from "react-icons/lu";
+import { LuDownload } from "react-icons/lu";
 import { useFetcher } from "react-router";
 import type { Template } from "~/modules/settings/types";
 import { path } from "~/utils/path";
@@ -32,10 +32,8 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
 
   if (templates.length === 0) return null;
 
-  const defaultTemplate: Template = templates.find((each) => !!each.isDefault);
-
   // // biome-ignore lint/correctness/useHookAtTopLevel: suppressed due to migration
-  const download = async (url: string) => {
+  const download = async (url: string, filename: string) => {
     try {
       const response = await fetch(url);
       const blob = await response.blob();
@@ -43,12 +41,12 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
       const a = document.createElement("a");
       document.body.appendChild(a);
       a.href = blobUrl;
-      a.download = defaultTemplate.name;
+      a.download = filename;
       a.click();
       window.URL.revokeObjectURL(blobUrl);
       document.body.removeChild(a);
     } catch (error) {
-      toast.error("Error downloading file");
+      toast.error(error.message);
       console.error(error);
     }
   };
@@ -56,38 +54,42 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="secondary"
-          leftIcon={<LuDownload />}
-          rightIcon={<LuChevronDown />}
-        >
+        <Button variant="secondary" leftIcon={<LuDownload />}>
           Export
         </Button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent align="end" className="min-w-[200px]">
-        <DropdownMenuItem
-          onClick={() =>
-            download(path.to.file.exportTemplateCsv(defaultTemplate.id))
-          }
-        >
-          Download as CSV
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {templates.map((template) => (
-            <DropdownMenuItem
-              key={template.id}
-              onClick={() =>
-                download(path.to.file.exportTemplatePdf(template.id))
-              }
-            >
-              <HStack className="justify-between items-center w-full">
-                {template.name}{" "}
-                {defaultTemplate?.id === template.id ? (
-                  <Status color="gray">Default</Status>
-                ) : null}
-              </HStack>
-            </DropdownMenuItem>
+            <DropdownMenuSub key={template.id}>
+              <DropdownMenuSubTrigger>
+                {/* <DropdownMenuIcon icon={<Lu />} /> */}
+                {template.name}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem
+                  onClick={() =>
+                    download(
+                      path.to.file.exportTemplateCsv(template.id),
+                      `${template.name}.csv`
+                    )
+                  }
+                >
+                  CSV
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() =>
+                    download(
+                      path.to.file.exportTemplatePdf(template.id),
+                      `${template.name}.pdf`
+                    )
+                  }
+                >
+                  PDF
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
           ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>

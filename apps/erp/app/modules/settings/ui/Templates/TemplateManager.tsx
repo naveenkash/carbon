@@ -50,7 +50,7 @@ const TemplateManager: React.FC<Props> = ({
     return `${path.to.file.previewTemplatePdf}?${params.toString()}#toolbar=0`;
   }, [module, category, selectedFields, computedFields, previewConfig]);
 
-  const debouncedUrl = useDebounced(previewUrl, 300);
+  const debouncedUrl = useDebounced(previewUrl, 400);
 
   return (
     <VStack spacing={0} className="w-full h-full">
