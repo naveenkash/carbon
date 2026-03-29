@@ -47,7 +47,7 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
       <DropdownMenuContent align="end" className="min-w-[200px]">
         <DropdownMenuItem
           onClick={() => {
-            window.location.href = path.to.api.exportTemplateAsCsv(
+            window.location.href = path.to.file.exportTemplateCsv(
               defaultTemplate?.id
             );
           }}

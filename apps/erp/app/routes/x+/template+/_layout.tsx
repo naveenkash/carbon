@@ -1,5 +1,6 @@
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { VStack } from "@carbon/react";
+import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { Outlet } from "react-router";
@@ -26,7 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export type TemplateOutletContext = {
   selectedFields: string[];
-  setSelectedFields: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedFields: Dispatch<SetStateAction<string[]>>;
 };
 
 export default function TemplateRoute() {

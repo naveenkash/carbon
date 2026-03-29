@@ -10,6 +10,7 @@ import {
   useSearchParams
 } from "react-router";
 import {
+  type ComputedField,
   type TemplateConfig,
   TemplateManager,
   templateValidator,
@@ -37,12 +38,11 @@ export async function action({ request }: ActionFunctionArgs) {
   const {
     id: _id,
     fields: fieldsJson,
+    computedFields: computedFieldsJson,
     colorTheme,
     margins,
     templateFont,
     templateStyle,
-    isDecorator,
-    isUppercase,
     fontSize,
     pdfTitle,
     pdfIsUppercase,
@@ -53,18 +53,21 @@ export async function action({ request }: ActionFunctionArgs) {
     sortType,
     primarySortBy,
     sortOrder,
+
     ...rest
   } = validation.data;
   const fields: string[] = fieldsJson ? JSON.parse(fieldsJson) : [];
+  const computedFields: ComputedField[] = computedFieldsJson
+    ? JSON.parse(computedFieldsJson)
+    : [];
 
   const templateConfiguration: TemplateConfig = {
     fields,
+    computedFields,
     colorTheme: colorTheme ?? "default",
     margins: margins ?? "default",
     templateFont: templateFont ?? "Inter",
     templateStyle: templateStyle ?? "REPORT_TEMPLATE_CLASSIC",
-    isDecorator: isDecorator === "true",
-    isUppercase: isUppercase === "true",
     fontSize: fontSize ?? "default",
     pdfTitleConfigs: {
       title: pdfTitle ?? "",

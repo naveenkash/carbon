@@ -9,9 +9,14 @@ import { renderToStream } from "@react-pdf/renderer";
 import type { LoaderFunctionArgs } from "react-router";
 import { getCompany, getTemplate } from "~/modules/settings";
 import {
+  type ComputedField,
   DEFAULT_TEMPLATE_CONFIG,
   type TemplateConfig
 } from "~/modules/settings/types";
+import {
+  applyComputedFields,
+  computedFieldToExportField
+} from "~/utils/computed-fields";
 import { runExportQuery } from "~/utils/export-query";
 import { getLocale } from "~/utils/request";
 
@@ -41,15 +46,16 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const generatedBy = userResult.data?.fullName ?? undefined;
 
   const raw = template.templateConfiguration as
-    | (Partial<TemplateConfig> & { fields?: string[] })
+    | (Partial<TemplateConfig> & {
+        fields?: string[];
+        computedFields?: ComputedField[];
+      })
     | null;
   const config: TemplateConfig = { ...DEFAULT_TEMPLATE_CONFIG, ...(raw ?? {}) };
   const fieldKeys: string[] = raw?.fields ?? [];
+  const computedFields: ComputedField[] = raw?.computedFields ?? [];
 
   const locale = getLocale(request);
-
-  let rows: ExportRow[];
-  let fields: ExportTemplatePDFProps["fields"];
 
   const exportResult = await runExportQuery(client, {
     module: template.module,
@@ -62,8 +68,18 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     throw new Response(exportResult.error.message, { status: 500 });
   }
 
-  rows = exportResult.data ?? [];
-  fields = exportResult.fields as ExportTemplatePDFProps["fields"];
+  const sourceRows = exportResult.data ?? [];
+
+  const rows: ExportRow[] = applyComputedFields(sourceRows, computedFields);
+
+  const computedExportFields = computedFields
+    .filter((f) => f.enabled)
+    .map(computedFieldToExportField);
+
+  const fields: ExportTemplatePDFProps["fields"] = [
+    ...(exportResult.fields as ExportTemplatePDFProps["fields"]),
+    ...computedExportFields
+  ];
 
   const pdfConfig: ExportTemplateConfig = {
     templateStyle: config.templateStyle,

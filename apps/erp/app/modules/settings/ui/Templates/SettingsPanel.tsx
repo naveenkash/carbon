@@ -6,20 +6,25 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  useMount,
   VStack
 } from "@carbon/react";
 import { themes } from "@carbon/utils";
 import type React from "react";
+import { useState } from "react";
 import { useFetcher, useParams, useSearchParams } from "react-router";
 import { Hidden, Input } from "~/components/Form";
 import { useRouteData } from "~/hooks";
 import { templateValidator } from "~/modules/settings/settings.models";
 import {
+  type ComputedField,
   DEFAULT_TEMPLATE_CONFIG,
   type Template,
   type TemplateConfig
 } from "~/modules/settings/types";
+import { getFieldsForModuleCategory } from "~/utils/field-registry";
 import { path } from "~/utils/path";
+import ComputedFieldsTab from "./ComputedFieldsTab";
 
 interface SettingsPanelProps {
   selectedFields: string[];
@@ -67,10 +72,19 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
   const fetcher = useFetcher();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const [computedFields, setComputedFields] = useState<ComputedField[]>([]);
 
   const routeData = useRouteData<{ template: Template }>(
     id ? path.to.template(id) : ""
   );
+
+  useMount(() => {
+    if (routeData?.template.templateConfiguration) {
+      setComputedFields(
+        routeData?.template.templateConfiguration.computedFields
+      );
+    }
+  });
 
   const isEditing = !!id;
   const template = routeData?.template ?? null;
@@ -104,6 +118,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
     ...initialConfig?.sortConfigs
   };
 
+  const availableFields = getFieldsForModuleCategory(module, category);
+
   return (
     <VStack className="w-4/12 bg-card h-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent border-l border-border px-4 py-2 text-sm">
       <VStack>
@@ -119,6 +135,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
             name: initialName,
             colorTheme: cfg.colorTheme,
             margins: cfg.margins,
+            fields: JSON.stringify(selectedFields),
+            computedFields: JSON.stringify(computedFields),
             templateFont: cfg.templateFont,
             templateStyle: cfg.templateStyle,
             fontSize: cfg.fontSize,
@@ -137,14 +155,17 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
           <Hidden name="module" value={module} />
           {category && <Hidden name="category" value={category} />}
           <Hidden name="fields" value={JSON.stringify(selectedFields)} />
+          <Hidden
+            name="computedFields"
+            value={JSON.stringify(computedFields)}
+          />
 
           <Tabs defaultValue="general">
-            <HStack>
-              <TabsList>
-                <TabsTrigger value="general">General</TabsTrigger>
-                <TabsTrigger value="pdf">PDF</TabsTrigger>
-              </TabsList>
-            </HStack>
+            <TabsList>
+              <TabsTrigger value="general">General</TabsTrigger>
+              <TabsTrigger value="pdf">PDF</TabsTrigger>
+              <TabsTrigger value="computed">Computed</TabsTrigger>
+            </TabsList>
 
             <TabsContent
               forceMount
@@ -231,6 +252,16 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
                   </HStack>{" "}
                 </VStack>
               </VStack>
+            </TabsContent>
+            <TabsContent
+              value="computed"
+              className="min-h-[120px] pt-4 data-[state=inactive]:hidden"
+            >
+              <ComputedFieldsTab
+                computedFields={computedFields}
+                setComputedFields={setComputedFields}
+                availableFields={availableFields}
+              />
             </TabsContent>
           </Tabs>
         </ValidatedForm>

@@ -1,6 +1,7 @@
 import { labelSizes } from "@carbon/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
+import { type FormulaConfig, FormulaType } from "~/modules/settings/types";
 import { DataType } from "~/modules/shared";
 
 export const modulesType = [
@@ -43,6 +44,73 @@ export const apiKeyPermissionModules = {
 
 export type ApiKeyPermissionModule = keyof typeof apiKeyPermissionModules;
 
+export const computedFieldEditorSchema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    config: z.custom<FormulaConfig>()
+  })
+  .superRefine(({ config }, ctx) => {
+    const cfg = config as FormulaConfig;
+    switch (cfg.type) {
+      case FormulaType.DateDiff:
+        if (!cfg.fieldA)
+          ctx.addIssue({
+            code: "custom",
+            path: ["fieldA"],
+            message: "Required"
+          });
+        if (!cfg.fieldB)
+          ctx.addIssue({
+            code: "custom",
+            path: ["fieldB"],
+            message: "Required"
+          });
+        break;
+      case FormulaType.Arithmetic:
+        if (!cfg.fieldA)
+          ctx.addIssue({
+            code: "custom",
+            path: ["fieldA"],
+            message: "Required"
+          });
+        if (cfg.isConstant && (cfg.fieldB === "" || cfg.fieldB === 0))
+          ctx.addIssue({
+            code: "custom",
+            path: ["fieldB"],
+            message: "Required"
+          });
+        if (!cfg.isConstant && !cfg.fieldB)
+          ctx.addIssue({
+            code: "custom",
+            path: ["fieldB"],
+            message: "Required"
+          });
+        break;
+      case FormulaType.Conditional:
+        if (!cfg.sourceField)
+          ctx.addIssue({
+            code: "custom",
+            path: ["sourceField"],
+            message: "Required"
+          });
+        if (cfg.rules.length === 0)
+          ctx.addIssue({
+            code: "custom",
+            path: ["rules"],
+            message: "At least one rule is required"
+          });
+        break;
+      case FormulaType.Concat:
+        if (cfg.parts.length === 0)
+          ctx.addIssue({
+            code: "custom",
+            path: ["parts"],
+            message: "At least one part is required"
+          });
+        break;
+    }
+  });
+
 export const apiKeyValidator = z.object({
   id: zfd.text(z.string().optional()),
   name: z.string().min(1, { message: "Name is required" }),
@@ -56,21 +124,18 @@ export const templateValidator = z.object({
   module: z.string().min(1, { message: "Module is required" }),
   category: zfd.text(z.string().optional()),
   fields: zfd.text(z.string().optional()),
+  computedFields: zfd.text(z.string().optional()),
   isDefault: zfd.checkbox().optional(),
   // General config
   colorTheme: zfd.text(z.string().optional()),
   margins: zfd.text(z.string().optional()),
   templateFont: zfd.text(z.string().optional()),
   templateStyle: zfd.text(z.string().optional()),
-  isDecorator: zfd.text(z.string().optional()),
-  isUppercase: zfd.text(z.string().optional()),
   fontSize: zfd.text(z.string().optional()),
   // pdfTitleConfigs
   pdfTitle: zfd.text(z.string().optional()),
   pdfIsUppercase: zfd.checkbox(),
   pdfLayout: zfd.text(z.string().optional()),
-  pdfHeadline: zfd.text(z.string().optional()),
-  pdfDateTitle: zfd.text(z.string().optional()),
   // pageFooterConfigs
   enablePageNumber: zfd.checkbox(),
   enableGeneratedBy: zfd.checkbox(),

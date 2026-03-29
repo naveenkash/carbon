@@ -11,7 +11,7 @@ import {
   templateValidator,
   upsertTemplate
 } from "~/modules/settings";
-import type { TemplateConfig } from "~/modules/settings/types";
+import type { ComputedField, TemplateConfig } from "~/modules/settings/types";
 import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
 import { path } from "~/utils/path";
 
@@ -50,6 +50,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const {
     id: _id,
     fields: fieldsJson,
+    computedFields: computedFieldsJson,
     colorTheme,
     margins,
     templateFont,
@@ -67,9 +68,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
     ...rest
   } = validation.data;
   const fields: string[] = fieldsJson ? JSON.parse(fieldsJson) : [];
+  const computedFields: ComputedField[] = computedFieldsJson
+    ? JSON.parse(computedFieldsJson)
+    : [];
 
   const templateConfiguration: TemplateConfig = {
     fields,
+    computedFields,
     colorTheme: colorTheme ?? "default",
     margins: margins ?? "default",
     templateFont: templateFont ?? "Inter",
