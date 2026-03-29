@@ -4,6 +4,8 @@ export type ExportField = {
   key: string;
   label: string;
   type: "text" | "number" | "date" | "currency" | "boolean";
+  suffix?: string;
+  prefix?: string;
 };
 
 export type ExportRow = Record<string, unknown>;
@@ -20,46 +22,56 @@ export type TableStyleConfig = {
 
 function formatValue(
   value: unknown,
-  type: ExportField["type"],
+  field: ExportField,
   locale: string,
   currencyCode?: string
 ): string {
+  const { type, prefix, suffix } = field;
   if (value === null || value === undefined || value === "") return "-";
 
+  let formatted: string;
   switch (type) {
     case "date": {
       try {
-        return new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
-          new Date(value as string)
-        );
+        formatted = new Intl.DateTimeFormat(locale, {
+          dateStyle: "medium"
+        }).format(new Date(value as string));
       } catch {
-        return String(value);
+        formatted = String(value);
       }
+      break;
     }
     case "currency": {
       try {
-        return new Intl.NumberFormat(locale, {
+        formatted = new Intl.NumberFormat(locale, {
           style: "currency",
           currency: currencyCode ?? "USD",
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
         }).format(Number(value));
       } catch {
-        return String(value);
+        formatted = String(value);
       }
+      break;
     }
     case "number": {
       try {
-        return new Intl.NumberFormat(locale).format(Number(value));
+        formatted = new Intl.NumberFormat(locale).format(Number(value));
       } catch {
-        return String(value);
+        formatted = String(value);
       }
+      break;
     }
     case "boolean":
-      return value ? "Yes" : "No";
+      formatted = value ? "Yes" : "No";
+      break;
     default:
-      return String(value);
+      formatted = String(value);
   }
+
+  if (prefix) formatted = `${prefix} ` + formatted;
+  if (suffix) formatted = formatted + ` ${suffix}`;
+  return formatted;
 }
 
 interface ExportTemplateTableProps {
@@ -135,7 +147,7 @@ const ExportTemplateTable = ({
                   color: "#1f2937"
                 }}
               >
-                {formatValue(row[field.key], field.type, locale, currencyCode)}
+                {formatValue(row[field.key], field, locale, currencyCode)}
               </Text>
             ))}
           </View>

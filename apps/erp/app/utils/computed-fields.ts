@@ -291,14 +291,18 @@ export function computedFieldToExportField(field: ComputedField): ExportField {
   return {
     key: `${COMPUTED_KEY_PREFIX}:${field.id}`,
     label: field.name,
-    type
+    type,
+    ...(fmt.suffix ? { suffix: fmt.suffix } : {}),
+    ...(fmt.prefix ? { prefix: fmt.prefix } : {})
   };
 }
 
 // ─── CSV formatter ────────────────────────────────────────────────────────────
 
 function formatCsvValue(value: unknown, fmt?: OutputFormat): string {
-  if (value === null || value === undefined) return "";
+  if (value === null || value === undefined || value === "") return "-";
+
+  let str: string;
 
   if (
     fmt?.type === OutputFormatType.Number ||
@@ -306,19 +310,17 @@ function formatCsvValue(value: unknown, fmt?: OutputFormat): string {
   ) {
     const n = Number(value);
     if (Number.isNaN(n)) return "";
-    const decimals = fmt.decimals ?? 2;
-    let str = n.toFixed(decimals);
-    if (fmt.prefix) str = fmt.prefix + str;
-    if (fmt.suffix) str = str + fmt.suffix;
-    return str;
-  }
-
-  if (fmt?.type === OutputFormatType.Currency) {
+    str = n.toFixed(fmt.decimals ?? 2);
+  } else if (fmt?.type === OutputFormatType.Currency) {
     const n = Number(value);
-    return Number.isNaN(n) ? "" : n.toFixed(fmt.decimals ?? 2);
+    str = Number.isNaN(n) ? "" : n.toFixed(fmt.decimals ?? 2);
+  } else {
+    str = String(value);
   }
 
-  return String(value);
+  if (fmt?.prefix) str = `${fmt.prefix} ` + str;
+  if (fmt?.suffix) str = str + ` ${fmt.suffix}`;
+  return str;
 }
 
 /**
@@ -345,7 +347,7 @@ export function buildCsvString(
         const formatted = computed
           ? formatCsvValue(raw, computed.outputFormat)
           : raw === null || raw === undefined
-            ? ""
+            ? "-"
             : String(raw);
         return csvCell(formatted);
       })
@@ -356,7 +358,7 @@ export function buildCsvString(
 }
 
 function csvCell(value: string): string {
-  const str = String(value ?? "");
+  const str = String(value ?? "-");
   if (str.includes(",") || str.includes('"') || str.includes("\n")) {
     return `"${str.replace(/"/g, '""')}"`;
   }

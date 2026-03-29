@@ -11,7 +11,8 @@ import { getCompany, getTemplate } from "~/modules/settings";
 import {
   type ComputedField,
   DEFAULT_TEMPLATE_CONFIG,
-  type TemplateConfig
+  type TemplateConfig,
+  type TemplateField
 } from "~/modules/settings/types";
 import {
   applyComputedFields,
@@ -47,12 +48,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const raw = template.templateConfiguration as
     | (Partial<TemplateConfig> & {
-        fields?: string[];
+        fields?: TemplateField[];
         computedFields?: ComputedField[];
       })
     | null;
   const config: TemplateConfig = { ...DEFAULT_TEMPLATE_CONFIG, ...(raw ?? {}) };
-  const fieldKeys: string[] = raw?.fields ?? [];
+  const fieldKeys = (raw?.fields ?? []).map((f) => f.key);
   const computedFields: ComputedField[] = raw?.computedFields ?? [];
 
   const locale = getLocale(request);

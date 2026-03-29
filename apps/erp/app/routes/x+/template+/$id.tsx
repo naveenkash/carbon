@@ -11,7 +11,11 @@ import {
   templateValidator,
   upsertTemplate
 } from "~/modules/settings";
-import type { ComputedField, TemplateConfig } from "~/modules/settings/types";
+import type {
+  ComputedField,
+  TemplateConfig,
+  TemplateField
+} from "~/modules/settings/types";
 import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
 import { path } from "~/utils/path";
 
@@ -67,7 +71,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     sortOrder,
     ...rest
   } = validation.data;
-  const fields: string[] = fieldsJson ? JSON.parse(fieldsJson) : [];
+  const fields = fieldsJson ? JSON.parse(fieldsJson) : [];
   const computedFields: ComputedField[] = computedFieldsJson
     ? JSON.parse(computedFieldsJson)
     : [];
@@ -129,9 +133,11 @@ export default function EditTemplateRoute() {
     useOutletContext<TemplateOutletContext>();
 
   const raw = template.templateConfiguration as
-    | (Partial<TemplateConfig> & { fields?: string[] })
+    | (Partial<TemplateConfig> & { fields?: TemplateField[] })
     | null;
+
   const initialFields = raw?.fields ?? [];
+
   const module = template.module ?? "Purchasing";
   const category = template.category ?? null;
 

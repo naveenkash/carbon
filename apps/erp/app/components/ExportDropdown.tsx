@@ -36,7 +36,6 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
 
   // // biome-ignore lint/correctness/useHookAtTopLevel: suppressed due to migration
   const download = async (url: string) => {
-    // const url = path.to.file.exportTemplateCsv(url);
     try {
       const response = await fetch(url);
       const blob = await response.blob();

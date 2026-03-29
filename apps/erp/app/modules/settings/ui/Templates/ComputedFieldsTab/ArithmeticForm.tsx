@@ -3,6 +3,7 @@ import {
   FormErrorMessage,
   FormLabel,
   HStack,
+  Input,
   NumberInput,
   VStack
 } from "@carbon/react";
@@ -71,11 +72,10 @@ export function ArithmeticForm({
           </button>
         </HStack>
         {config.isConstant ? (
-          <NumberInput
-            value={typeof config.fieldB === "number" ? config.fieldB : ""}
-            onChange={(e) =>
-              onChange({ ...config, fieldB: parseFloat(e.target.value) || 0 })
-            }
+          <Input
+            type="text"
+            value={config.fieldB}
+            onChange={(e) => onChange({ ...config, fieldB: e.target.value })}
             placeholder="0"
           />
         ) : (

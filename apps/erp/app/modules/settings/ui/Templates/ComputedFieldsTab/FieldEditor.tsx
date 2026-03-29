@@ -74,9 +74,10 @@ export function FieldEditor({
     .map((cf) => ({ value: cf.id, label: `ƒ ${cf.name}` }));
 
   function handleTypeChange(type: FormulaConfig["type"]) {
-    const newConfig = defaultConfig(type);
-    setConfig(newConfig);
-    setOutputFormat(defaultOutput(type));
+    if (type === config.type) return;
+    const restored =
+      initial?.config.type === type ? initial.config : defaultConfig(type);
+    setConfig(restored);
     setErrors({});
   }
 
@@ -134,7 +135,7 @@ export function FieldEditor({
         />
       </FormControl>
 
-      <Tabs defaultValue={FormulaType.DateDiff}>
+      <Tabs defaultValue={config.type ?? FormulaType.DateDiff}>
         <VStack className="flex flex-col">
           <label className="text-xs text-muted-foreground">Formula Type</label>
           <TabsList>

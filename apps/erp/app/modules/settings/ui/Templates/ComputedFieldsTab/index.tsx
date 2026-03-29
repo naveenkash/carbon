@@ -38,9 +38,10 @@ export default function ComputedFieldsTab({
 }: Props) {
   const [editing, setEditing] = useState<ComputedField | null | "new">(null);
 
-  const labelMap = Object.fromEntries(
-    availableFields.map((f) => [f.key, f.label])
-  );
+  const labelMap = {
+    ...Object.fromEntries(availableFields.map((f) => [f.key, f.label])),
+    ...Object.fromEntries(computedFields.map((cf) => [cf.id, cf.name]))
+  };
 
   function handleSave(field: ComputedField) {
     if (editing === "new") {
@@ -76,7 +77,7 @@ export default function ComputedFieldsTab({
   }
 
   return (
-    <VStack spacing={3} className="pt-2">
+    <VStack spacing={3} className="pt-2 items-center">
       <HStack className="w-full">
         <Button
           className="ml-auto"

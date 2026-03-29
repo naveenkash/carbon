@@ -12,31 +12,6 @@ import {
 import { getFieldsForModuleCategory } from "~/utils/field-registry";
 import { getLocale } from "~/utils/request";
 
-const DUMMY_TEXT = ["-", "-", "-", "-", "-"];
-const DUMMY_DATES = ["-", "-", "-", "-", "-"];
-const DUMMY_NUMS = [0, 0, 0, 0, 0];
-const DUMMY_CURRENCY = [0, 0, 0, 0, 0];
-const DUMMY_STATUSES = ["-", "-", "-", "-", "-"];
-
-function dummyValue(type: string, i: number): unknown {
-  switch (type) {
-    case "text":
-      return DUMMY_TEXT[i % DUMMY_TEXT.length];
-    case "number":
-      return DUMMY_NUMS[i % DUMMY_NUMS.length];
-    case "currency":
-      return DUMMY_CURRENCY[i % DUMMY_CURRENCY.length];
-    case "date":
-      return DUMMY_DATES[i % DUMMY_DATES.length];
-    case "boolean":
-      return i % 2 === 0;
-    case "status":
-      return DUMMY_STATUSES[i % DUMMY_STATUSES.length];
-    default:
-      return "—";
-  }
-}
-
 export async function loader({ request }: LoaderFunctionArgs) {
   await requirePermissions(request, { view: "settings" });
 
@@ -52,7 +27,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // fall back to defaults
   }
 
-  const fieldKeys: string[] = Array.isArray(config.fields) ? config.fields : [];
+  const fieldKeys = (Array.isArray(config.fields) ? config.fields : []).map(
+    (f) => f.key
+  );
   const computedFields = Array.isArray(config.computedFields)
     ? config.computedFields
     : [];
@@ -62,15 +39,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const activeDefs =
     fieldKeys.length > 0
       ? allFields.filter((f) => fieldKeys.includes(f.key))
-      : allFields.slice(0, 6);
+      : [];
 
-  const sourceRows: ExportRow[] = Array.from({ length: 5 }, (_, i) => {
-    const row: Record<string, unknown> = {};
-    for (const f of activeDefs) {
-      row[f.key] = dummyValue(f.type, i);
-    }
-    return row;
-  });
+  const sourceRows: ExportRow[] =
+    activeDefs.length > 0
+      ? Array.from({ length: 5 }, (_, i) => {
+          const row: Record<string, unknown> = {};
+          for (const f of activeDefs) {
+            row[f.key] = "-"; // dummyValue
+          }
+          return row;
+        })
+      : [];
 
   const rows = applyComputedFields(sourceRows, computedFields);
 

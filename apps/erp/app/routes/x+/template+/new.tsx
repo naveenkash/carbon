@@ -56,7 +56,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     ...rest
   } = validation.data;
-  const fields: string[] = fieldsJson ? JSON.parse(fieldsJson) : [];
+  const fields = fieldsJson ? JSON.parse(fieldsJson) : [];
   const computedFields: ComputedField[] = computedFieldsJson
     ? JSON.parse(computedFieldsJson)
     : [];
@@ -118,6 +118,7 @@ export default function NewTemplateRoute() {
 
   const { selectedFields, computedFields, previewConfig } =
     useOutletContext<TemplateOutletContext>();
+  console.log(selectedFields, "--selectedFields--");
 
   return (
     <TemplateManager

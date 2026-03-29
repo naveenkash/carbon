@@ -22,14 +22,15 @@ import {
   type ComputedField,
   DEFAULT_TEMPLATE_CONFIG,
   type Template,
-  type TemplateConfig
+  type TemplateConfig,
+  type TemplateField
 } from "~/modules/settings/types";
 import { getFieldsForModuleCategory } from "~/utils/field-registry";
 import { path } from "~/utils/path";
 import ComputedFieldsTab from "./ComputedFieldsTab";
 
 interface SettingsPanelProps {
-  selectedFields: string[];
+  selectedFields: TemplateField[];
   onToggleField: (fieldKey: string) => void;
   computedFields: ComputedField[];
   setComputedFields: Dispatch<SetStateAction<ComputedField[]>>;
@@ -114,7 +115,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   const action = isEditing ? path.to.template(id!) : path.to.newTemplate;
   const initialName = template?.name ?? "";
   const rawConfig = template?.templateConfiguration as
-    | (Partial<TemplateConfig> & { fields?: string[] })
+    | (Partial<TemplateConfig> & { fields?: unknown[] })
     | null;
   const initialConfig: Partial<TemplateConfig> = rawConfig
     ? { ...DEFAULT_TEMPLATE_CONFIG, ...rawConfig }
@@ -172,7 +173,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       templateStyle: localConfig.templateStyle,
       fontSize: localConfig.fontSize,
       fields: initialConfig.fields ?? [],
-      documentLogo: initialConfig.documentLogo ?? [],
       computedFields: initialConfig.computedFields ?? [],
       pdfTitleConfigs: {
         title: localConfig.pdfTitle,
@@ -194,8 +194,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     localConfig,
     onConfigChange,
     initialConfig.computedFields,
-    initialConfig.fields,
-    initialConfig.documentLogo
+    initialConfig.fields
   ]);
 
   return (
@@ -247,6 +246,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </TabsList>
 
             <TabsContent
+              forceMount
               value="fields"
               className="min-h-[120px] pt-4 data-[state=inactive]:hidden"
             >

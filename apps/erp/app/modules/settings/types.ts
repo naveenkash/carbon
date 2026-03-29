@@ -42,6 +42,7 @@ export type Template = NonNullable<
 >[number];
 
 export const COMPUTED_KEY_PREFIX = "computed" as const;
+export const COMPUTED_FORMULA_ICON = "ƒ";
 
 export enum FormulaType {
   DateDiff = "date_diff",
@@ -153,21 +154,18 @@ export type ComputedField = {
   enabled: boolean;
 };
 
+export type TemplateField = {
+  key: string;
+  order: number;
+};
+
 export type TemplateConfig = {
   colorTheme: string;
   margins: string;
   templateFont: string;
   templateStyle: string;
   fontSize: string;
-  fields: [];
-  documentLogo: {
-    link: string;
-    name: string;
-    fileName: string;
-    fileId: string;
-    fileUrl: string;
-    fileType: string;
-  }[];
+  fields: TemplateField[];
   pdfTitleConfigs: {
     title: string;
     isUppercase: boolean;
@@ -192,7 +190,6 @@ export const DEFAULT_TEMPLATE_CONFIG: TemplateConfig = {
   templateFont: "Inter", // inter,lato,roboto
   templateStyle: "REPORT_TEMPLATE_CLASSIC", // classic, modern, balanced
   fontSize: "default",
-  documentLogo: [],
   fields: [],
   pdfTitleConfigs: {
     title: "",

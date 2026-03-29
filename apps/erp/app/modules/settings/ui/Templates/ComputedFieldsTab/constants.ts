@@ -9,8 +9,8 @@ import {
 export const FORMULA_TYPES = [
   { value: FormulaType.DateDiff, label: "Date Diff" },
   { value: FormulaType.Arithmetic, label: "Arithmetic" },
-  { value: FormulaType.Conditional, label: "Conditional" },
-  { value: FormulaType.Concat, label: "Concat" }
+  { value: FormulaType.Conditional, label: "Conditional" }
+  // { value: FormulaType.Concat, label: "Concat" }
 ] as const;
 
 export const UNIT_OPTIONS = [

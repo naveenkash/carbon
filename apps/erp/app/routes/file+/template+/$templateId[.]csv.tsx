@@ -2,7 +2,11 @@ import { requirePermissions } from "@carbon/auth/auth.server";
 import type { ExportField } from "@carbon/documents/pdf";
 import type { LoaderFunctionArgs } from "react-router";
 import { getTemplate } from "~/modules/settings";
-import type { ComputedField, TemplateConfig } from "~/modules/settings/types";
+import type {
+  ComputedField,
+  TemplateConfig,
+  TemplateField
+} from "~/modules/settings/types";
 import { applyComputedFields, buildCsvString } from "~/utils/computed-fields";
 import { runExportQuery } from "~/utils/export-query";
 
@@ -23,12 +27,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const raw = template.templateConfiguration as
     | (Partial<TemplateConfig> & {
-        fields?: string[];
+        fields?: TemplateField[];
         computedFields?: ComputedField[];
       })
     | null;
 
-  const fieldKeys: string[] = raw?.fields ?? [];
+  const fieldKeys = (raw?.fields ?? []).map((f) => f.key);
   const computedFields: ComputedField[] = raw?.computedFields ?? [];
 
   const exportResult = await runExportQuery(client, {

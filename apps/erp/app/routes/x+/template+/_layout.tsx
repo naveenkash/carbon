@@ -5,7 +5,11 @@ import { useState } from "react";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { Outlet } from "react-router";
 import { PanelProvider, ResizablePanels } from "~/components/Layout";
-import type { ComputedField, TemplateConfig } from "~/modules/settings/types";
+import type {
+  ComputedField,
+  TemplateConfig,
+  TemplateField
+} from "~/modules/settings/types";
 import { DEFAULT_TEMPLATE_CONFIG } from "~/modules/settings/types";
 import SettingsPanel from "~/modules/settings/ui/Templates/SettingsPanel";
 import TemplateHeader from "~/modules/settings/ui/Templates/TemplateHeader";
@@ -28,26 +32,28 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export type TemplateOutletContext = {
-  selectedFields: string[];
-  setSelectedFields: Dispatch<SetStateAction<string[]>>;
+  selectedFields: TemplateField[];
+  setSelectedFields: Dispatch<SetStateAction<TemplateField[]>>;
   computedFields: ComputedField[];
   setComputedFields: Dispatch<SetStateAction<ComputedField[]>>;
   previewConfig: TemplateConfig;
 };
 
 export default function TemplateRoute() {
-  const [selectedFields, setSelectedFields] = useState<string[]>([]);
+  const [selectedFields, setSelectedFields] = useState<TemplateField[]>([]);
   const [computedFields, setComputedFields] = useState<ComputedField[]>([]);
   const [previewConfig, setPreviewConfig] = useState<TemplateConfig>(
     DEFAULT_TEMPLATE_CONFIG
   );
 
   function handleToggleField(fieldKey: string) {
-    setSelectedFields((prev) =>
-      prev.includes(fieldKey)
-        ? prev.filter((k) => k !== fieldKey)
-        : [...prev, fieldKey]
-    );
+    setSelectedFields((prev) => {
+      const exists = prev.find((f) => f.key === fieldKey);
+      if (exists) return prev.filter((f) => f.key !== fieldKey);
+      const nextOrder =
+        prev.length === 0 ? 0 : Math.max(...prev.map((f) => f.order)) + 1;
+      return [...prev, { key: fieldKey, order: nextOrder }];
+    });
   }
 
   const outletContext: TemplateOutletContext = {
