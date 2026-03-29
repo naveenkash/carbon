@@ -105,7 +105,6 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
     ];
   }, [people]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
   const renderContextMenu = useCallback(
     (row: Template) => (
       <>
@@ -153,7 +152,7 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         </MenuItem>
       </>
     ),
-    [navigate, params, permissions, fetcher, deleteTemplateModal]
+    [navigate, params, fetcher, deleteTemplateModal]
   );
 
   return (

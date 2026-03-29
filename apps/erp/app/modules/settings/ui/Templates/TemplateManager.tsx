@@ -27,25 +27,6 @@ const TemplateManager: React.FC<Props> = ({
           />
         </CardContent>
       </Card>
-
-      {/* <Card>
-        <CardHeader>
-          <VStack>
-            <CardTitle>Template Manager</CardTitle>
-            <CardDescription>
-              Select the fields to include when exporting data.
-            </CardDescription>
-          </VStack>
-        </CardHeader>
-        <CardContent>
-          <FieldPicker
-            module={module}
-            category={category}
-            selectedFields={selectedFields}
-            onToggleField={onToggleField}
-          />
-        </CardContent>
-      </Card> */}
     </VStack>
   );
 };
