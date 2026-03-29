@@ -30,19 +30,25 @@ export default function FieldPicker({
     }, {});
 
   const renderGroup = (title: string, groupFields: FieldDefinition[]) => (
-    <div key={title}>
+    <VStack className="w-full" key={title}>
       <Heading size="h4" className="mb-2">
         {title}
       </Heading>
       <VStack className="space-y-2">
         {groupFields.map((field) => (
-          <HStack key={field.key} onClick={() => onToggleField(field.key)}>
-            <Checkbox checked={selectedFields.includes(field.key)} />
-            <label htmlFor={field.key}>{field.label}</label>
+          <HStack key={field.key} className="items-center gap-2">
+            <Checkbox
+              id={field.key}
+              checked={selectedFields.includes(field.key)}
+              onCheckedChange={() => onToggleField(field.key)}
+            />
+            <label htmlFor={field.key} className="cursor-pointer text-sm">
+              {field.label}
+            </label>
           </HStack>
         ))}
       </VStack>
-    </div>
+    </VStack>
   );
 
   if (fields.length === 0) {
@@ -56,10 +62,13 @@ export default function FieldPicker({
 
   return (
     <HStack className="items-start space-x-6">
-      {coreFields.length > 0 && renderGroup("Core Fields", coreFields)}
-      {Object.entries(groups).map(([groupName, groupFields]) =>
-        renderGroup(groupName, groupFields)
-      )}
+      <VStack className="space-y-4">
+        {coreFields.length > 0 && renderGroup("Core Fields", coreFields)}
+
+        {Object.entries(groups).map(([groupName, groupFields]) =>
+          renderGroup(groupName, groupFields)
+        )}
+      </VStack>
     </HStack>
   );
 }

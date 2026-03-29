@@ -358,6 +358,7 @@ export const path = {
       quote: (id: string) => generatePath(`${file}/quote/${id}.pdf`),
       exportTemplatePdf: (id: string) =>
         generatePath(`${file}/template/${id}.pdf`),
+      previewTemplatePdf: `${file}/template-preview.pdf`,
       exportTemplateCsv: (id: string) =>
         generatePath(`${file}/template/${id}.csv`)
     },

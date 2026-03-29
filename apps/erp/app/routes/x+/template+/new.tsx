@@ -116,23 +116,16 @@ export default function NewTemplateRoute() {
   const module = searchParams.get("module") ?? "Purchasing";
   const category = searchParams.get("category");
 
-  const { selectedFields, setSelectedFields } =
+  const { selectedFields, computedFields, previewConfig } =
     useOutletContext<TemplateOutletContext>();
-
-  const handleToggleField = (fieldKey: string) => {
-    setSelectedFields((prev) =>
-      prev.includes(fieldKey)
-        ? prev.filter((key) => key !== fieldKey)
-        : [...prev, fieldKey]
-    );
-  };
 
   return (
     <TemplateManager
       module={module}
       category={category}
       selectedFields={selectedFields}
-      onToggleField={handleToggleField}
+      computedFields={computedFields}
+      previewConfig={previewConfig}
     />
   );
 }

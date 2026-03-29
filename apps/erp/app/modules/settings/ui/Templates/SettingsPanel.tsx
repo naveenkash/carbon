@@ -11,9 +11,11 @@ import {
 } from "@carbon/react";
 import { themes } from "@carbon/utils";
 import type React from "react";
-import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import { useFetcher, useParams, useSearchParams } from "react-router";
 import { Hidden, Input } from "~/components/Form";
+import FieldPicker from "~/components/Templates/FieldPicker";
 import { useRouteData } from "~/hooks";
 import { templateValidator } from "~/modules/settings/settings.models";
 import {
@@ -28,6 +30,10 @@ import ComputedFieldsTab from "./ComputedFieldsTab";
 
 interface SettingsPanelProps {
   selectedFields: string[];
+  onToggleField: (fieldKey: string) => void;
+  computedFields: ComputedField[];
+  setComputedFields: Dispatch<SetStateAction<ComputedField[]>>;
+  onConfigChange: (config: TemplateConfig) => void;
 }
 
 export const TEMPLATE_FORM_ID = "template-settings-form";
@@ -68,23 +74,37 @@ const SORT_BY_OPTIONS = [
   { value: "NAME_DESC", label: "Name (Z–A)" }
 ];
 
-const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
+type LocalConfig = {
+  colorTheme: string;
+  margins: string;
+  templateFont: string;
+  templateStyle: string;
+  fontSize: string;
+  pdfTitle: string;
+  pdfLayout: string;
+  pdfIsUppercase: boolean;
+  enablePageNumber: boolean;
+  enableGeneratedBy: boolean;
+  enableTimeStamp: boolean;
+  sortType: string;
+  primarySortBy: string;
+  sortOrder: string | null;
+};
+
+const SettingsPanel: React.FC<SettingsPanelProps> = ({
+  selectedFields,
+  onToggleField,
+  computedFields,
+  setComputedFields,
+  onConfigChange
+}) => {
   const fetcher = useFetcher();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
-  const [computedFields, setComputedFields] = useState<ComputedField[]>([]);
 
   const routeData = useRouteData<{ template: Template }>(
     id ? path.to.template(id) : ""
   );
-
-  useMount(() => {
-    if (routeData?.template.templateConfiguration) {
-      setComputedFields(
-        routeData?.template.templateConfiguration.computedFields
-      );
-    }
-  });
 
   const isEditing = !!id;
   const template = routeData?.template ?? null;
@@ -95,6 +115,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
   const category = isEditing
     ? (template?.category ?? null)
     : searchParams.get("category");
+
   const action = isEditing ? path.to.template(id!) : path.to.newTemplate;
   const initialName = template?.name ?? "";
   const rawConfig = template?.templateConfiguration as
@@ -119,6 +140,68 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
   };
 
   const availableFields = getFieldsForModuleCategory(module, category);
+
+  // Local state for live preview tracking
+  const [localConfig, setLocalConfig] = useState<LocalConfig>({
+    colorTheme: cfg.colorTheme ?? DEFAULT_TEMPLATE_CONFIG.colorTheme,
+    margins: cfg.margins ?? DEFAULT_TEMPLATE_CONFIG.margins,
+    templateFont: cfg.templateFont ?? DEFAULT_TEMPLATE_CONFIG.templateFont,
+    templateStyle: cfg.templateStyle ?? DEFAULT_TEMPLATE_CONFIG.templateStyle,
+    fontSize: cfg.fontSize ?? DEFAULT_TEMPLATE_CONFIG.fontSize,
+    pdfTitle: pdf.title ?? "",
+    pdfLayout: pdf.layout ?? DEFAULT_TEMPLATE_CONFIG.pdfTitleConfigs.layout,
+    pdfIsUppercase: pdf.isUppercase ?? false,
+    enablePageNumber: footer.enablePageNumber ?? true,
+    enableGeneratedBy: footer.enableGeneratedBy ?? false,
+    enableTimeStamp: footer.enableTimeStamp ?? false,
+    sortType: sort.type ?? DEFAULT_TEMPLATE_CONFIG.sortConfigs.type,
+    primarySortBy:
+      sort.primarySortBy ?? DEFAULT_TEMPLATE_CONFIG.sortConfigs.primarySortBy,
+    sortOrder: sort.order ?? null
+  });
+
+  useMount(() => {
+    if (routeData?.template.templateConfiguration) {
+      setComputedFields(
+        routeData.template.templateConfiguration.computedFields ?? []
+      );
+    }
+  });
+
+  // Propagate local config changes to parent for live preview
+  useEffect(() => {
+    onConfigChange({
+      colorTheme: localConfig.colorTheme,
+      margins: localConfig.margins,
+      templateFont: localConfig.templateFont,
+      templateStyle: localConfig.templateStyle,
+      fontSize: localConfig.fontSize,
+      fields: initialConfig.fields ?? [],
+      documentLogo: initialConfig.documentLogo ?? [],
+      computedFields: initialConfig.computedFields ?? [],
+      pdfTitleConfigs: {
+        title: localConfig.pdfTitle,
+        isUppercase: localConfig.pdfIsUppercase,
+        layout: localConfig.pdfLayout
+      },
+      pageFooterConfigs: {
+        enablePageNumber: localConfig.enablePageNumber,
+        enableGeneratedBy: localConfig.enableGeneratedBy,
+        enableTimeStamp: localConfig.enableTimeStamp
+      },
+      sortConfigs: {
+        type: localConfig.sortType,
+        primarySortBy: localConfig.primarySortBy,
+        order: localConfig.sortOrder
+      }
+    });
+  }, [
+    localConfig,
+    onConfigChange,
+    initialConfig.computedFields,
+    initialConfig.fields,
+    initialConfig.documentLogo
+  ]);
 
   return (
     <VStack className="w-4/12 bg-card h-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent border-l border-border px-4 py-2 text-sm">
@@ -160,12 +243,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
             value={JSON.stringify(computedFields)}
           />
 
-          <Tabs defaultValue="general">
+          <Tabs defaultValue="fields">
             <TabsList>
+              <TabsTrigger value="fields">Fields</TabsTrigger>
               <TabsTrigger value="general">General</TabsTrigger>
               <TabsTrigger value="pdf">PDF</TabsTrigger>
               <TabsTrigger value="computed">Computed</TabsTrigger>
             </TabsList>
+
+            <TabsContent
+              value="fields"
+              className="min-h-[120px] pt-4 data-[state=inactive]:hidden"
+            >
+              <FieldPicker
+                module={module}
+                category={category}
+                selectedFields={selectedFields}
+                onToggleField={onToggleField}
+              />
+            </TabsContent>
 
             <TabsContent
               forceMount
@@ -182,26 +278,56 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
                   name="colorTheme"
                   label="Color Theme"
                   options={COLOR_THEME_OPTIONS}
+                  onChange={(v) =>
+                    setLocalConfig((p) => ({
+                      ...p,
+                      colorTheme: v?.value ?? p.colorTheme
+                    }))
+                  }
                 />
                 <Select
                   name="margins"
                   label="Margins"
                   options={MARGINS_OPTIONS}
+                  onChange={(v) =>
+                    setLocalConfig((p) => ({
+                      ...p,
+                      margins: v?.value ?? p.margins
+                    }))
+                  }
                 />
                 <Select
                   name="templateFont"
                   label="Font"
                   options={FONT_OPTIONS}
+                  onChange={(v) =>
+                    setLocalConfig((p) => ({
+                      ...p,
+                      templateFont: v?.value ?? p.templateFont
+                    }))
+                  }
                 />
                 <Select
                   name="templateStyle"
                   label="Template Style"
                   options={TEMPLATE_STYLE_OPTIONS}
+                  onChange={(v) =>
+                    setLocalConfig((p) => ({
+                      ...p,
+                      templateStyle: v?.value ?? p.templateStyle
+                    }))
+                  }
                 />
                 <Select
                   name="fontSize"
                   label="Font Size"
                   options={FONT_SIZE_OPTIONS}
+                  onChange={(v) =>
+                    setLocalConfig((p) => ({
+                      ...p,
+                      fontSize: v?.value ?? p.fontSize
+                    }))
+                  }
                 />
               </VStack>
 
@@ -210,6 +336,12 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
                 name="primarySortBy"
                 label="Primary Sort By"
                 options={SORT_BY_OPTIONS}
+                onChange={(v) =>
+                  setLocalConfig((p) => ({
+                    ...p,
+                    primarySortBy: v?.value ?? p.primarySortBy
+                  }))
+                }
               />
             </TabsContent>
 
@@ -225,14 +357,35 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
                     name="pdfLayout"
                     label="Layout"
                     options={LAYOUT_OPTIONS}
+                    onChange={(v) =>
+                      setLocalConfig((p) => ({
+                        ...p,
+                        pdfLayout: v?.value ?? p.pdfLayout
+                      }))
+                    }
                   />
                   <Heading size="h4">Header Details</Heading>
                   <Input
                     placeholder="PDF Title"
                     name="pdfTitle"
                     label="Title"
+                    onChange={(e) =>
+                      setLocalConfig((p) => ({
+                        ...p,
+                        pdfTitle: e.target.value
+                      }))
+                    }
                   />
-                  <Boolean name="pdfIsUppercase" label="Title Uppercase" />
+                  <Boolean
+                    name="pdfIsUppercase"
+                    label="Title Uppercase"
+                    onChange={(checked) =>
+                      setLocalConfig((p) => ({
+                        ...p,
+                        pdfIsUppercase: checked
+                      }))
+                    }
+                  />
                 </VStack>
 
                 <VStack className="pb-5">
@@ -241,18 +394,40 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ selectedFields }) => {
                     <Boolean
                       name="enablePageNumber"
                       label="Enable Page Number"
+                      onChange={(checked) =>
+                        setLocalConfig((p) => ({
+                          ...p,
+                          enablePageNumber: checked
+                        }))
+                      }
                     />
                     <Boolean
                       name="enableGeneratedBy"
                       label="Enable Generated By"
+                      onChange={(checked) =>
+                        setLocalConfig((p) => ({
+                          ...p,
+                          enableGeneratedBy: checked
+                        }))
+                      }
                     />
                   </HStack>
                   <HStack className="space-x-2 justify-between w-full">
-                    <Boolean name="enableTimeStamp" label="Enable Timestamp" />
-                  </HStack>{" "}
+                    <Boolean
+                      name="enableTimeStamp"
+                      label="Enable Timestamp"
+                      onChange={(checked) =>
+                        setLocalConfig((p) => ({
+                          ...p,
+                          enableTimeStamp: checked
+                        }))
+                      }
+                    />
+                  </HStack>
                 </VStack>
               </VStack>
             </TabsContent>
+
             <TabsContent
               value="computed"
               className="min-h-[120px] pt-4 data-[state=inactive]:hidden"

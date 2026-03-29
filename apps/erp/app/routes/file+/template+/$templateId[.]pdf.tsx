@@ -35,7 +35,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   ]);
 
   if (templateResult.error || !templateResult.data) {
-    throw new Response("Template not found", { status: 404 });
+    throw new Response(templateResult.error.message, { status: 404 });
   }
   if (companyResult.error || !companyResult.data) {
     throw new Response("Company not found", { status: 404 });

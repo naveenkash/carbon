@@ -5,6 +5,8 @@ import { useState } from "react";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { Outlet } from "react-router";
 import { PanelProvider, ResizablePanels } from "~/components/Layout";
+import type { ComputedField, TemplateConfig } from "~/modules/settings/types";
+import { DEFAULT_TEMPLATE_CONFIG } from "~/modules/settings/types";
 import SettingsPanel from "~/modules/settings/ui/Templates/SettingsPanel";
 import TemplateHeader from "~/modules/settings/ui/Templates/TemplateHeader";
 import type { Handle } from "~/utils/handle";
@@ -28,14 +30,32 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export type TemplateOutletContext = {
   selectedFields: string[];
   setSelectedFields: Dispatch<SetStateAction<string[]>>;
+  computedFields: ComputedField[];
+  setComputedFields: Dispatch<SetStateAction<ComputedField[]>>;
+  previewConfig: TemplateConfig;
 };
 
 export default function TemplateRoute() {
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
+  const [computedFields, setComputedFields] = useState<ComputedField[]>([]);
+  const [previewConfig, setPreviewConfig] = useState<TemplateConfig>(
+    DEFAULT_TEMPLATE_CONFIG
+  );
+
+  function handleToggleField(fieldKey: string) {
+    setSelectedFields((prev) =>
+      prev.includes(fieldKey)
+        ? prev.filter((k) => k !== fieldKey)
+        : [...prev, fieldKey]
+    );
+  }
 
   const outletContext: TemplateOutletContext = {
     selectedFields,
-    setSelectedFields
+    setSelectedFields,
+    computedFields,
+    setComputedFields,
+    previewConfig
   };
 
   return (
@@ -53,7 +73,15 @@ export default function TemplateRoute() {
                   </VStack>
                 </div>
               }
-              properties={<SettingsPanel selectedFields={selectedFields} />}
+              properties={
+                <SettingsPanel
+                  selectedFields={selectedFields}
+                  onToggleField={handleToggleField}
+                  computedFields={computedFields}
+                  setComputedFields={setComputedFields}
+                  onConfigChange={setPreviewConfig}
+                />
+              }
             />
           </div>
         </div>

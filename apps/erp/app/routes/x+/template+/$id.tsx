@@ -125,7 +125,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function EditTemplateRoute() {
   const { template } = useLoaderData<typeof loader>();
 
-  const { selectedFields, setSelectedFields } =
+  const { selectedFields, setSelectedFields, computedFields, previewConfig } =
     useOutletContext<TemplateOutletContext>();
 
   const raw = template.templateConfiguration as
@@ -139,20 +139,13 @@ export default function EditTemplateRoute() {
     setSelectedFields(initialFields);
   }, [initialFields, setSelectedFields]);
 
-  const handleToggleField = (fieldKey: string) => {
-    setSelectedFields((prev) =>
-      prev.includes(fieldKey)
-        ? prev.filter((key) => key !== fieldKey)
-        : [...prev, fieldKey]
-    );
-  };
-
   return (
     <TemplateManager
       module={module}
       category={category}
       selectedFields={selectedFields}
-      onToggleField={handleToggleField}
+      computedFields={computedFields}
+      previewConfig={previewConfig}
     />
   );
 }
