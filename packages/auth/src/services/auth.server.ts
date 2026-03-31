@@ -114,6 +114,46 @@ function makeAuthSession(
   };
 }
 
+/**
+ * Determines the effective user based on console mode and pin-in state.
+ * If console mode is on and an operator is pinned in, returns
+ * the operator's ID. Otherwise returns the session user's ID.
+ *
+ * Console mode is read from the auth session; pin-in state is
+ * still read from the `console-pin-{companyId}` cookie.
+ */
+function getEffectiveUser(
+  request: Request,
+  companyId: string,
+  sessionUserId: string,
+  consoleMode: boolean
+): string {
+  if (!consoleMode) return sessionUserId;
+
+  const cookieHeader = request.headers.get("cookie");
+  if (!cookieHeader) return sessionUserId;
+
+  // Parse only the pin-in cookie we need
+  const cookies = Object.fromEntries(
+    cookieHeader.split(";").map((c) => {
+      const [key, ...rest] = c.trim().split("=");
+      return [key, decodeURIComponent(rest.join("="))];
+    })
+  );
+
+  const pinRaw = cookies[`console-pin-${companyId}`];
+  if (!pinRaw) return sessionUserId;
+
+  try {
+    const pinIn = JSON.parse(pinRaw);
+    const elapsed = Date.now() - pinIn.pinnedAt;
+    if (elapsed > 3600000) return sessionUserId;
+    return pinIn.userId ?? sessionUserId;
+  } catch {
+    return sessionUserId;
+  }
+}
+
 export async function requirePermissions(
   request: Request,
   requiredPermissions: {
@@ -129,6 +169,8 @@ export async function requirePermissions(
   companyId: string;
   email: string;
   userId: string;
+  sessionUserId: string;
+  consoleMode: boolean;
 }> {
   const apiKey = request.headers.get("carbon-key");
   if (apiKey) {
@@ -203,13 +245,16 @@ export async function requirePermissions(
         client,
         companyId,
         userId,
-        email: ""
+        sessionUserId: userId,
+        email: "",
+        consoleMode: false
       };
     }
   }
 
-  const { accessToken, companyId, email, userId } =
-    await requireAuthSession(request);
+  const authSession = await requireAuthSession(request);
+  const { accessToken, companyId, email, userId } = authSession;
+  const consoleMode = authSession.console === companyId;
 
   const myClaims = await getUserClaims(userId, companyId);
 
@@ -222,7 +267,9 @@ export async function requirePermissions(
           : getCarbon(accessToken),
       companyId,
       email,
-      userId
+      userId: getEffectiveUser(request, companyId, userId, consoleMode),
+      sessionUserId: userId,
+      consoleMode
     };
   }
 
@@ -277,7 +324,9 @@ export async function requirePermissions(
         : getCarbon(accessToken),
     companyId,
     email,
-    userId
+    userId: getEffectiveUser(request, companyId, userId, consoleMode),
+    sessionUserId: userId,
+    consoleMode
   };
 }
 

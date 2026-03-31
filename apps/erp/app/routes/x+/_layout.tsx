@@ -2,7 +2,8 @@ import {
   CarbonEdition,
   CarbonProvider,
   CONTROLLED_ENVIRONMENT,
-  getCarbon
+  getCarbon,
+  getMESUrl
 } from "@carbon/auth";
 import { setCompanyId } from "@carbon/auth/company.server";
 import {
@@ -68,8 +69,14 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { accessToken, companyId, expiresAt, expiresIn, userId } =
-    await requireAuthSession(request, { verify: true });
+  const authSession = await requireAuthSession(request, { verify: true });
+  const { accessToken, companyId, expiresAt, expiresIn, userId } = authSession;
+
+  // Block ERP access when console mode is active on this terminal.
+  // Console terminals should only access the MES app.
+  if (authSession.console) {
+    throw redirect(getMESUrl());
+  }
 
   // const { computeRegion, proxyRegion } = parseVercelId(
   //   request.headers.get("x-vercel-id")

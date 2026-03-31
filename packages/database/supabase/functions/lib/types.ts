@@ -2923,6 +2923,7 @@ export type Database = {
           accountsPayableEmail: string | null
           accountsReceivableAddress: boolean | null
           accountsReceivableEmail: string | null
+          consoleEnabled: boolean
           defaultCustomerCc: string[] | null
           defaultSupplierCc: string[] | null
           digitalQuoteEnabled: boolean
@@ -2959,6 +2960,7 @@ export type Database = {
           accountsPayableEmail?: string | null
           accountsReceivableAddress?: boolean | null
           accountsReceivableEmail?: string | null
+          consoleEnabled?: boolean
           defaultCustomerCc?: string[] | null
           defaultSupplierCc?: string[] | null
           digitalQuoteEnabled?: boolean
@@ -2995,6 +2997,7 @@ export type Database = {
           accountsPayableEmail?: string | null
           accountsReceivableAddress?: boolean | null
           accountsReceivableEmail?: string | null
+          consoleEnabled?: boolean
           defaultCustomerCc?: string[] | null
           defaultSupplierCc?: string[] | null
           digitalQuoteEnabled?: boolean
@@ -6794,18 +6797,21 @@ export type Database = {
           companyId: string
           employeeTypeId: string
           id: string
+          pin: string | null
         }
         Insert: {
           active?: boolean
           companyId: string
           employeeTypeId: string
           id?: string
+          pin?: string | null
         }
         Update: {
           active?: boolean
           companyId?: string
           employeeTypeId?: string
           id?: string
+          pin?: string | null
         }
         Relationships: [
           {
@@ -40619,6 +40625,7 @@ export type Database = {
           flags: Json
           fullName: string | null
           id: string
+          isConsoleOperator: boolean
           lastName: string
           updatedAt: string | null
         }
@@ -40635,6 +40642,7 @@ export type Database = {
           flags?: Json
           fullName?: string | null
           id: string
+          isConsoleOperator?: boolean
           lastName?: string
           updatedAt?: string | null
         }
@@ -40651,6 +40659,7 @@ export type Database = {
           flags?: Json
           fullName?: string | null
           id?: string
+          isConsoleOperator?: boolean
           lastName?: string
           updatedAt?: string | null
         }
