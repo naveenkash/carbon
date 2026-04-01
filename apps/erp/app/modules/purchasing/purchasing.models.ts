@@ -459,9 +459,9 @@ export const purchasingRfqValidator = z.object({
   locationId: zfd.text(z.string().optional()),
   employeeId: zfd.text(z.string().optional()),
   status: z.enum(purchasingRfqStatusType).optional(),
-  supplierIds: z
-    .array(z.string())
-    .min(1, { message: "At least one supplier is required" })
+  supplierIds: zfd.repeatable(
+    z.array(z.string()).min(1, { message: "At least one supplier is required" })
+  )
 });
 
 export const purchasingRfqLineValidator = z.object({
@@ -484,9 +484,11 @@ export const purchasingRfqLineValidator = z.object({
 
 export const purchasingRfqSuppliersValidator = z.object({
   purchasingRfqId: z.string().min(1, { message: "RFQ is required" }),
-  supplierIds: z
-    .array(z.string())
-    .min(1, { message: "At least one supplier is required" })
+  supplierIds: zfd
+    .repeatable(z.array(z.string()))
+    .refine((val) => val.length > 0, {
+      message: "At least one supplier is required"
+    })
 });
 
 export const purchasingRfqFinalizeValidator = z.object({

@@ -73,7 +73,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return validationError(validation.error);
   }
 
-  const { rfqId, ...d } = validation.data;
+  const { rfqId, supplierIds: _supplierIds, ...d } = validation.data;
   if (!rfqId) throw new Error("Could not find rfqId");
 
   const update = await upsertPurchasingRFQ(client, {

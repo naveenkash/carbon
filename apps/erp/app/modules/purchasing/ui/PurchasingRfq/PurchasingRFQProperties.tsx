@@ -69,24 +69,58 @@ const PurchasingRFQProperties = () => {
     }
   }, [fetcher.data]);
 
+  const buildRfqFormData = useCallback(
+    (
+      overrides: Partial<
+        Pick<
+          PurchasingRFQ,
+          "rfqDate" | "expirationDate" | "locationId" | "employeeId"
+        >
+      >
+    ) => {
+      const formData = new FormData();
+      formData.append("rfqId", routeData?.rfqSummary?.rfqId ?? "");
+      formData.append(
+        "rfqDate",
+        overrides.rfqDate ?? routeData?.rfqSummary?.rfqDate ?? ""
+      );
+      formData.append(
+        "expirationDate",
+        overrides.expirationDate ?? routeData?.rfqSummary?.expirationDate ?? ""
+      );
+      formData.append(
+        "locationId",
+        overrides.locationId ?? routeData?.rfqSummary?.locationId ?? ""
+      );
+      formData.append(
+        "employeeId",
+        overrides.employeeId ?? routeData?.rfqSummary?.employeeId ?? ""
+      );
+      for (const id of currentSupplierIds) {
+        formData.append("supplierIds", id);
+      }
+      return formData;
+    },
+    [routeData?.rfqSummary, currentSupplierIds]
+  );
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
   const onUpdate = useCallback(
-    (field: keyof PurchasingRFQ, value: string | null) => {
-      if (value === routeData?.rfqSummary[field]) {
-        return;
-      }
-      const formData = new FormData();
-
-      formData.append("ids", rfqId);
-      formData.append("field", field);
-      formData.append("value", value ?? "");
+    (
+      field: keyof Pick<
+        PurchasingRFQ,
+        "rfqDate" | "expirationDate" | "locationId" | "employeeId"
+      >,
+      value: string | null
+    ) => {
+      if (value === routeData?.rfqSummary[field]) return;
+      const formData = buildRfqFormData({ [field]: value ?? "" });
       fetcher.submit(formData, {
         method: "post",
         action: path.to.purchasingRfqDetails(rfqId)
       });
     },
-
-    [rfqId, routeData?.rfqSummary]
+    [rfqId, routeData?.rfqSummary, buildRfqFormData]
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
