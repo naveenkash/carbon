@@ -243,7 +243,11 @@ const PurchasingRFQProperties = () => {
           supplierIds: currentSupplierIds
         }}
         validator={z.object({
-          supplierIds: z.array(z.string()).optional()
+          supplierIds: zfd.repeatable(
+            z
+              .array(z.string())
+              .min(1, { message: "At least one supplier is required" })
+          )
         })}
         className="w-full"
       >
@@ -376,14 +380,15 @@ const SuppliersInlinePreview = (
   options: { value: string; label: string; helper?: string }[],
   maxPreview = 5
 ) => {
-  const [suppliers] = useSuppliers();
   return (
     <AvatarGroup limit={maxPreview} className="relative z-10">
       <AvatarGroupList>
-        {value.map((supplier, index: number) => (
+        {value.map((supplierId, index: number) => (
           <Avatar
             key={index}
-            name={suppliers.find((s) => s.id === supplier)?.name ?? supplier}
+            name={
+              options.find((o) => o.value === supplierId)?.label ?? supplierId
+            }
           />
         ))}
       </AvatarGroupList>

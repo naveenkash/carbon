@@ -2,11 +2,12 @@ import { assertIsPost, error, success } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
-import type { ActionFunctionArgs } from "react-router";
+import { type ActionFunctionArgs, redirect } from "react-router";
 import {
   purchasingRfqSuppliersValidator,
   upsertPurchasingRFQSuppliers
 } from "~/modules/purchasing";
+import { path } from "~/utils/path";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   assertIsPost(request);
@@ -37,8 +38,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
   );
 
   if (update.error) {
-    flash(request, error(update.error, "Failed to update suppliers"));
+    throw redirect(
+      path.to.purchasingRfq(id),
+      await flash(request, error(update.error, "Failed to update suppliers"))
+    );
   }
 
-  flash(request, success("Updated suppliers"));
+  throw redirect(
+    path.to.purchasingRfq(id),
+    await flash(request, success("Updated suppliers"))
+  );
 }
