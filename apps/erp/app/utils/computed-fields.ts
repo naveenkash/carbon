@@ -273,7 +273,9 @@ export function applyComputedFields(
  * Maps a computed field's outputFormat to an ExportField for the PDF/CSV renderer.
  */
 export function computedFieldToExportField(field: ComputedField): ExportField {
-  const fmt: OutputFormat = field.outputFormat ?? { type: "text" };
+  const fmt: OutputFormat = field.outputFormat ?? {
+    type: OutputFormatType.Text
+  };
   let type: ExportField["type"] = "text";
 
   switch (fmt.type) {

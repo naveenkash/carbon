@@ -20,6 +20,7 @@ import {
 } from "~/utils/computed-fields";
 import { runExportQuery } from "~/utils/export-query";
 import { getLocale } from "~/utils/request";
+import type { Company } from "../../../../../../packages/documents/src/types";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const { client, companyId, userId } = await requirePermissions(request, {
@@ -66,7 +67,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   });
 
   if (exportResult.error) {
-    throw new Response(exportResult.error.message, { status: 500 });
+    throw new Response("Failed to export", { status: 500 });
   }
 
   const sourceRows = exportResult.data ?? [];
@@ -97,7 +98,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       rows={rows}
       fields={fields}
       config={pdfConfig}
-      company={company}
+      company={company as Company}
       locale={locale}
       currencyCode={company.baseCurrencyCode}
       templateName={template.name}
@@ -120,5 +121,5 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     "Content-Type": "application/pdf",
     "Content-Disposition": `inline; filename="${template.name}.pdf"`
   });
-  return new Response(body, { status: 200, headers });
+  return new Response(new Uint8Array(body), { status: 200, headers });
 }

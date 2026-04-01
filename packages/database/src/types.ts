@@ -2923,7 +2923,6 @@ export type Database = {
           accountsPayableEmail: string | null
           accountsReceivableAddress: boolean | null
           accountsReceivableEmail: string | null
-          consoleEnabled: boolean
           defaultCustomerCc: string[] | null
           defaultSupplierCc: string[] | null
           digitalQuoteEnabled: boolean
@@ -2960,7 +2959,6 @@ export type Database = {
           accountsPayableEmail?: string | null
           accountsReceivableAddress?: boolean | null
           accountsReceivableEmail?: string | null
-          consoleEnabled?: boolean
           defaultCustomerCc?: string[] | null
           defaultSupplierCc?: string[] | null
           digitalQuoteEnabled?: boolean
@@ -2997,7 +2995,6 @@ export type Database = {
           accountsPayableEmail?: string | null
           accountsReceivableAddress?: boolean | null
           accountsReceivableEmail?: string | null
-          consoleEnabled?: boolean
           defaultCustomerCc?: string[] | null
           defaultSupplierCc?: string[] | null
           digitalQuoteEnabled?: boolean
@@ -6797,21 +6794,18 @@ export type Database = {
           companyId: string
           employeeTypeId: string
           id: string
-          pin: string | null
         }
         Insert: {
           active?: boolean
           companyId: string
           employeeTypeId: string
           id?: string
-          pin?: string | null
         }
         Update: {
           active?: boolean
           companyId?: string
           employeeTypeId?: string
           id?: string
-          pin?: string | null
         }
         Relationships: [
           {
@@ -7237,9 +7231,6 @@ export type Database = {
           id: string
           name: string
           protected: boolean
-          systemType:
-            | Database["public"]["Enums"]["employeeTypeSystemType"]
-            | null
           updatedAt: string | null
         }
         Insert: {
@@ -7248,9 +7239,6 @@ export type Database = {
           id?: string
           name: string
           protected?: boolean
-          systemType?:
-            | Database["public"]["Enums"]["employeeTypeSystemType"]
-            | null
           updatedAt?: string | null
         }
         Update: {
@@ -7259,9 +7247,6 @@ export type Database = {
           id?: string
           name?: string
           protected?: boolean
-          systemType?:
-            | Database["public"]["Enums"]["employeeTypeSystemType"]
-            | null
           updatedAt?: string | null
         }
         Relationships: [
@@ -16283,7 +16268,6 @@ export type Database = {
           quantity: number
           scrapQuantity: number
           shelfIds: Json
-          sourcingType: Database["public"]["Enums"]["sourcingType"]
           tags: string[] | null
           unitOfMeasureCode: string
           updatedAt: string | null
@@ -16307,7 +16291,6 @@ export type Database = {
           quantity: number
           scrapQuantity?: number
           shelfIds?: Json
-          sourcingType?: Database["public"]["Enums"]["sourcingType"]
           tags?: string[] | null
           unitOfMeasureCode: string
           updatedAt?: string | null
@@ -16331,7 +16314,6 @@ export type Database = {
           quantity?: number
           scrapQuantity?: number
           shelfIds?: Json
-          sourcingType?: Database["public"]["Enums"]["sourcingType"]
           tags?: string[] | null
           unitOfMeasureCode?: string
           updatedAt?: string | null
@@ -30831,6 +30813,7 @@ export type Database = {
           assetId: string | null
           companyId: string
           convertedAddOnCost: number | null
+          convertedNonTaxableAddOnCost: number | null
           convertedSetupPrice: number | null
           convertedShippingCost: number | null
           convertedUnitPrice: number | null
@@ -30848,6 +30831,7 @@ export type Database = {
           locationId: string | null
           methodType: Database["public"]["Enums"]["methodType"]
           modelUploadId: string | null
+          nonTaxableAddOnCost: number
           opportunityId: string | null
           quantity: number
           salesOrderId: string | null
@@ -30867,6 +30851,7 @@ export type Database = {
           assetId?: string | null
           companyId: string
           convertedAddOnCost?: number | null
+          convertedNonTaxableAddOnCost?: number | null
           convertedSetupPrice?: number | null
           convertedShippingCost?: number | null
           convertedUnitPrice?: number | null
@@ -30884,6 +30869,7 @@ export type Database = {
           locationId?: string | null
           methodType?: Database["public"]["Enums"]["methodType"]
           modelUploadId?: string | null
+          nonTaxableAddOnCost?: number
           opportunityId?: string | null
           quantity?: number
           salesOrderId?: string | null
@@ -30903,6 +30889,7 @@ export type Database = {
           assetId?: string | null
           companyId?: string
           convertedAddOnCost?: number | null
+          convertedNonTaxableAddOnCost?: number | null
           convertedSetupPrice?: number | null
           convertedShippingCost?: number | null
           convertedUnitPrice?: number | null
@@ -30920,6 +30907,7 @@ export type Database = {
           locationId?: string | null
           methodType?: Database["public"]["Enums"]["methodType"]
           modelUploadId?: string | null
+          nonTaxableAddOnCost?: number
           opportunityId?: string | null
           quantity?: number
           salesOrderId?: string | null
@@ -33352,6 +33340,48 @@ export type Database = {
             referencedColumns: ["userId"]
           },
         ]
+      }
+      searchIndex_5b3hLM3V14oLjKJijiAbCU: {
+        Row: {
+          createdAt: string
+          description: string | null
+          entityId: string
+          entityType: string
+          id: number
+          link: string
+          metadata: Json | null
+          searchVector: unknown
+          tags: string[] | null
+          title: string
+          updatedAt: string | null
+        }
+        Insert: {
+          createdAt?: string
+          description?: string | null
+          entityId: string
+          entityType: string
+          id?: number
+          link: string
+          metadata?: Json | null
+          searchVector?: unknown
+          tags?: string[] | null
+          title: string
+          updatedAt?: string | null
+        }
+        Update: {
+          createdAt?: string
+          description?: string | null
+          entityId?: string
+          entityType?: string
+          id?: number
+          link?: string
+          metadata?: Json | null
+          searchVector?: unknown
+          tags?: string[] | null
+          title?: string
+          updatedAt?: string | null
+        }
+        Relationships: []
       }
       searchIndexRegistry: {
         Row: {
@@ -40772,7 +40802,6 @@ export type Database = {
           flags: Json
           fullName: string | null
           id: string
-          isConsoleOperator: boolean
           lastName: string
           updatedAt: string | null
         }
@@ -40789,7 +40818,6 @@ export type Database = {
           flags?: Json
           fullName?: string | null
           id: string
-          isConsoleOperator?: boolean
           lastName?: string
           updatedAt?: string | null
         }
@@ -40806,7 +40834,6 @@ export type Database = {
           flags?: Json
           fullName?: string | null
           id?: string
-          isConsoleOperator?: boolean
           lastName?: string
           updatedAt?: string | null
         }
@@ -45410,7 +45437,6 @@ export type Database = {
           itemId: string | null
           itemReadableId: string | null
           itemReadableIdWithoutRevision: string | null
-          itemScrapPercentage: number | null
           itemType: string | null
           jobId: string | null
           jobMakeMethodId: string | null
@@ -52636,14 +52662,14 @@ export type Database = {
           },
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["customerCountryCode"]
+            columns: ["invoiceCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
           },
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["customerCountryCode"]
+            columns: ["shipmentCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
@@ -56423,10 +56449,6 @@ export type Database = {
         Args: { p_company_id: string }
         Returns: undefined
       }
-      create_embedding_subscriptions_for_company: {
-        Args: { p_company_id: string }
-        Returns: undefined
-      }
       create_event_system_subscription: {
         Args: {
           p_active?: boolean
@@ -56962,6 +56984,7 @@ export type Database = {
         Args: { jid: string }
         Returns: {
           description: string
+          externalId: Json
           isRoot: boolean
           itemId: string
           itemReadableId: string
@@ -58216,7 +58239,6 @@ export type Database = {
         | "Audio"
         | "Other"
         | "Model"
-      employeeTypeSystemType: "Admin" | "Console Operator"
       externalLinkDocumentType:
         | "Quote"
         | "SupplierQuote"
@@ -58369,7 +58391,7 @@ export type Database = {
       maintenanceSource: "Scheduled" | "Reactive" | "Non-Conformance"
       makeMethodStatus: "Draft" | "Active" | "Archived"
       methodOperationOrder: "After Previous" | "With Previous"
-      methodType: "Purchase to Order" | "Pull from Inventory" | "Make to Order"
+      methodType: "Buy" | "Make" | "Pick"
       module:
         | "Accounting"
         | "Documents"
@@ -58579,7 +58601,6 @@ export type Database = {
         | "Outbound Transfer"
       shipmentStatus: "Draft" | "Pending" | "Posted" | "Voided"
       shippingCarrier: "UPS" | "FedEx" | "USPS" | "DHL" | "Other"
-      sourcingType: "Specified" | "Drop Ship" | "Ship from Inventory"
       stockTransferStatus: "Draft" | "Released" | "In Progress" | "Completed"
       supplierLedgerDocumentType:
         | "Payment"
@@ -59346,7 +59367,6 @@ export const Constants = {
         "Other",
         "Model",
       ],
-      employeeTypeSystemType: ["Admin", "Console Operator"],
       externalLinkDocumentType: [
         "Quote",
         "SupplierQuote",
@@ -59515,7 +59535,7 @@ export const Constants = {
       maintenanceSource: ["Scheduled", "Reactive", "Non-Conformance"],
       makeMethodStatus: ["Draft", "Active", "Archived"],
       methodOperationOrder: ["After Previous", "With Previous"],
-      methodType: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
+      methodType: ["Buy", "Make", "Pick"],
       module: [
         "Accounting",
         "Documents",
@@ -59745,7 +59765,6 @@ export const Constants = {
       ],
       shipmentStatus: ["Draft", "Pending", "Posted", "Voided"],
       shippingCarrier: ["UPS", "FedEx", "USPS", "DHL", "Other"],
-      sourcingType: ["Specified", "Drop Ship", "Ship from Inventory"],
       stockTransferStatus: ["Draft", "Released", "In Progress", "Completed"],
       supplierLedgerDocumentType: [
         "Payment",

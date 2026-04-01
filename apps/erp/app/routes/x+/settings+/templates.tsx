@@ -6,7 +6,7 @@ import { Outlet, redirect, useLoaderData } from "react-router";
 import { getTemplates, TemplatesTable } from "~/modules/settings";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
-import { getGenericQueryFilters } from "~/utils/query";
+// import { getGenericQueryFilters } from "~/utils/query";
 
 export const handle: Handle = {
   breadcrumb: "Templates",
@@ -18,19 +18,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     view: "settings"
   });
 
-  const url = new URL(request.url);
-  const searchParams = new URLSearchParams(url.search);
-  const search = searchParams.get("search");
-  const { limit, offset, sorts, filters } =
-    getGenericQueryFilters(searchParams);
+  // const url = new URL(request.url);
+  // const searchParams = new URLSearchParams(url.search);
+  // const search = searchParams.get("search");
+  // const { limit, offset, sorts, filters } =
+  //   getGenericQueryFilters(searchParams);
 
-  const templates = await getTemplates(client, companyId, {
-    limit,
-    offset,
-    sorts,
-    search,
-    filters
-  });
+  const templates = await getTemplates(client, companyId);
 
   if (templates.error) {
     throw redirect(

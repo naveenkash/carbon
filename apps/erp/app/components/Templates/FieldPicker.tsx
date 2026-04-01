@@ -1,13 +1,15 @@
 import { Checkbox, Heading, HStack, VStack } from "@carbon/react";
 import type { TemplateField } from "~/modules/settings/types";
 import {
+  type Category,
   type FieldDefinition,
-  getFieldsForModuleCategory
+  getFieldsForModuleCategory,
+  type Module
 } from "~/utils/field-registry";
 
 type Props = {
-  module: string;
-  category?: string | null;
+  module: Module;
+  category: Category;
   selectedFields: TemplateField[];
   onToggleField: (fieldKey: string) => void;
 };

@@ -9,15 +9,19 @@ import {
   applyComputedFields,
   computedFieldToExportField
 } from "~/utils/computed-fields";
-import { getFieldsForModuleCategory } from "~/utils/field-registry";
+import {
+  type Category,
+  getFieldsForModuleCategory,
+  type Module
+} from "~/utils/field-registry";
 import { getLocale } from "~/utils/request";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requirePermissions(request, { view: "settings" });
 
   const sp = new URL(request.url).searchParams;
-  const module = sp.get("module") ?? "Purchasing";
-  const category = sp.get("category") ?? null;
+  const module: Module | null = sp.get("module") as Module;
+  const category: Category | null = sp.get("category") as Category;
 
   let config: TemplateConfig = DEFAULT_TEMPLATE_CONFIG;
   try {
@@ -85,7 +89,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     stream.on("error", reject);
   });
 
-  return new Response(body, {
+  return new Response(new Uint8Array(body), {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": 'inline; filename="preview.pdf"'
