@@ -13,7 +13,13 @@ import {
   LuUser
 } from "react-icons/lu";
 import { useNavigate } from "react-router";
-import { EmployeeAvatar, Hyperlink, New, Table } from "~/components";
+import {
+  EmployeeAvatar,
+  ExportDropdown,
+  Hyperlink,
+  New,
+  Table
+} from "~/components";
 import { Enumerable } from "~/components/Enumerable";
 import { ConfirmDelete } from "~/components/Modals";
 import { usePermissions } from "~/hooks";
@@ -260,7 +266,10 @@ const PurchasingRFQsTable = memo(
           }}
           primaryAction={
             permissions.can("create", "purchasing") && (
-              <New label="RFQ" to={path.to.newPurchasingRFQ} />
+              <>
+                <ExportDropdown module="Purchasing" category="Rfqs" />
+                <New label="RFQ" to={path.to.newPurchasingRFQ} />
+              </>
             )
           }
           renderContextMenu={renderContextMenu}

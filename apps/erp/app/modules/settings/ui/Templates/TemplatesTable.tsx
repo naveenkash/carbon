@@ -3,7 +3,11 @@ import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   HStack,
   MenuIcon,
@@ -143,6 +147,48 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
     [navigate, params, fetcher, deleteTemplateModal]
   );
 
+  const renderNewButton = useMemo(() => {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            leftIcon={<LuPlus />}
+            variant="primary"
+            rightIcon={<LuChevronDown />}
+          >
+            New Template
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end" className="min-w-[220px]">
+          <DropdownMenuGroup>
+            {Object.entries(REGISTERED_TEMPLATES).map(
+              ([module, categories]) => (
+                <DropdownMenuSub key={module}>
+                  <DropdownMenuSubTrigger>{module}</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    {categories.map(({ category }) => {
+                      const qs = new URLSearchParams({ module });
+                      if (category) qs.set("category", category);
+
+                      return (
+                        <DropdownMenuItem key={category} asChild>
+                          <Link to={`${path.to.newTemplate}?${qs.toString()}`}>
+                            {category ?? "General"}
+                          </Link>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              )
+            )}
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }, []);
+
   return (
     <>
       <Table<Template>
@@ -151,32 +197,7 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         count={count}
         primaryAction={
           <HStack>
-            {permissions.can("create", "settings") && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    leftIcon={<LuPlus />}
-                    variant="primary"
-                    rightIcon={<LuChevronDown />}
-                  >
-                    New Template
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {REGISTERED_TEMPLATES.map(({ module, category, label }) => {
-                    const qs = new URLSearchParams({ module });
-                    if (category) qs.set("category", category);
-                    return (
-                      <DropdownMenuItem key={label} asChild>
-                        <Link to={`${path.to.newTemplate}?${qs.toString()}`}>
-                          {label}
-                        </Link>
-                      </DropdownMenuItem>
-                    );
-                  })}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+            {permissions.can("create", "settings") && renderNewButton}
           </HStack>
         }
         renderContextMenu={renderContextMenu}

@@ -1,10 +1,13 @@
 import type { Database } from "@carbon/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
+  type Category,
   type FieldDefinition,
   getFieldsByKeys,
   type JoinStep,
-  MODULE_PRIMARY_TABLE
+  MODULE_PRIMARY_TABLE,
+  type Module,
+  type RegistryKey
 } from "~/utils/field-registry";
 
 // A single flat row in the export output — field keys map to their raw values.
@@ -281,14 +284,14 @@ export async function runExportQuery(
     companyId,
     filters
   }: {
-    module: string;
-    category: string | null;
+    module: Module;
+    category: Category;
     fieldKeys: string[];
     companyId: string;
     filters?: Record<string, string>;
   }
 ): Promise<ExportQueryResult> {
-  const registryKey = category ? `${module}:${category}` : module;
+  const registryKey: RegistryKey = `${module}:${category}`;
   const primaryTable = MODULE_PRIMARY_TABLE[registryKey];
 
   if (!primaryTable) {
@@ -306,6 +309,8 @@ export async function runExportQuery(
 
   const selectStr = buildSelectString(fields);
 
+  console.log(selectStr, "--selectStr--");
+
   let query = (client as any)
     .from(primaryTable)
     .select(selectStr)
@@ -318,6 +323,8 @@ export async function runExportQuery(
   }
 
   const { data, error } = await query;
+
+  console.log(error);
 
   if (error) return { data: null, fields: null, error };
 

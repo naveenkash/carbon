@@ -1,3 +1,8 @@
+import type { Database } from "@carbon/database";
+
+export type Module = Database["public"]["Enums"]["module"];
+export type Category = Database["public"]["Enums"]["category"];
+
 export type JoinStep = {
   table: string; // DB table name at this hop
   fk: string; // FK column on this table pointing back to its parent
@@ -14,9 +19,10 @@ export type FieldDefinition = {
   joins?: JoinStep[]; // path from the primary table to this field's table; absent = header field
 };
 
+export type RegistryKey = `${Module}:${Category}`;
+
 // Registry keyed by "Module:Category" or just "Module" when no category applies.
-// Module and Category must match the DB enum values exactly.
-const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
+const FIELD_REGISTRY: Partial<Record<RegistryKey, FieldDefinition[]>> = {
   // ─── Purchasing → Orders ──────────────────────────────────────────────────
   "Purchasing:Orders": [
     {
@@ -487,30 +493,104 @@ const FIELD_REGISTRY: Record<string, FieldDefinition[]> = {
         }
       ]
     }
+  ],
+
+  // ─── Purchasing → RFQs ────────────────────────────────────────────────────
+  "Purchasing:Rfqs": [
+    { key: "rfqId", label: "RFQ #", type: "text", column: "rfqId" },
+    { key: "status", label: "Status", type: "status", column: "status" },
+    { key: "rfqDate", label: "RFQ Date", type: "date", column: "rfqDate" },
+    {
+      key: "expirationDate",
+      label: "Expiration Date",
+      type: "date",
+      column: "expirationDate"
+    },
+    // Line fields
+    {
+      key: "line.description",
+      label: "Description",
+      type: "text",
+      column: "description",
+      group: "RFQ Lines",
+      joins: [{ table: "purchasingRfqLine", fk: "purchasingRfqId" }]
+    },
+    {
+      key: "line.purchaseUnitOfMeasureCode",
+      label: "Purchase UOM",
+      type: "text",
+      column: "purchaseUnitOfMeasureCode",
+      group: "RFQ Lines",
+      joins: [{ table: "purchasingRfqLine", fk: "purchasingRfqId" }]
+    },
+    {
+      key: "line.inventoryUnitOfMeasureCode",
+      label: "Inventory UOM",
+      type: "text",
+      column: "inventoryUnitOfMeasureCode",
+      group: "RFQ Lines",
+      joins: [{ table: "purchasingRfqLine", fk: "purchasingRfqId" }]
+    },
+    {
+      key: "line.conversionFactor",
+      label: "Conversion Factor",
+      type: "number",
+      column: "conversionFactor",
+      group: "RFQ Lines",
+      joins: [{ table: "purchasingRfqLine", fk: "purchasingRfqId" }]
+    }
+  ],
+
+  // ─── Purchasing → Suppliers ───────────────────────────────────────────────
+  "Purchasing:Suppliers": [
+    { key: "name", label: "Name", type: "text", column: "name" },
+    { key: "taxId", label: "Tax ID", type: "text", column: "taxId" },
+    {
+      key: "vatNumber",
+      label: "VAT Number",
+      type: "text",
+      column: "vatNumber"
+    },
+    { key: "phone", label: "Phone", type: "text", column: "phone" },
+    { key: "website", label: "Website", type: "text", column: "website" },
+    {
+      key: "currencyCode",
+      label: "Currency",
+      type: "text",
+      column: "currencyCode"
+    },
+    {
+      key: "taxPercent",
+      label: "Tax %",
+      type: "number",
+      column: "taxPercent"
+    }
   ]
 };
 
 // ─── Primary table per module:category ────────────────────────────────────────
 
-export const MODULE_PRIMARY_TABLE: Record<string, string> = {
+export const MODULE_PRIMARY_TABLE: Partial<Record<RegistryKey, string>> = {
   "Purchasing:Orders": "purchaseOrder",
   "Purchasing:Invoices": "purchaseInvoice",
-  "Purchasing:Quotes": "supplierQuote"
+  "Purchasing:Quotes": "supplierQuote",
+  "Purchasing:Rfqs": "purchasingRfq",
+  "Purchasing:Suppliers": "suppliers"
 };
 
 // ─── Public helpers ────────────────────────────────────────────────────────────
 
 export function getFieldsForModuleCategory(
-  module: string,
-  category?: string | null
+  module: Module,
+  category: Category
 ): FieldDefinition[] {
-  const key = category ? `${module}:${category}` : module;
+  const key: RegistryKey = `${module}:${category}`;
   return FIELD_REGISTRY[key] ?? [];
 }
 
 export function getFieldsByKeys(
-  module: string,
-  category: string | null,
+  module: Module,
+  category: Category,
   keys: string[]
 ): FieldDefinition[] {
   const all = getFieldsForModuleCategory(module, category);
@@ -519,11 +599,21 @@ export function getFieldsByKeys(
 }
 
 // All valid (module, category) combinations — used to populate the "New Template" dropdown.
-export const REGISTERED_TEMPLATES = Object.keys(FIELD_REGISTRY).map((key) => {
-  const [module, category] = key.split(":");
-  return {
-    module,
-    category: category ?? null,
-    label: key.replace(":", " → ")
-  };
-});
+export const REGISTERED_TEMPLATES = (
+  Object.keys(FIELD_REGISTRY) as RegistryKey[]
+).reduce(
+  (acc, key) => {
+    const [module, category] = key.split(":") as [Module, Category];
+
+    if (!acc[module]) {
+      acc[module] = [];
+    }
+
+    acc[module]!.push({
+      category
+    });
+
+    return acc;
+  },
+  {} as Partial<Record<Module, { category: Category }[]>>
+);

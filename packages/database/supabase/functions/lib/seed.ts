@@ -162,4 +162,47 @@ export const standardTemplates: Array<{
       ],
     },
   },
+  {
+    name: "Standard Purchase RFQs",
+    module: "Purchasing",
+    category: "Rfqs",
+    templateConfiguration: {
+      ...standardTemplateConfig,
+      pdfTitleConfigs: {
+        title: "Purchase RFQs Report",
+        ...standardTemplateConfig.pdfTitleConfigs,
+      },
+      fields: [
+        { key: "rfqId",                           order: 0 },
+        { key: "status",                          order: 1 },
+        { key: "rfqDate",                         order: 2 },
+        { key: "expirationDate",                  order: 3 },
+        { key: "line.description",                order: 4 },
+        { key: "line.purchaseUnitOfMeasureCode",  order: 5 },
+        { key: "line.inventoryUnitOfMeasureCode", order: 6 },
+        { key: "line.conversionFactor",           order: 7 },
+      ],
+    },
+  },
+  {
+    name: "Standard Purchasing Suppliers",
+    module: "Purchasing",
+    category: "Suppliers",
+    templateConfiguration: {
+      ...standardTemplateConfig,
+      pdfTitleConfigs: {
+        title: "Purchasing Suppliers Report",
+        ...standardTemplateConfig.pdfTitleConfigs,
+      },
+      fields: [
+        { key: "name",                        order: 0 },
+        { key: "taxId",                       order: 1 },
+        { key: "vatNumber",                   order: 2 },
+        { key: "phone",                       order: 3 },
+        { key: "website",                     order: 4 },
+        { key: "currencyCode",                order: 5 },
+        { key: "taxPercent",                  order: 6 },
+      ],
+    },
+  },
 ];

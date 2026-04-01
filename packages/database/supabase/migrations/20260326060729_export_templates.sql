@@ -316,3 +316,122 @@ WHERE NOT EXISTS (
   AND t."module" = 'Purchasing'::module
   AND t."category" = 'Quotes'::category
 );
+
+-- Seed standard Purchasing → RFQs template for all existing companies
+-- that don't already have a template for this module/category.
+
+INSERT INTO "templates" (
+  "name",
+  "module",
+  "category",
+  "templateConfiguration",
+  "isDefault",
+  "companyId",
+  "createdBy"
+)
+SELECT
+  'Standard Purchase RFQs'       AS "name",
+  'Purchasing'::module            AS "module",
+  'Rfqs'::category                AS "category",
+  '{
+    "colorTheme": "zinc",
+    "margins": "default",
+    "templateFont": "Inter",
+    "templateStyle": "REPORT_TEMPLATE_CLASSIC",
+    "fontSize": "default",
+    "fields": [
+      {"key": "rfqId",                              "order": 0},
+      {"key": "status",                             "order": 1},
+      {"key": "rfqDate",                            "order": 2},
+      {"key": "expirationDate",                     "order": 3},
+      {"key": "line.description",                   "order": 4},
+      {"key": "line.purchaseUnitOfMeasureCode",     "order": 5},
+      {"key": "line.inventoryUnitOfMeasureCode",    "order": 6},
+      {"key": "line.conversionFactor",              "order": 7}
+    ],
+    "pdfTitleConfigs": {
+      "title": "Purchase RFQs Report",
+      "isUppercase": false,
+      "layout": "left_aligned"
+    },
+    "pageFooterConfigs": {
+      "enablePageNumber": true,
+      "enableGeneratedBy": false,
+      "enableTimeStamp": false
+    },
+    "sortConfigs": {
+      "type": "FIXED",
+      "primarySortBy": "NAME_ASC",
+      "order": null
+    },
+    "computedFields": []
+  }'::jsonb                        AS "templateConfiguration",
+  TRUE                             AS "isDefault",
+  c.id                             AS "companyId",
+  NULL                             AS "createdBy"
+FROM "company" c
+WHERE NOT EXISTS (
+  SELECT 1 FROM "templates" t
+  WHERE t."companyId" = c.id
+  AND t."module" = 'Purchasing'::module
+  AND t."category" = 'Rfqs'::category
+);
+
+-- Seed standard Purchasing → Suppliers template for all existing companies
+-- that don't already have a template for this module/category.
+
+INSERT INTO "templates" (
+  "name",
+  "module",
+  "category",
+  "templateConfiguration",
+  "isDefault",
+  "companyId",
+  "createdBy"
+)
+SELECT
+  'Standard Purchasing Suppliers' AS "name",
+  'Purchasing'::module             AS "module",
+  'Suppliers'::category            AS "category",
+  '{
+    "colorTheme": "zinc",
+    "margins": "default",
+    "templateFont": "Inter",
+    "templateStyle": "REPORT_TEMPLATE_CLASSIC",
+    "fontSize": "default",
+    "fields": [
+      {"key": "name",                       "order": 0},
+      {"key": "taxId",                      "order": 1},
+      {"key": "vatNumber",                  "order": 2},
+      {"key": "phone",                      "order": 3},
+      {"key": "website",                    "order": 4},
+      {"key": "currencyCode",               "order": 5},
+      {"key": "taxPercent",                 "order": 6}
+    ],
+    "pdfTitleConfigs": {
+      "title": "Purchasing Suppliers Report",
+      "isUppercase": false,
+      "layout": "left_aligned"
+    },
+    "pageFooterConfigs": {
+      "enablePageNumber": true,
+      "enableGeneratedBy": false,
+      "enableTimeStamp": false
+    },
+    "sortConfigs": {
+      "type": "FIXED",
+      "primarySortBy": "NAME_ASC",
+      "order": null
+    },
+    "computedFields": []
+  }'::jsonb                         AS "templateConfiguration",
+  TRUE                              AS "isDefault",
+  c.id                              AS "companyId",
+  NULL                              AS "createdBy"
+FROM "company" c
+WHERE NOT EXISTS (
+  SELECT 1 FROM "templates" t
+  WHERE t."companyId" = c.id
+  AND t."module" = 'Purchasing'::module
+  AND t."category" = 'Suppliers'::category
+);

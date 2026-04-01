@@ -14,18 +14,19 @@ import { useEffect } from "react";
 import { LuDownload } from "react-icons/lu";
 import { useFetcher } from "react-router";
 import type { Template } from "~/modules/settings/types";
+import type { Category, Module } from "~/utils/field-registry";
 import { path } from "~/utils/path";
 
 type ExportDropdownProps = {
-  module: string;
-  category?: string;
+  module: Module;
+  category: Category;
 };
 
 export function ExportDropdown({ module, category }: ExportDropdownProps) {
   const fetcher = useFetcher<{ data: Template[] | null; error: unknown }>();
   // biome-ignore lint/correctness/useExhaustiveDependencies: load once on mount
   useEffect(() => {
-    fetcher.load(path.to.api.templates(module, category));
+    fetcher.load(path.to.api.templates(module as unknown as string, category));
   }, [category, module]);
 
   const templates = fetcher.data?.data ?? [];
@@ -46,7 +47,7 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
       window.URL.revokeObjectURL(blobUrl);
       document.body.removeChild(a);
     } catch (error) {
-      toast.error(error.message);
+      toast.error((error as any).message);
       console.error(error);
     }
   };
@@ -63,10 +64,7 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
         <DropdownMenuGroup>
           {templates.map((template) => (
             <DropdownMenuSub key={template.id}>
-              <DropdownMenuSubTrigger>
-                {/* <DropdownMenuIcon icon={<Lu />} /> */}
-                {template.name}
-              </DropdownMenuSubTrigger>
+              <DropdownMenuSubTrigger>{template.name}</DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
                 <DropdownMenuItem
                   onClick={() =>

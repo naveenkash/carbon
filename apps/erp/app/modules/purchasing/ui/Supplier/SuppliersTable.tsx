@@ -26,6 +26,7 @@ import {
 import { Link, useNavigate } from "react-router";
 import {
   EmployeeAvatar,
+  ExportDropdown,
   Hyperlink,
   New,
   SupplierAvatar,
@@ -296,6 +297,7 @@ const SuppliersTable = memo(({ data, count, tags }: SuppliersTableProps) => {
         primaryAction={
           permissions.can("create", "purchasing") && (
             <div className="flex items-center gap-2">
+              <ExportDropdown module="Purchasing" category="Suppliers" />
               <Button variant="secondary" leftIcon={<LuShapes />} asChild>
                 <Link to={path.to.supplierTypes}>Supplier Types</Link>
               </Button>
