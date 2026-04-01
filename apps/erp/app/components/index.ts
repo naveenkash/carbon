@@ -21,6 +21,7 @@ import {
   MethodItemTypeIcon,
   ModuleIcon,
   OperationStatusIcon,
+  SourcingTypeIcon,
   TimeTypeIcon,
   TrackingTypeIcon
 } from "./Icons";
@@ -64,6 +65,7 @@ export {
   RealtimeDataProvider,
   SearchFilter,
   Select,
+  SourcingTypeIcon,
   SupplierAvatar,
   Table,
   TimeTypeIcon,

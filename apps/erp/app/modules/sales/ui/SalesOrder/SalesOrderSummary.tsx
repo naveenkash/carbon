@@ -67,6 +67,11 @@ const SalesOrderSummary = ({
     lines: SalesOrderLine[];
     customer: Customer;
     quote: Quotation;
+    invoiceSummary: {
+      invoicedAmount: number;
+      paidAmount: number;
+      currencyMismatchCount: number;
+    };
   }>(path.to.salesOrder(orderId));
 
   const salesOrderToJobsModal = useDisclosure();
@@ -112,7 +117,8 @@ const SalesOrderSummary = ({
 
   // Check if there are any lines with "Make" method type that would require jobs
   const hasMakeItems =
-    routeData?.lines?.some((line) => line.methodType === "Make") ?? false;
+    routeData?.lines?.some((line) => line.methodType === "Make to Order") ??
+    false;
 
   return (
     <>
@@ -263,6 +269,39 @@ const SalesOrderSummary = ({
                 locales={locale}
               />
             </HStack>
+            <div className="h-px bg-border my-2 w-full" />
+            <HStack className="justify-between text-base text-muted-foreground w-full">
+              <span>Invoiced Amount:</span>
+              <MotionNumber
+                value={routeData?.invoiceSummary?.invoicedAmount ?? 0}
+                format={{
+                  style: "currency",
+                  currency: routeData?.salesOrder?.currencyCode ?? "USD"
+                }}
+                locales={locale}
+              />
+            </HStack>
+            <HStack className="justify-between text-base text-muted-foreground w-full">
+              <span>Paid Amount:</span>
+              <MotionNumber
+                value={routeData?.invoiceSummary?.paidAmount ?? 0}
+                format={{
+                  style: "currency",
+                  currency: routeData?.salesOrder?.currencyCode ?? "USD"
+                }}
+                locales={locale}
+              />
+            </HStack>
+            {(routeData?.invoiceSummary?.currencyMismatchCount ?? 0) > 0 && (
+              <span className="text-xs text-muted-foreground">
+                Excludes {routeData?.invoiceSummary?.currencyMismatchCount}{" "}
+                invoice
+                {(routeData?.invoiceSummary?.currencyMismatchCount ?? 0) > 1
+                  ? "s"
+                  : ""}{" "}
+                in a different currency.
+              </span>
+            )}
           </VStack>
         </CardContent>
       </Card>
@@ -301,9 +340,10 @@ function LineItems({
       {lines.map((line) => {
         if (!line.id) return null;
 
-        const isMade = line.methodType === "Make";
+        const isMade = line.methodType === "Make to Order";
 
         const { jobLabel, jobVariant, jobs } = getSalesOrderJobStatus(
+          // @ts-expect-error TS2345 - TODO: fix type
           salesOrder?.jobs as SalesOrderJob[] | undefined,
           line as any
         );
@@ -397,7 +437,9 @@ function LineItems({
                           className="flex items-center gap-2"
                         >
                           {line.saleQuantity}
-                          <MethodIcon type={line.methodType ?? "Pick"} />
+                          <MethodIcon
+                            type={line.methodType ?? "Pull from Inventory"}
+                          />
                         </Badge>
                         <Badge variant="green">
                           {formatter.format(line.unitPrice ?? 0)}{" "}
@@ -623,6 +665,7 @@ function LineItems({
                             index === jobs.length - 1 && "border-b-0"
                           )}
                         >
+                          {/* @ts-expect-error TS2739 */}
                           <SalesOrderJobItem job={job} />
                         </div>
                       ))}

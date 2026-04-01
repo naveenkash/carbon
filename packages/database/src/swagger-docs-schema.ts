@@ -9205,6 +9205,9 @@ export default {
             $ref: "#/parameters/rowFilter.jobMaterialWithMakeMethodId.kit",
           },
           {
+            $ref: "#/parameters/rowFilter.jobMaterialWithMakeMethodId.itemScrapPercentage",
+          },
+          {
             $ref: "#/parameters/rowFilter.jobMaterialWithMakeMethodId.shelfName",
           },
           {
@@ -10012,6 +10015,9 @@ export default {
             $ref: "#/parameters/rowFilter.methodMaterial.shelfIds",
           },
           {
+            $ref: "#/parameters/rowFilter.methodMaterial.sourcingType",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -10134,6 +10140,9 @@ export default {
             $ref: "#/parameters/rowFilter.methodMaterial.shelfIds",
           },
           {
+            $ref: "#/parameters/rowFilter.methodMaterial.sourcingType",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -10208,6 +10217,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.methodMaterial.shelfIds",
+          },
+          {
+            $ref: "#/parameters/rowFilter.methodMaterial.sourcingType",
           },
           {
             $ref: "#/parameters/body.methodMaterial",
@@ -38998,6 +39010,9 @@ export default {
             $ref: "#/parameters/rowFilter.employee.active",
           },
           {
+            $ref: "#/parameters/rowFilter.employee.pin",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -39069,6 +39084,9 @@ export default {
             $ref: "#/parameters/rowFilter.employee.active",
           },
           {
+            $ref: "#/parameters/rowFilter.employee.pin",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -39092,6 +39110,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.employee.active",
+          },
+          {
+            $ref: "#/parameters/rowFilter.employee.pin",
           },
           {
             $ref: "#/parameters/body.employee",
@@ -48655,6 +48676,9 @@ export default {
             $ref: "#/parameters/rowFilter.employeeType.updatedAt",
           },
           {
+            $ref: "#/parameters/rowFilter.employeeType.systemType",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -48732,6 +48756,9 @@ export default {
             $ref: "#/parameters/rowFilter.employeeType.updatedAt",
           },
           {
+            $ref: "#/parameters/rowFilter.employeeType.systemType",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -48761,6 +48788,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.employeeType.updatedAt",
+          },
+          {
+            $ref: "#/parameters/rowFilter.employeeType.systemType",
           },
           {
             $ref: "#/parameters/body.employeeType",
@@ -50389,6 +50419,9 @@ export default {
             $ref: "#/parameters/rowFilter.user.flags",
           },
           {
+            $ref: "#/parameters/rowFilter.user.isConsoleOperator",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -50490,6 +50523,9 @@ export default {
             $ref: "#/parameters/rowFilter.user.flags",
           },
           {
+            $ref: "#/parameters/rowFilter.user.isConsoleOperator",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -50543,6 +50579,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.user.flags",
+          },
+          {
+            $ref: "#/parameters/rowFilter.user.isConsoleOperator",
           },
           {
             $ref: "#/parameters/body.user",
@@ -63241,6 +63280,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget",
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.consoleEnabled",
+          },
+          {
             $ref: "#/parameters/rowFilter.companySettings.timeCardEnabled",
           },
           {
@@ -63402,6 +63444,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget",
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.consoleEnabled",
+          },
+          {
             $ref: "#/parameters/rowFilter.companySettings.timeCardEnabled",
           },
           {
@@ -63515,6 +63560,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget",
+          },
+          {
+            $ref: "#/parameters/rowFilter.companySettings.consoleEnabled",
           },
           {
             $ref: "#/parameters/rowFilter.companySettings.timeCardEnabled",
@@ -67378,6 +67426,41 @@ export default {
         tags: ["(rpc) groups_for_user"],
       },
     },
+    "/rpc/create_embedding_subscriptions_for_company": {
+      post: {
+        parameters: [
+          {
+            in: "body",
+            name: "args",
+            required: true,
+            schema: {
+              properties: {
+                p_company_id: {
+                  format: "text",
+                  type: "string",
+                },
+              },
+              required: ["p_company_id"],
+              type: "object",
+            },
+          },
+          {
+            $ref: "#/parameters/preferParams",
+          },
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json",
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+          },
+        },
+        tags: ["(rpc) create_embedding_subscriptions_for_company"],
+      },
+    },
     "/rpc/get_period_start_date": {
       get: {
         parameters: [
@@ -70704,7 +70787,7 @@ export default {
           type: "string",
         },
         defaultMethodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -70900,8 +70983,8 @@ export default {
           type: "string",
         },
         methodType: {
-          default: "Make",
-          enum: ["Buy", "Make", "Pick"],
+          default: "Make to Order",
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -74267,7 +74350,7 @@ export default {
           type: "string",
         },
         methodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -74369,6 +74452,10 @@ export default {
         kit: {
           format: "boolean",
           type: "boolean",
+        },
+        itemScrapPercentage: {
+          format: "numeric",
+          type: "number",
         },
         shelfName: {
           format: "text",
@@ -74704,6 +74791,7 @@ export default {
         "scrapQuantity",
         "kit",
         "shelfIds",
+        "sourcingType",
       ],
       properties: {
         id: {
@@ -74719,8 +74807,8 @@ export default {
           type: "string",
         },
         methodType: {
-          default: "Buy",
-          enum: ["Buy", "Make", "Pick"],
+          default: "Pull from Inventory",
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -74814,6 +74902,12 @@ export default {
         shelfIds: {
           format: "jsonb",
         },
+        sourcingType: {
+          default: "Specified",
+          enum: ["Specified", "Drop Ship", "Ship from Inventory"],
+          format: 'public."sourcingType"',
+          type: "string",
+        },
       },
       type: "object",
     },
@@ -74901,7 +74995,7 @@ export default {
           type: "string",
         },
         methodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -80453,7 +80547,7 @@ export default {
           type: "string",
         },
         defaultMethodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -85306,8 +85400,8 @@ export default {
           type: "string",
         },
         methodType: {
-          default: "Make",
-          enum: ["Buy", "Make", "Pick"],
+          default: "Make to Order",
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -86222,7 +86316,7 @@ export default {
           type: "string",
         },
         methodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -88250,6 +88344,10 @@ export default {
           format: "boolean",
           type: "boolean",
         },
+        pin: {
+          format: "text",
+          type: "string",
+        },
       },
       type: "object",
     },
@@ -89172,7 +89270,7 @@ export default {
           type: "number",
         },
         methodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -89672,7 +89770,7 @@ export default {
           type: "string",
         },
         methodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -89854,7 +89952,7 @@ export default {
           type: "string",
         },
         defaultMethodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -90117,7 +90215,7 @@ export default {
           type: "string",
         },
         defaultMethodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -90803,7 +90901,7 @@ export default {
           type: "string",
         },
         defaultMethodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -91413,7 +91511,7 @@ export default {
           type: "string",
         },
         methodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -92281,8 +92379,8 @@ export default {
           type: "string",
         },
         methodType: {
-          default: "Make",
-          enum: ["Buy", "Make", "Pick"],
+          default: "Make to Order",
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -93100,6 +93198,11 @@ export default {
           format: "timestamp with time zone",
           type: "string",
         },
+        systemType: {
+          enum: ["Admin", "Console Operator"],
+          format: 'public."employeeTypeSystemType"',
+          type: "string",
+        },
       },
       type: "object",
     },
@@ -93605,8 +93708,8 @@ export default {
           type: "number",
         },
         methodType: {
-          default: "Make",
-          enum: ["Buy", "Make", "Pick"],
+          default: "Pull from Inventory",
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -93937,6 +94040,7 @@ export default {
         "createdAt",
         "acknowledgedITAR",
         "flags",
+        "isConsoleOperator",
       ],
       properties: {
         id: {
@@ -94002,6 +94106,11 @@ export default {
         },
         flags: {
           format: "jsonb",
+        },
+        isConsoleOperator: {
+          default: false,
+          format: "boolean",
+          type: "boolean",
         },
       },
       type: "object",
@@ -96776,7 +96885,7 @@ export default {
           type: "string",
         },
         methodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -97523,8 +97632,8 @@ export default {
           type: "string",
         },
         defaultMethodType: {
-          default: "Buy",
-          enum: ["Buy", "Make", "Pick"],
+          default: "Pull from Inventory",
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -98007,7 +98116,7 @@ export default {
           type: "string",
         },
         methodType: {
-          enum: ["Buy", "Make", "Pick"],
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -99955,8 +100064,8 @@ export default {
           type: "string",
         },
         methodType: {
-          default: "Pick",
-          enum: ["Buy", "Make", "Pick"],
+          default: "Pull from Inventory",
+          enum: ["Purchase to Order", "Pull from Inventory", "Make to Order"],
           format: 'public."methodType"',
           type: "string",
         },
@@ -100200,6 +100309,7 @@ export default {
         "jobTravelerIncludeWorkInstructions",
         "supplierApproval",
         "qualityIssueTarget",
+        "consoleEnabled",
         "timeCardEnabled",
       ],
       properties: {
@@ -100390,6 +100500,11 @@ export default {
           default: 20,
           format: "integer",
           type: "integer",
+        },
+        consoleEnabled: {
+          default: false,
+          format: "boolean",
+          type: "boolean",
         },
         timeCardEnabled: {
           default: false,
@@ -105686,6 +105801,12 @@ export default {
       in: "query",
       type: "string",
     },
+    "rowFilter.jobMaterialWithMakeMethodId.itemScrapPercentage": {
+      name: "itemScrapPercentage",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "rowFilter.jobMaterialWithMakeMethodId.shelfName": {
       name: "shelfName",
       required: false,
@@ -106225,6 +106346,12 @@ export default {
     },
     "rowFilter.methodMaterial.shelfIds": {
       name: "shelfIds",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.methodMaterial.sourcingType": {
+      name: "sourcingType",
       required: false,
       in: "query",
       type: "string",
@@ -121360,6 +121487,12 @@ export default {
       in: "query",
       type: "string",
     },
+    "rowFilter.employee.pin": {
+      name: "pin",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "body.activeMaintenanceDispatchesByLocation": {
       name: "activeMaintenanceDispatchesByLocation",
       description: "activeMaintenanceDispatchesByLocation",
@@ -126877,6 +127010,12 @@ export default {
       in: "query",
       type: "string",
     },
+    "rowFilter.employeeType.systemType": {
+      name: "systemType",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "body.shipmentLine": {
       name: "shipmentLine",
       description: "shipmentLine",
@@ -127926,6 +128065,12 @@ export default {
     },
     "rowFilter.user.flags": {
       name: "flags",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.user.isConsoleOperator": {
+      name: "isConsoleOperator",
       required: false,
       in: "query",
       type: "string",
@@ -135027,6 +135172,12 @@ export default {
     },
     "rowFilter.companySettings.qualityIssueTarget": {
       name: "qualityIssueTarget",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.companySettings.consoleEnabled": {
+      name: "consoleEnabled",
       required: false,
       in: "query",
       type: "string",
