@@ -10,7 +10,7 @@ import {
   templateValidator,
   upsertTemplate
 } from "~/modules/settings";
-import type { TemplateConfig } from "~/modules/settings/types";
+import type { ComputedField, TemplateConfig } from "~/modules/settings/types";
 import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
 import { path } from "~/utils/path";
 
@@ -132,8 +132,6 @@ export default function EditTemplateRoute() {
     <TemplateManager
       module={module}
       category={category}
-      selectedFields={liveConfig.fields}
-      computedFields={liveConfig.computedFields}
       previewConfig={liveConfig}
     />
   );

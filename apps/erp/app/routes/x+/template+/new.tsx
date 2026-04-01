@@ -122,8 +122,6 @@ export default function NewTemplateRoute() {
     <TemplateManager
       module={module}
       category={category}
-      selectedFields={liveConfig.fields}
-      computedFields={liveConfig.computedFields}
       previewConfig={liveConfig}
     />
   );

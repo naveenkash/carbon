@@ -1,19 +1,13 @@
 import { VStack } from "@carbon/react";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
-import type {
-  ComputedField,
-  TemplateConfig,
-  TemplateField
-} from "~/modules/settings/types";
+import type { TemplateConfig } from "~/modules/settings/types";
 import { DEFAULT_TEMPLATE_CONFIG } from "~/modules/settings/types";
 import { path } from "~/utils/path";
 
 interface Props {
   module: string;
   category?: string | null;
-  selectedFields: TemplateField[];
-  computedFields: ComputedField[];
   previewConfig: Partial<TemplateConfig>;
 }
 
@@ -29,16 +23,14 @@ function useDebounced<T>(value: T, delay: number): T {
 const TemplateManager: React.FC<Props> = ({
   module,
   category,
-  selectedFields,
-  computedFields,
   previewConfig
 }) => {
   const previewUrl = useMemo(() => {
     const config: TemplateConfig = {
       ...DEFAULT_TEMPLATE_CONFIG,
       ...previewConfig,
-      fields: selectedFields,
-      computedFields: computedFields.filter((f) => f.enabled)
+      computedFields:
+        previewConfig?.computedFields?.filter((f) => f.enabled) ?? []
     };
 
     const params = new URLSearchParams({
@@ -48,7 +40,7 @@ const TemplateManager: React.FC<Props> = ({
     if (category) params.set("category", category);
 
     return `${path.to.file.previewTemplatePdf}?${params.toString()}#toolbar=0`;
-  }, [module, category, selectedFields, computedFields, previewConfig]);
+  }, [module, category, previewConfig]);
 
   const debouncedUrl = useDebounced(previewUrl, 400);
 

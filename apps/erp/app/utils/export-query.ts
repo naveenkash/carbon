@@ -3,52 +3,123 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   type FieldDefinition,
   getFieldsByKeys,
+  type JoinStep,
   MODULE_PRIMARY_TABLE
 } from "~/utils/field-registry";
 
 // A single flat row in the export output — field keys map to their raw values.
 export type ExportRow = Record<string, unknown>;
 
+// ─── Join graph ────────────────────────────────────────────────────────────────
+//
+// Groups JoinSteps by their parent table so trees can be built in any order.
+// Steps with no `from` are children of the primary table (sentinel: ROOT).
+
+const ROOT = "__root__";
+
+type JoinGraph = Map<string, JoinStep[]>; // parentTable → child steps
+
+function buildJoinGraph(joins: JoinStep[]): JoinGraph {
+  const graph: JoinGraph = new Map();
+  for (const step of joins) {
+    const parent = step.from ?? ROOT;
+    if (!graph.has(parent)) graph.set(parent, []);
+    graph.get(parent)!.push(step);
+  }
+  return graph;
+}
+
+// ─── Internal tree types ───────────────────────────────────────────────────────
+
+type SelectNode = {
+  table: string;
+  alias: string;
+  columns: Set<string>;
+  children: Map<string, SelectNode>; // keyed by alias
+};
+
+type FieldNode = {
+  fields: FieldDefinition[];
+  children: Map<string, FieldNode>; // alias → child node
+};
+
 // ─── Select string builder ─────────────────────────────────────────────────────
 //
-// Groups fields by their relation alias (or "header" for direct columns) and
-// produces a PostgREST-compatible select string, e.g.:
-//   "purchaseOrderId, orderDate, delivery:purchaseOrderDelivery(receiptRequestedDate),
-//    purchaseOrderLine(itemReadableId, unitPrice)"
+// Walks the join graph recursively from ROOT outward, building a SelectNode tree,
+// then serialises into a PostgREST-compatible select string. Join order in the
+// `joins` array does NOT matter — only `from` determines nesting.
 //
+//   "supplierQuoteId, quotedDate,
+//    supplierQuoteLine(description, taxPercent,
+//      supplierQuoteLinePrice(supplierUnitPrice, unitPrice, quantity))"
+//
+
 function buildSelectString(fields: FieldDefinition[]): string {
-  const headerCols = new Set<string>();
-  // alias → { table, fk, columns }
-  const relations = new Map<
-    string,
-    { table: string; fk: string; columns: Set<string> }
-  >();
+  const rootColumns = new Set<string>();
+  const rootChildren = new Map<string, SelectNode>();
 
   for (const field of fields) {
-    if (!field.relation) {
-      headerCols.add(field.column);
-    } else {
-      const alias = field.relation.alias ?? field.relation.table;
-      if (!relations.has(alias)) {
-        relations.set(alias, {
-          table: field.relation.table,
-          fk: field.relation.fk,
-          columns: new Set()
-        });
-      }
-      relations.get(alias)!.columns.add(field.column);
+    if (!field.joins || field.joins.length === 0) {
+      rootColumns.add(field.column);
+      continue;
     }
+    const graph = buildJoinGraph(field.joins);
+    addSelectColumn(field.column, ROOT, graph, rootChildren);
   }
 
-  const parts: string[] = [...headerCols];
+  return serializeLevel(rootColumns, rootChildren);
+}
 
-  for (const [alias, rel] of relations) {
-    const cols = [...rel.columns].join(", ");
-    // PostgREST syntax: alias:table(col1, col2)
+function addSelectColumn(
+  column: string,
+  parentKey: string,
+  graph: JoinGraph,
+  parentChildren: Map<string, SelectNode>
+): void {
+  const steps = graph.get(parentKey);
+  if (!steps) return;
+
+  for (const step of steps) {
+    const alias = step.alias ?? step.table;
+
+    if (!parentChildren.has(alias)) {
+      parentChildren.set(alias, {
+        table: step.table,
+        alias,
+        columns: new Set(),
+        children: new Map()
+      });
+    }
+
+    const node = parentChildren.get(alias)!;
+    const hasChildren = graph.has(step.table);
+
+    if (hasChildren) {
+      // Intermediate node: recurse deeper
+      addSelectColumn(column, step.table, graph, node.children);
+    } else {
+      // Leaf: column lives on this table
+      node.columns.add(column);
+    }
+  }
+}
+
+function serializeNode(node: SelectNode): string {
+  return serializeLevel(node.columns, node.children);
+}
+
+function serializeLevel(
+  columns: Set<string>,
+  children: Map<string, SelectNode>
+): string {
+  const parts: string[] = [...columns];
+
+  for (const child of children.values()) {
+    const inner = serializeNode(child);
     const clause =
-      alias === rel.table
-        ? `${rel.table}(${cols})`
-        : `${alias}:${rel.table}(${cols})`;
+      child.alias === child.table
+        ? `${child.table}(${inner})`
+        : `${child.alias}:${child.table}(${inner})`;
     parts.push(clause);
   }
 
@@ -57,65 +128,142 @@ function buildSelectString(fields: FieldDefinition[]): string {
 
 // ─── Row flattener ─────────────────────────────────────────────────────────────
 //
-// Takes a header record (which may contain nested arrays for line relations)
-// and explodes it into one flat row per line item.
-// If no line fields were selected, returns a single flat row.
+// Builds a FieldNode tree using the same graph approach, then recursively walks
+// the PostgREST response — exploding 1-to-many arrays into individual rows and
+// merging 1-to-1 objects. Join order in the `joins` array does NOT matter.
 //
+// Example for a 2-level join (quote → line → price break):
+//
+//   { supplierQuoteId: "q1",
+//     supplierQuoteLine: [
+//       { description: "Part A",
+//         supplierQuoteLinePrice: [
+//           { supplierUnitPrice: 10, quantity: 100 },
+//           { supplierUnitPrice: 9,  quantity: 200 }
+//         ]
+//       }
+//     ]
+//   }
+//
+
+function buildFieldTree(fields: FieldDefinition[]): FieldNode {
+  const root: FieldNode = { fields: [], children: new Map() };
+
+  for (const field of fields) {
+    if (!field.joins || field.joins.length === 0) {
+      root.fields.push(field);
+      continue;
+    }
+    const graph = buildJoinGraph(field.joins);
+    addFieldToNode(field, ROOT, graph, root);
+  }
+
+  return root;
+}
+
+function addFieldToNode(
+  field: FieldDefinition,
+  parentKey: string,
+  graph: JoinGraph,
+  parentNode: FieldNode
+): void {
+  const steps = graph.get(parentKey);
+  if (!steps) return;
+
+  for (const step of steps) {
+    const alias = step.alias ?? step.table;
+
+    if (!parentNode.children.has(alias)) {
+      parentNode.children.set(alias, { fields: [], children: new Map() });
+    }
+
+    const node = parentNode.children.get(alias)!;
+    const hasChildren = graph.has(step.table);
+
+    if (hasChildren) {
+      // Intermediate node: recurse deeper
+      addFieldToNode(field, step.table, graph, node);
+    } else {
+      // Leaf: field belongs on this table
+      node.fields.push(field);
+    }
+  }
+}
+
+// ─── Scalar coercion ───────────────────────────────────────────────────────────
+//
+// Prevents raw JSON objects (JSON/JSONB columns) and PostgreSQL array values
+// (e.g. NUMERIC[]) from reaching downstream formatters as plain objects,
+// which would otherwise produce "[object Object]" when stringified.
+//
+
+function toScalar(v: unknown): unknown {
+  if (v === null || v === undefined) return null;
+  if (Array.isArray(v)) return v.join(", ");
+  if (typeof v === "object") return JSON.stringify(v);
+  return v;
+}
+
+// ─── Recursive row expander ────────────────────────────────────────────────────
+
+function flattenNode(
+  record: Record<string, unknown>,
+  node: FieldNode
+): ExportRow[] {
+  const baseRow: ExportRow = {};
+  for (const field of node.fields) {
+    baseRow[field.key] = toScalar(record[field.column] ?? null);
+  }
+
+  if (node.children.size === 0) return [baseRow];
+
+  let rows: ExportRow[] = [baseRow];
+
+  for (const [alias, childNode] of node.children) {
+    const value = record[alias];
+
+    if (Array.isArray(value)) {
+      // 1-to-many: cross-product current rows with each child's flattened rows
+      const expanded: ExportRow[] = [];
+      for (const currentRow of rows) {
+        const items = value as Record<string, unknown>[];
+        if (items.length === 0) {
+          // No child rows — preserve parent row (child columns absent)
+          expanded.push(currentRow);
+        } else {
+          for (const item of items) {
+            for (const childRow of flattenNode(item, childNode)) {
+              expanded.push({ ...currentRow, ...childRow });
+            }
+          }
+        }
+      }
+      rows = expanded;
+    } else if (
+      value !== null &&
+      value !== undefined &&
+      typeof value === "object"
+    ) {
+      // 1-to-1: merge child columns into every current row
+      const childRows = flattenNode(
+        value as Record<string, unknown>,
+        childNode
+      );
+      rows = rows.flatMap((currentRow) =>
+        childRows.map((childRow) => ({ ...currentRow, ...childRow }))
+      );
+    }
+    // null/undefined: rows unchanged, child columns absent (treated as null downstream)
+  }
+
+  return rows;
+}
+
 function flattenRecord(
   record: Record<string, unknown>,
   fields: FieldDefinition[]
 ): ExportRow[] {
-  // Find the first relation that has line data (array value on the record)
-  const lineAliases = new Set(
-    fields
-      .filter((f) => f.relation)
-      .map((f) => f.relation!.alias ?? f.relation!.table)
-  );
-
-  // Build header portion — all non-relation fields, keyed by field.key
-  const headerRow: ExportRow = {};
-  for (const field of fields.filter((f) => !f.relation)) {
-    headerRow[field.key] = record[field.column] ?? null;
-  }
-
-  // Find the first line alias that produced an array
-  let lineAlias: string | null = null;
-  for (const alias of lineAliases) {
-    if (Array.isArray(record[alias])) {
-      lineAlias = alias;
-      break;
-    }
-  }
-
-  if (!lineAlias) {
-    // No lines — 1-to-1 join or header-only
-    // Still pull in any relation columns that came back as objects (1-to-1)
-    for (const field of fields.filter((f) => f.relation)) {
-      const alias = field.relation!.alias ?? field.relation!.table;
-      const rel = record[alias] as Record<string, unknown> | null;
-      headerRow[field.key] = rel?.[field.column] ?? null;
-    }
-    return [headerRow];
-  }
-
-  // Group line fields by their alias
-  const lineFieldsByAlias = new Map<string, FieldDefinition[]>();
-  for (const field of fields.filter((f) => f.relation)) {
-    const alias = field.relation!.alias ?? field.relation!.table;
-    if (!lineFieldsByAlias.has(alias)) lineFieldsByAlias.set(alias, []);
-    lineFieldsByAlias.get(alias)!.push(field);
-  }
-
-  const lines = record[lineAlias] as Record<string, unknown>[];
-  if (lines.length === 0) return [headerRow];
-
-  return lines.map((line) => {
-    const row: ExportRow = { ...headerRow };
-    for (const field of lineFieldsByAlias.get(lineAlias!) ?? []) {
-      row[field.key] = line[field.column] ?? null;
-    }
-    return row;
-  });
+  return flattenNode(record, buildFieldTree(fields));
 }
 
 // ─── Main export query function ────────────────────────────────────────────────
@@ -137,7 +285,7 @@ export async function runExportQuery(
     category: string | null;
     fieldKeys: string[];
     companyId: string;
-    filters?: Record<string, string>; // additional eq filters e.g. { status: "Draft" }
+    filters?: Record<string, string>;
   }
 ): Promise<ExportQueryResult> {
   const registryKey = category ? `${module}:${category}` : module;
@@ -158,9 +306,6 @@ export async function runExportQuery(
 
   const selectStr = buildSelectString(fields);
 
-  console.log(selectStr, "--selectStr--");
-
-  // biome-ignore lint/suspicious/noExplicitAny: Supabase types not generated for new tables
   let query = (client as any)
     .from(primaryTable)
     .select(selectStr)

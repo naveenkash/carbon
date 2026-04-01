@@ -91,7 +91,9 @@ const ExportTemplateTable = ({
 }: ExportTemplateTableProps) => {
   const colFlex = 1;
   const bodyFontSize =
-    style.fontSize === "small" ? 8 : style.fontSize === "large" ? 11 : 9;
+    style.fontSize === "small" ? 7 : style.fontSize === "large" ? 12 : 9;
+  const headerFontSize =
+    style.fontSize === "small" ? 6 : style.fontSize === "large" ? 10 : 8;
 
   return (
     <View>
@@ -111,7 +113,7 @@ const ExportTemplateTable = ({
             style={{
               flex: colFlex,
               color: style.headerText,
-              fontSize: 8,
+              fontSize: headerFontSize,
               fontWeight: 700,
               textTransform: "uppercase"
             }}

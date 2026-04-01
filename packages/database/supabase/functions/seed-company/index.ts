@@ -8,6 +8,7 @@ import {
   accounts,
   currencies,
   customerStatuses,
+  standardTemplates,
   failureModes,
   fiscalYearSettings,
   gaugeTypes,
@@ -324,6 +325,24 @@ serve(async (req: Request) => {
         .update({ permissions: newPermissions })
         .eq("id", userId);
       if (error) throw new Error(error.message);
+
+      // Insert default templates inside the transaction
+      
+      await trx
+        .insertInto("templates")
+        .values(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          standardTemplates.map((t) => ({
+            name: t.name,
+            module: t.module,
+            category: t.category,
+            templateConfiguration: t.templateConfiguration as any,
+            isDefault: true,
+            companyId,
+            createdAt: new Date().toISOString(),
+          }))
+        )
+        .execute();
     });
 
     return new Response(
@@ -337,6 +356,8 @@ serve(async (req: Request) => {
     );
   } catch (err) {
     console.error(err);
+    console.log(standardTemplates,'--standardTemplates--');
+    
     return new Response(JSON.stringify(err), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,

@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router";
 import {
   EmployeeAvatar,
+  ExportDropdown,
   Hyperlink,
   ItemThumbnail,
   New,
@@ -314,7 +315,10 @@ const PurchaseInvoicesTable = memo(
           }}
           primaryAction={
             permissions.can("create", "invoicing") && (
-              <New label="Purchase Invoice" to={path.to.newPurchaseInvoice} />
+              <>
+                <ExportDropdown module="Purchasing" category="Invoices" />
+                <New label="Purchase Invoice" to={path.to.newPurchaseInvoice} />
+              </>
             )
           }
           renderContextMenu={renderContextMenu}

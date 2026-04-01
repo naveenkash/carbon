@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router";
 import {
   EmployeeAvatar,
+  ExportDropdown,
   Hyperlink,
   ItemThumbnail,
   New,
@@ -252,7 +253,10 @@ const SupplierQuotesTable = memo(
           }}
           primaryAction={
             permissions.can("create", "purchasing") && (
-              <New label="Supplier Quote" to={path.to.newSupplierQuote} />
+              <>
+                <ExportDropdown module="Purchasing" category="Quotes" />
+                <New label="Supplier Quote" to={path.to.newSupplierQuote} />
+              </>
             )
           }
           renderContextMenu={renderContextMenu}

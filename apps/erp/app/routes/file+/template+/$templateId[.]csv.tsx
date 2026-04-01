@@ -41,6 +41,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     fieldKeys,
     companyId
   });
+  console.log(exportResult, "--exportResult--");
 
   if (exportResult.error) {
     throw new Response(String(exportResult.error), { status: 500 });

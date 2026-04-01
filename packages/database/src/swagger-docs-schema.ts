@@ -17530,6 +17530,9 @@ export default {
             $ref: "#/parameters/rowFilter.timeCardEntries.locationName",
           },
           {
+            $ref: "#/parameters/rowFilter.timeCardEntries.status",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -27705,6 +27708,195 @@ export default {
         tags: ["warehouse"],
       },
     },
+    "/templates": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.templates.id",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.name",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.companyId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.module",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.category",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.templateConfiguration",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.isDefault",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.createdBy",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.updatedBy",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.createdAt",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.updatedAt",
+          },
+          {
+            $ref: "#/parameters/select",
+          },
+          {
+            $ref: "#/parameters/order",
+          },
+          {
+            $ref: "#/parameters/range",
+          },
+          {
+            $ref: "#/parameters/rangeUnit",
+          },
+          {
+            $ref: "#/parameters/offset",
+          },
+          {
+            $ref: "#/parameters/limit",
+          },
+          {
+            $ref: "#/parameters/preferCount",
+          },
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/templates",
+              },
+              type: "array",
+            },
+          },
+          "206": {
+            description: "Partial Content",
+          },
+        },
+        tags: ["templates"],
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.templates",
+          },
+          {
+            $ref: "#/parameters/select",
+          },
+          {
+            $ref: "#/parameters/preferPost",
+          },
+        ],
+        responses: {
+          "201": {
+            description: "Created",
+          },
+        },
+        tags: ["templates"],
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.templates.id",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.name",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.companyId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.module",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.category",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.templateConfiguration",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.isDefault",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.createdBy",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.updatedBy",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.createdAt",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.updatedAt",
+          },
+          {
+            $ref: "#/parameters/preferReturn",
+          },
+        ],
+        responses: {
+          "204": {
+            description: "No Content",
+          },
+        },
+        tags: ["templates"],
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.templates.id",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.name",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.companyId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.module",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.category",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.templateConfiguration",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.isDefault",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.createdBy",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.updatedBy",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.createdAt",
+          },
+          {
+            $ref: "#/parameters/rowFilter.templates.updatedAt",
+          },
+          {
+            $ref: "#/parameters/body.templates",
+          },
+          {
+            $ref: "#/parameters/preferReturn",
+          },
+        ],
+        responses: {
+          "204": {
+            description: "No Content",
+          },
+        },
+        tags: ["templates"],
+      },
+    },
     "/salesOrderCustomers": {
       get: {
         parameters: [
@@ -34390,6 +34582,12 @@ export default {
             $ref: "#/parameters/rowFilter.salesInvoiceLines.updatedBy",
           },
           {
+            $ref: "#/parameters/rowFilter.salesInvoiceLines.nonTaxableAddOnCost",
+          },
+          {
+            $ref: "#/parameters/rowFilter.salesInvoiceLines.convertedNonTaxableAddOnCost",
+          },
+          {
             $ref: "#/parameters/rowFilter.salesInvoiceLines.itemReadableId",
           },
           {
@@ -40754,6 +40952,12 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.salesOrderLines.sentDate",
+          },
+          {
+            $ref: "#/parameters/rowFilter.salesOrderLines.nonTaxableAddOnCost",
+          },
+          {
+            $ref: "#/parameters/rowFilter.salesOrderLines.convertedNonTaxableAddOnCost",
           },
           {
             $ref: "#/parameters/rowFilter.salesOrderLines.itemReadableId",
@@ -59457,6 +59661,51 @@ export default {
         tags: ["workCenter"],
       },
     },
+    "/categories": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.categories.name",
+          },
+          {
+            $ref: "#/parameters/select",
+          },
+          {
+            $ref: "#/parameters/order",
+          },
+          {
+            $ref: "#/parameters/range",
+          },
+          {
+            $ref: "#/parameters/rangeUnit",
+          },
+          {
+            $ref: "#/parameters/offset",
+          },
+          {
+            $ref: "#/parameters/limit",
+          },
+          {
+            $ref: "#/parameters/preferCount",
+          },
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/categories",
+              },
+              type: "array",
+            },
+          },
+          "206": {
+            description: "Partial Content",
+          },
+        },
+        tags: ["categories"],
+      },
+    },
     "/training": {
       get: {
         parameters: [
@@ -65266,6 +65515,188 @@ export default {
         tags: ["(rpc) get_jobs_by_date_range"],
       },
     },
+    "/rpc/calculate_quantity_to_order": {
+      get: {
+        parameters: [
+          {
+            format: '"itemReorderingPolicy"',
+            in: "query",
+            name: "p_reordering_policy",
+            required: true,
+            type: "string",
+          },
+          {
+            format: "integer",
+            in: "query",
+            name: "p_reorder_point",
+            required: true,
+            type: "integer",
+          },
+          {
+            format: "integer",
+            in: "query",
+            name: "p_reorder_quantity",
+            required: true,
+            type: "integer",
+          },
+          {
+            format: "integer",
+            in: "query",
+            name: "p_minimum_order_quantity",
+            required: true,
+            type: "integer",
+          },
+          {
+            format: "integer",
+            in: "query",
+            name: "p_maximum_order_quantity",
+            required: true,
+            type: "integer",
+          },
+          {
+            format: "integer",
+            in: "query",
+            name: "p_order_multiple",
+            required: true,
+            type: "integer",
+          },
+          {
+            format: "integer",
+            in: "query",
+            name: "p_lot_size",
+            required: true,
+            type: "integer",
+          },
+          {
+            format: "numeric",
+            in: "query",
+            name: "p_maximum_inventory_quantity",
+            required: true,
+            type: "number",
+          },
+          {
+            format: "integer",
+            in: "query",
+            name: "p_demand_accumulation_period",
+            required: true,
+            type: "integer",
+          },
+          {
+            format: "numeric",
+            in: "query",
+            name: "p_demand_accumulation_safety_stock",
+            required: true,
+            type: "number",
+          },
+          {
+            format: "numeric[]",
+            in: "query",
+            name: "p_projections",
+            required: true,
+            type: "string",
+          },
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json",
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+          },
+        },
+        tags: ["(rpc) calculate_quantity_to_order"],
+      },
+      post: {
+        parameters: [
+          {
+            in: "body",
+            name: "args",
+            required: true,
+            schema: {
+              properties: {
+                p_demand_accumulation_period: {
+                  format: "integer",
+                  type: "integer",
+                },
+                p_demand_accumulation_safety_stock: {
+                  format: "numeric",
+                  type: "number",
+                },
+                p_lot_size: {
+                  format: "integer",
+                  type: "integer",
+                },
+                p_maximum_inventory_quantity: {
+                  format: "numeric",
+                  type: "number",
+                },
+                p_maximum_order_quantity: {
+                  format: "integer",
+                  type: "integer",
+                },
+                p_minimum_order_quantity: {
+                  format: "integer",
+                  type: "integer",
+                },
+                p_order_multiple: {
+                  format: "integer",
+                  type: "integer",
+                },
+                p_projections: {
+                  format: "numeric[]",
+                  items: {
+                    type: "number",
+                  },
+                  type: "array",
+                },
+                p_reorder_point: {
+                  format: "integer",
+                  type: "integer",
+                },
+                p_reorder_quantity: {
+                  format: "integer",
+                  type: "integer",
+                },
+                p_reordering_policy: {
+                  format: '"itemReorderingPolicy"',
+                  type: "string",
+                },
+              },
+              required: [
+                "p_reordering_policy",
+                "p_reorder_point",
+                "p_reorder_quantity",
+                "p_minimum_order_quantity",
+                "p_maximum_order_quantity",
+                "p_order_multiple",
+                "p_lot_size",
+                "p_maximum_inventory_quantity",
+                "p_demand_accumulation_period",
+                "p_demand_accumulation_safety_stock",
+                "p_projections",
+              ],
+              type: "object",
+            },
+          },
+          {
+            $ref: "#/parameters/preferParams",
+          },
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json",
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+          },
+        },
+        tags: ["(rpc) calculate_quantity_to_order"],
+      },
+    },
     "/rpc/get_period_end_date": {
       get: {
         parameters: [
@@ -65854,6 +66285,41 @@ export default {
           },
         },
         tags: ["(rpc) get_item_quantities_by_tracking_id"],
+      },
+    },
+    "/rpc/get_inventory_value_by_location": {
+      post: {
+        parameters: [
+          {
+            in: "body",
+            name: "args",
+            required: true,
+            schema: {
+              properties: {
+                company_id: {
+                  format: "text",
+                  type: "string",
+                },
+              },
+              required: ["company_id"],
+              type: "object",
+            },
+          },
+          {
+            $ref: "#/parameters/preferParams",
+          },
+        ],
+        produces: [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json",
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+          },
+        },
+        tags: ["(rpc) get_inventory_value_by_location"],
       },
     },
     "/rpc/get_quote_methods_by_method_id": {
@@ -73587,7 +74053,7 @@ export default {
       properties: {
         id: {
           description:
-            "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `supplierLocation.id`.<fk table='supplierLocation' column='id'/>",
+            "Note:\nThis is a Foreign Key to `supplierLocation.id`.<fk table='supplierLocation' column='id'/>",
           format: "text",
           type: "string",
         },
@@ -73636,7 +74102,7 @@ export default {
         },
         supplierLocationId: {
           description:
-            "Note:\nThis is a Foreign Key to `supplierLocation.id`.<fk table='supplierLocation' column='id'/>",
+            "Note:\nThis is a Primary Key.<pk/>\nThis is a Foreign Key to `supplierLocation.id`.<fk table='supplierLocation' column='id'/>",
           format: "text",
           type: "string",
         },
@@ -78088,6 +78554,10 @@ export default {
           type: "string",
         },
         locationName: {
+          format: "text",
+          type: "string",
+        },
+        status: {
           format: "text",
           type: "string",
         },
@@ -82617,6 +83087,90 @@ export default {
       },
       type: "object",
     },
+    templates: {
+      required: [
+        "id",
+        "name",
+        "companyId",
+        "module",
+        "templateConfiguration",
+        "createdAt",
+      ],
+      properties: {
+        id: {
+          default: "public.xid()",
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string",
+        },
+        name: {
+          format: "text",
+          type: "string",
+        },
+        companyId: {
+          description:
+            "Note:\nThis is a Foreign Key to `company.id`.<fk table='company' column='id'/>",
+          format: "text",
+          type: "string",
+        },
+        module: {
+          enum: [
+            "Accounting",
+            "Documents",
+            "Invoicing",
+            "Inventory",
+            "Items",
+            "Messaging",
+            "Parts",
+            "People",
+            "Production",
+            "Purchasing",
+            "Resources",
+            "Sales",
+            "Settings",
+            "Users",
+            "Quality",
+          ],
+          format: "public.module",
+          type: "string",
+        },
+        category: {
+          enum: ["Orders", "Invoices", "Quotes", "Rfqs", "Suppliers"],
+          format: "public.category",
+          type: "string",
+        },
+        templateConfiguration: {
+          format: "jsonb",
+        },
+        isDefault: {
+          default: false,
+          format: "boolean",
+          type: "boolean",
+        },
+        createdBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string",
+        },
+        updatedBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string",
+        },
+        createdAt: {
+          default: "now()",
+          format: "timestamp with time zone",
+          type: "string",
+        },
+        updatedAt: {
+          format: "timestamp with time zone",
+          type: "string",
+        },
+      },
+      type: "object",
+    },
     salesOrderCustomers: {
       properties: {
         id: {
@@ -85799,6 +86353,14 @@ export default {
           format: "text",
           type: "string",
         },
+        nonTaxableAddOnCost: {
+          format: "numeric",
+          type: "number",
+        },
+        convertedNonTaxableAddOnCost: {
+          format: "numeric",
+          type: "number",
+        },
         itemReadableId: {
           format: "text",
           type: "string",
@@ -88655,6 +89217,14 @@ export default {
         sentDate: {
           format: "date",
           type: "string",
+        },
+        nonTaxableAddOnCost: {
+          format: "numeric",
+          type: "number",
+        },
+        convertedNonTaxableAddOnCost: {
+          format: "numeric",
+          type: "number",
         },
         itemReadableId: {
           format: "text",
@@ -96396,7 +96966,7 @@ export default {
       ],
       properties: {
         id: {
-          default: "public.xid()",
+          default: "public.id('tce'::text)",
           description: "Note:\nThis is a Primary Key.<pk/>",
           format: "text",
           type: "string",
@@ -98071,6 +98641,16 @@ export default {
             type: "string",
           },
           type: "array",
+        },
+      },
+      type: "object",
+    },
+    categories: {
+      properties: {
+        name: {
+          enum: ["Orders", "Invoices", "Quotes", "Rfqs", "Suppliers"],
+          format: "public.category",
+          type: "string",
         },
       },
       type: "object",
@@ -109879,6 +110459,12 @@ export default {
       in: "query",
       type: "string",
     },
+    "rowFilter.timeCardEntries.status": {
+      name: "status",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "body.materialDimensions": {
       name: "materialDimensions",
       description: "materialDimensions",
@@ -115045,6 +115631,81 @@ export default {
       in: "query",
       type: "string",
     },
+    "body.templates": {
+      name: "templates",
+      description: "templates",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/templates",
+      },
+    },
+    "rowFilter.templates.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.name": {
+      name: "name",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.companyId": {
+      name: "companyId",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.module": {
+      name: "module",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.category": {
+      name: "category",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.templateConfiguration": {
+      name: "templateConfiguration",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.isDefault": {
+      name: "isDefault",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.createdBy": {
+      name: "createdBy",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.updatedBy": {
+      name: "updatedBy",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.createdAt": {
+      name: "createdAt",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.templates.updatedAt": {
+      name: "updatedAt",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "body.salesOrderCustomers": {
       name: "salesOrderCustomers",
       description: "salesOrderCustomers",
@@ -118569,6 +119230,18 @@ export default {
       in: "query",
       type: "string",
     },
+    "rowFilter.salesInvoiceLines.nonTaxableAddOnCost": {
+      name: "nonTaxableAddOnCost",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.salesInvoiceLines.convertedNonTaxableAddOnCost": {
+      name: "convertedNonTaxableAddOnCost",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "rowFilter.salesInvoiceLines.itemReadableId": {
       name: "itemReadableId",
       required: false,
@@ -121782,6 +122455,18 @@ export default {
     },
     "rowFilter.salesOrderLines.sentDate": {
       name: "sentDate",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.salesOrderLines.nonTaxableAddOnCost": {
+      name: "nonTaxableAddOnCost",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.salesOrderLines.convertedNonTaxableAddOnCost": {
+      name: "convertedNonTaxableAddOnCost",
       required: false,
       in: "query",
       type: "string",
@@ -132467,6 +133152,21 @@ export default {
     },
     "rowFilter.workCenter.tags": {
       name: "tags",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "body.categories": {
+      name: "categories",
+      description: "categories",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/categories",
+      },
+    },
+    "rowFilter.categories.name": {
+      name: "name",
       required: false,
       in: "query",
       type: "string",
