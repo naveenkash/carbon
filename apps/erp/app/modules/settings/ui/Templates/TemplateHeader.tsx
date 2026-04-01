@@ -1,5 +1,5 @@
 import { Button, Heading, HStack, IconButton, useMount } from "@carbon/react";
-import { LuPanelRight } from "react-icons/lu";
+import { LuPanelRight, LuRefreshCw } from "react-icons/lu";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 
 import { usePanels } from "~/components/Layout";
@@ -8,7 +8,12 @@ import type { Template } from "~/modules/settings/types";
 import { TEMPLATE_FORM_ID } from "~/modules/settings/ui/Templates/SettingsPanel";
 import { path } from "~/utils/path";
 
-const TemplateHeader = () => {
+interface TemplateHeaderProps {
+  isDirty: boolean;
+  onRefresh: () => void;
+}
+
+const TemplateHeader = ({ isDirty, onRefresh }: TemplateHeaderProps) => {
   const { setIsExplorerCollapsed, toggleProperties } = usePanels();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -41,6 +46,13 @@ const TemplateHeader = () => {
           <span>{label}</span>
         </Heading>
         <HStack>
+          <IconButton
+            aria-label="Refresh preview"
+            icon={<LuRefreshCw />}
+            onClick={onRefresh}
+            isDisabled={!isDirty}
+            variant="ghost"
+          />
           <Button
             type="button"
             variant="secondary"

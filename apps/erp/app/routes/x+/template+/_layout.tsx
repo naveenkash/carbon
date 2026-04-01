@@ -1,15 +1,11 @@
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { VStack } from "@carbon/react";
-import type { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import { Outlet } from "react-router";
+import { Outlet, useParams } from "react-router";
 import { PanelProvider, ResizablePanels } from "~/components/Layout";
-import type {
-  ComputedField,
-  TemplateConfig,
-  TemplateField
-} from "~/modules/settings/types";
+import { useRouteData } from "~/hooks";
+import type { Template, TemplateConfig } from "~/modules/settings/types";
 import { DEFAULT_TEMPLATE_CONFIG } from "~/modules/settings/types";
 import SettingsPanel from "~/modules/settings/ui/Templates/SettingsPanel";
 import TemplateHeader from "~/modules/settings/ui/Templates/TemplateHeader";
@@ -32,42 +28,53 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export type TemplateOutletContext = {
-  selectedFields: TemplateField[];
-  setSelectedFields: Dispatch<SetStateAction<TemplateField[]>>;
-  computedFields: ComputedField[];
-  setComputedFields: Dispatch<SetStateAction<ComputedField[]>>;
-  previewConfig: TemplateConfig;
+  liveConfig: TemplateConfig;
 };
 
 export default function TemplateRoute() {
-  const [selectedFields, setSelectedFields] = useState<TemplateField[]>([]);
-  const [computedFields, setComputedFields] = useState<ComputedField[]>([]);
-  const [previewConfig, setPreviewConfig] = useState<TemplateConfig>(
-    DEFAULT_TEMPLATE_CONFIG
+  const { id } = useParams();
+  const routeData = useRouteData<{ template: Template }>(
+    id ? path.to.template(id) : ""
   );
+  const template = routeData?.template ?? null;
 
-  function handleToggleField(fieldKey: string) {
-    setSelectedFields((prev) => {
-      const exists = prev.find((f) => f.key === fieldKey);
-      if (exists) return prev.filter((f) => f.key !== fieldKey);
-      const nextOrder =
-        prev.length === 0 ? 0 : Math.max(...prev.map((f) => f.order)) + 1;
-      return [...prev, { key: fieldKey, order: nextOrder }];
-    });
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we want to re-derive the initial config when the template changes
+  const initialConfig = useMemo((): TemplateConfig => {
+    const raw =
+      template?.templateConfiguration as Partial<TemplateConfig> | null;
+    return raw
+      ? ({ ...DEFAULT_TEMPLATE_CONFIG, ...raw } as TemplateConfig)
+      : DEFAULT_TEMPLATE_CONFIG;
+  }, [template?.id]);
+
+  const [pendingConfig, setPendingConfig] =
+    useState<TemplateConfig>(initialConfig);
+  const [liveConfig, setLiveConfig] = useState<TemplateConfig>(initialConfig);
+  const [isDirty, setIsDirty] = useState(false);
+
+  // Reinitialize both configs whenever the template changes (handles navigation)
+  useEffect(() => {
+    setPendingConfig(initialConfig);
+    setLiveConfig(initialConfig);
+    setIsDirty(false);
+  }, [initialConfig]);
+
+  function handleConfigChange(patch: Partial<TemplateConfig>) {
+    setPendingConfig((prev) => ({ ...prev, ...patch }));
+    setIsDirty(true);
   }
 
-  const outletContext: TemplateOutletContext = {
-    selectedFields,
-    setSelectedFields,
-    computedFields,
-    setComputedFields,
-    previewConfig
-  };
+  function handleRefresh() {
+    setLiveConfig(pendingConfig);
+    setIsDirty(false);
+  }
+
+  const outletContext: TemplateOutletContext = { liveConfig };
 
   return (
     <PanelProvider>
       <div className="flex flex-col h-[calc(100dvh-49px)] overflow-hidden w-full">
-        <TemplateHeader />
+        <TemplateHeader isDirty={isDirty} onRefresh={handleRefresh} />
         <div className="flex h-[calc(100dvh-99px)] overflow-hidden w-full">
           <div className="flex flex-grow overflow-hidden">
             <ResizablePanels
@@ -81,11 +88,9 @@ export default function TemplateRoute() {
               }
               properties={
                 <SettingsPanel
-                  selectedFields={selectedFields}
-                  onToggleField={handleToggleField}
-                  computedFields={computedFields}
-                  setComputedFields={setComputedFields}
-                  onConfigChange={setPreviewConfig}
+                  template={template}
+                  config={pendingConfig}
+                  onConfigChange={handleConfigChange}
                 />
               }
             />

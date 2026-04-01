@@ -22,11 +22,11 @@ import {
   LuPlus,
   LuStar,
   LuTag,
-  LuTrash,
-  LuUser
+  LuTrash
+  // LuUser
 } from "react-icons/lu";
 import { Link, Outlet, useFetcher, useNavigate } from "react-router";
-import { EmployeeAvatar, Hyperlink, Table } from "~/components";
+import { Hyperlink, Table } from "~/components";
 import { ConfirmDelete } from "~/components/Modals";
 import { usePermissions, useUrlParams } from "~/hooks";
 import type { Template } from "~/modules/settings";
@@ -89,23 +89,6 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
             <Badge variant="secondary">Default</Badge>
           ) : null,
         meta: { icon: <LuStar /> }
-      },
-      {
-        id: "createdBy",
-        header: "Created By",
-        cell: ({ row }) => (
-          <EmployeeAvatar employeeId={row.original.createdBy} />
-        ),
-        meta: {
-          icon: <LuUser />,
-          filter: {
-            type: "static",
-            options: people.map((employee) => ({
-              value: employee.id,
-              label: employee.name
-            }))
-          }
-        }
       }
     ];
   }, [people]);

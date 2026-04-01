@@ -116,17 +116,15 @@ export default function NewTemplateRoute() {
   const module = searchParams.get("module") ?? "Purchasing";
   const category = searchParams.get("category");
 
-  const { selectedFields, computedFields, previewConfig } =
-    useOutletContext<TemplateOutletContext>();
-  console.log(selectedFields, "--selectedFields--");
+  const { liveConfig } = useOutletContext<TemplateOutletContext>();
 
   return (
     <TemplateManager
       module={module}
       category={category}
-      selectedFields={selectedFields}
-      computedFields={computedFields}
-      previewConfig={previewConfig}
+      selectedFields={liveConfig.fields}
+      computedFields={liveConfig.computedFields}
+      previewConfig={liveConfig}
     />
   );
 }

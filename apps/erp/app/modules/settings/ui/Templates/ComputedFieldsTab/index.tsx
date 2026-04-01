@@ -11,7 +11,6 @@ import {
   IconButton,
   VStack
 } from "@carbon/react";
-import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import {
   LuPencil,
@@ -27,13 +26,13 @@ import { formulaSummary } from "./helpers";
 
 type Props = {
   computedFields: ComputedField[];
-  setComputedFields: Dispatch<SetStateAction<ComputedField[]>>;
+  onComputedFieldsChange: (fields: ComputedField[]) => void;
   availableFields: FieldDefinition[];
 };
 
 export default function ComputedFieldsTab({
   computedFields,
-  setComputedFields,
+  onComputedFieldsChange,
   availableFields
 }: Props) {
   const [editing, setEditing] = useState<ComputedField | null | "new">(null);
@@ -45,22 +44,24 @@ export default function ComputedFieldsTab({
 
   function handleSave(field: ComputedField) {
     if (editing === "new") {
-      setComputedFields((prev) => [...prev, field]);
+      onComputedFieldsChange([...computedFields, field]);
     } else {
-      setComputedFields((prev) =>
-        prev.map((cf) => (cf.id === field.id ? field : cf))
+      onComputedFieldsChange(
+        computedFields.map((cf) => (cf.id === field.id ? field : cf))
       );
     }
     setEditing(null);
   }
 
   function handleDelete(id: string) {
-    setComputedFields((prev) => prev.filter((cf) => cf.id !== id));
+    onComputedFieldsChange(computedFields.filter((cf) => cf.id !== id));
   }
 
   function handleToggle(id: string) {
-    setComputedFields((prev) =>
-      prev.map((cf) => (cf.id === id ? { ...cf, enabled: !cf.enabled } : cf))
+    onComputedFieldsChange(
+      computedFields.map((cf) =>
+        cf.id === id ? { ...cf, enabled: !cf.enabled } : cf
+      )
     );
   }
 

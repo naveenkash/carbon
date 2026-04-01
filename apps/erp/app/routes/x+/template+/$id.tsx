@@ -2,7 +2,6 @@ import { assertIsPost, error, success } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
-import { useEffect } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { data, redirect, useLoaderData, useOutletContext } from "react-router";
 import {
@@ -11,11 +10,7 @@ import {
   templateValidator,
   upsertTemplate
 } from "~/modules/settings";
-import type {
-  ComputedField,
-  TemplateConfig,
-  TemplateField
-} from "~/modules/settings/types";
+import type { TemplateConfig } from "~/modules/settings/types";
 import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
 import { path } from "~/utils/path";
 
@@ -128,30 +123,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function EditTemplateRoute() {
   const { template } = useLoaderData<typeof loader>();
-
-  const { selectedFields, setSelectedFields, computedFields, previewConfig } =
-    useOutletContext<TemplateOutletContext>();
-
-  const raw = template.templateConfiguration as
-    | (Partial<TemplateConfig> & { fields?: TemplateField[] })
-    | null;
-
-  const initialFields = raw?.fields ?? [];
+  const { liveConfig } = useOutletContext<TemplateOutletContext>();
 
   const module = template.module ?? "Purchasing";
   const category = template.category ?? null;
-
-  useEffect(() => {
-    setSelectedFields(initialFields);
-  }, [initialFields, setSelectedFields]);
 
   return (
     <TemplateManager
       module={module}
       category={category}
-      selectedFields={selectedFields}
-      computedFields={computedFields}
-      previewConfig={previewConfig}
+      selectedFields={liveConfig.fields}
+      computedFields={liveConfig.computedFields}
+      previewConfig={liveConfig}
     />
   );
 }
