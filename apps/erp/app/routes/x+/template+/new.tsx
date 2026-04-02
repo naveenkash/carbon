@@ -17,6 +17,7 @@ import {
   upsertTemplate
 } from "~/modules/settings";
 import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
+import type { Category, Module } from "~/utils/field-registry";
 import { path } from "~/utils/path";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -87,6 +88,8 @@ export async function action({ request }: ActionFunctionArgs) {
     client,
     {
       ...rest,
+      module: rest.module as Module,
+      category: rest.category as Category,
       templateConfiguration,
       companyId,
       createdBy: userId

@@ -12,6 +12,7 @@ import {
 } from "~/modules/settings";
 import type { ComputedField, TemplateConfig } from "~/modules/settings/types";
 import type { TemplateOutletContext } from "~/routes/x+/template+/_layout";
+import type { Category, Module } from "~/utils/field-registry";
 import { path } from "~/utils/path";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -99,6 +100,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
     {
       id,
       ...rest,
+      module: rest.module as Module,
+      category: rest.category as Category,
       templateConfiguration,
       companyId,
       updatedBy: userId

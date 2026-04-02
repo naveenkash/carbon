@@ -146,7 +146,7 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
           Duplicate template
         </MenuItem>
         <MenuItem
-          disabled={row.isDefault}
+          disabled={row.isDefault ?? undefined}
           onClick={() => {
             console.log(row.id);
             fetcher.submit(

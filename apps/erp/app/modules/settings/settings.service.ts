@@ -162,7 +162,7 @@ export async function upsertTemplate(
         id?: undefined;
         name: string;
         module: Module;
-        category?: Category;
+        category: Category;
         templateConfiguration: Record<string, unknown>;
         isDefault?: boolean;
         companyId: string;
@@ -171,8 +171,8 @@ export async function upsertTemplate(
     | {
         id: string;
         name: string;
-        module: string;
-        category?: string;
+        module: Module;
+        category: Category;
         templateConfiguration: Record<string, unknown>;
         isDefault?: boolean;
         companyId: string;

@@ -122,7 +122,7 @@ export const templateValidator = z.object({
   id: zfd.text(z.string().optional()),
   name: z.string().min(1, { message: "Name is required" }),
   module: z.string().min(1, { message: "Module is required" }),
-  category: zfd.text(z.string().optional()),
+  category: z.string().min(1, { message: "Category is required" }),
   fields: zfd.text(z.string().optional()),
   computedFields: zfd.text(z.string().optional()),
   isDefault: zfd.checkbox().optional(),
