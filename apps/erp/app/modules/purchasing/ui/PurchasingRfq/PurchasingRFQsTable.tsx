@@ -267,7 +267,9 @@ const PurchasingRFQsTable = memo(
           primaryAction={
             permissions.can("create", "purchasing") && (
               <>
-                <ExportDropdown module="Purchasing" category="Rfqs" />
+                {!!data.length && (
+                  <ExportDropdown module="Purchasing" category="Rfqs" />
+                )}
                 <New label="RFQ" to={path.to.newPurchasingRFQ} />
               </>
             )

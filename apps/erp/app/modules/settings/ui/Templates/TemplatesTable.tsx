@@ -56,6 +56,20 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
   const deleteTemplateModal = useDisclosure();
 
   const columns = useMemo<ColumnDef<Template>[]>(() => {
+    const moduleOptions = Object.keys(REGISTERED_TEMPLATES).map((m) => ({
+      value: m,
+      label: m
+    }));
+
+    const categoryOptions = Array.from(
+      new Set(
+        Object.values(REGISTERED_TEMPLATES)
+          .flat()
+          .map((r) => r.category)
+          .filter(Boolean)
+      )
+    ).map((c) => ({ value: c as string, label: c as string }));
+
     return [
       {
         accessorKey: "name",
@@ -73,7 +87,13 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         cell: ({ row }) => (
           <span className="text-sm">{row.original.module}</span>
         ),
-        meta: { icon: <LuLayers /> }
+        meta: {
+          icon: <LuLayers />,
+          filter: {
+            type: "static" as const,
+            options: moduleOptions
+          }
+        }
       },
       {
         accessorKey: "category",
@@ -83,7 +103,13 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
             {row.original.category ?? "—"}
           </span>
         ),
-        meta: { icon: <LuTag /> }
+        meta: {
+          icon: <LuTag />,
+          filter: {
+            type: "static" as const,
+            options: categoryOptions
+          }
+        }
       },
       {
         accessorKey: "isDefault",
@@ -202,6 +228,7 @@ const TemplatesTable = memo(({ data, count }: TemplatesTableProps) => {
         }
         renderContextMenu={renderContextMenu}
         title="Templates"
+        withSavedView
       />
       <Outlet />
       {selectedTemplate && selectedTemplate.id && (

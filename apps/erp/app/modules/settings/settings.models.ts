@@ -141,10 +141,8 @@ export const templateValidator = z.object({
   enableGeneratedBy: zfd.checkbox(),
   enableTimeStamp: zfd.checkbox(),
   // sortConfigs
-  sortType: zfd.text(z.string().optional()),
-  primarySortBy: zfd.text(z.string().optional()),
-  secondarySortBy: zfd.text(z.string().optional()),
-  sortOrder: zfd.text(z.string().optional())
+  sortBy: zfd.text(z.string().optional()),
+  sortDirection: zfd.text(z.string().optional())
 });
 
 const company = {

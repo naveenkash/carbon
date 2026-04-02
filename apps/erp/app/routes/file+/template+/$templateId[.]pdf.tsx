@@ -74,6 +74,24 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const rows: ExportRow[] = applyComputedFields(sourceRows, computedFields);
 
+  if (config.sortConfigs?.sortBy) {
+    const { sortBy, sortDirection } = config.sortConfigs;
+    rows.sort((a, b) => {
+      const aVal = a[sortBy];
+      const bVal = b[sortBy];
+      if (aVal == null && bVal == null) return 0;
+      if (aVal == null) return 1;
+      if (bVal == null) return -1;
+      let cmp: number;
+      if (typeof aVal === "number" && typeof bVal === "number") {
+        cmp = aVal - bVal;
+      } else {
+        cmp = String(aVal).localeCompare(String(bVal));
+      }
+      return sortDirection === "desc" ? -cmp : cmp;
+    });
+  }
+
   const computedExportFields = computedFields
     .filter((f) => f.enabled)
     .map(computedFieldToExportField);

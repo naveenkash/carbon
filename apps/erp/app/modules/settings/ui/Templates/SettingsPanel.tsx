@@ -20,7 +20,11 @@ import {
   type TemplateConfig,
   type TemplateField
 } from "~/modules/settings/types";
-import { getFieldsForModuleCategory } from "~/utils/field-registry";
+import {
+  type Category,
+  getFieldsForModuleCategory,
+  type Module
+} from "~/utils/field-registry";
 import { path } from "~/utils/path";
 import ComputedFieldsTab from "./ComputedFieldsTab";
 
@@ -63,6 +67,11 @@ const LAYOUT_OPTIONS = [
   { value: "right_aligned", label: "Right Aligned" }
 ];
 
+const SORT_DIRECTION_OPTIONS = [
+  { value: "asc", label: "Ascending" },
+  { value: "desc", label: "Descending" }
+];
+
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
   template,
   config,
@@ -74,11 +83,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   const isEditing = !!template;
 
   const module = isEditing
-    ? (template.module ?? "")
-    : (searchParams.get("module") ?? "");
+    ? template.module
+    : (searchParams.get("module") as Module);
   const category = isEditing
-    ? (template.category ?? null)
-    : searchParams.get("category");
+    ? template.category
+    : (searchParams.get("category") as Category);
 
   const action = isEditing
     ? path.to.template(template.id)
@@ -91,7 +100,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     ? { ...DEFAULT_TEMPLATE_CONFIG, ...rawConfig }
     : DEFAULT_TEMPLATE_CONFIG;
 
-  const cfg = initialConfig;
   const pdf = {
     ...DEFAULT_TEMPLATE_CONFIG.pdfTitleConfigs,
     ...initialConfig?.pdfTitleConfigs
@@ -101,7 +109,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     ...initialConfig?.pageFooterConfigs
   };
   const sort = {
-    ...DEFAULT_TEMPLATE_CONFIG.sortConfigs,
+    sortBy: "",
+    sortDirection: "asc" as const,
     ...initialConfig?.sortConfigs
   };
 
@@ -139,22 +148,21 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           action={action}
           defaultValues={{
             name: initialName,
-            colorTheme: cfg.colorTheme,
-            margins: cfg.margins,
-            fields: JSON.stringify(cfg.fields ?? []),
-            computedFields: JSON.stringify(cfg.computedFields ?? []),
-            templateFont: cfg.templateFont,
-            templateStyle: cfg.templateStyle,
-            fontSize: cfg.fontSize,
+            colorTheme: initialConfig.colorTheme,
+            margins: initialConfig.margins,
+            fields: JSON.stringify(initialConfig.fields ?? []),
+            computedFields: JSON.stringify(initialConfig.computedFields ?? []),
+            templateFont: initialConfig.templateFont,
+            templateStyle: initialConfig.templateStyle,
+            fontSize: initialConfig.fontSize,
             pdfTitle: pdf.title,
             pdfLayout: pdf.layout,
             pdfIsUppercase: pdf.isUppercase,
             enablePageNumber: footer.enablePageNumber,
             enableGeneratedBy: footer.enableGeneratedBy,
             enableTimeStamp: footer.enableTimeStamp,
-            sortType: sort.type,
-            primarySortBy: sort.primarySortBy,
-            sortOrder: sort.order ?? ""
+            sortBy: sort.sortBy,
+            sortDirection: sort.sortDirection
           }}
           fetcher={fetcher}
         >
@@ -242,6 +250,42 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   options={FONT_SIZE_OPTIONS}
                   onChange={(v) =>
                     onConfigChange({ fontSize: v?.value ?? config.fontSize })
+                  }
+                />
+                <Select
+                  name="sortBy"
+                  label="Sort By"
+                  options={[
+                    { value: "__none__", label: "None" },
+                    ...availableFields.map((f) => ({
+                      value: f.key,
+                      label: f.label
+                    }))
+                  ]}
+                  onChange={(v) =>
+                    onConfigChange({
+                      sortConfigs: {
+                        sortBy: v?.value === "__none__" ? "" : (v?.value ?? ""),
+                        sortDirection:
+                          config.sortConfigs?.sortDirection ?? "asc"
+                      }
+                    })
+                  }
+                />
+                <Select
+                  name="sortDirection"
+                  label="Sort Direction"
+                  options={SORT_DIRECTION_OPTIONS}
+                  onChange={(v) =>
+                    onConfigChange({
+                      sortConfigs: {
+                        sortBy: config.sortConfigs?.sortBy ?? "",
+                        sortDirection:
+                          (v?.value as "asc" | "desc") ??
+                          config.sortConfigs?.sortDirection ??
+                          "asc"
+                      }
+                    })
                   }
                 />
               </VStack>

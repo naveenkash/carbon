@@ -19,7 +19,7 @@ CREATE TABLE "templates" (
     "companyId" TEXT NOT NULL,
 
     "module" module NOT NULL,        -- e.g., 'Purchasing', 'Inventory'
-    "category" category,             -- e.g., 'Orders', 'Invoices'
+    "category" category NOT NULL,             -- e.g., 'Orders', 'Invoices'
 
     "templateConfiguration" JSONB NOT NULL DEFAULT '{}'::jsonb,
 
@@ -162,9 +162,8 @@ SELECT
       "enableTimeStamp": false
     },
     "sortConfigs": {
-      "type": "FIXED",
-      "primarySortBy": "NAME_ASC",
-      "order": null
+      "sortBy": "",
+      "sortDirection": "asc"
     },
     "computedFields": []
   }'::jsonb                     AS "templateConfiguration",
@@ -236,9 +235,8 @@ SELECT
       "enableTimeStamp": false
     },
     "sortConfigs": {
-      "type": "FIXED",
-      "primarySortBy": "NAME_ASC",
-      "order": null
+      "sortBy": "",
+      "sortDirection": "asc"
     },
     "computedFields": []
   }'::jsonb                       AS "templateConfiguration",
@@ -300,9 +298,8 @@ SELECT
       "enableTimeStamp": false
     },
     "sortConfigs": {
-      "type": "FIXED",
-      "primarySortBy": "NAME_ASC",
-      "order": null
+      "sortBy": "",
+      "sortDirection": "asc"
     },
     "computedFields": []
   }'::jsonb                       AS "templateConfiguration",
@@ -360,9 +357,8 @@ SELECT
       "enableTimeStamp": false
     },
     "sortConfigs": {
-      "type": "FIXED",
-      "primarySortBy": "NAME_ASC",
-      "order": null
+      "sortBy": "",
+      "sortDirection": "asc"
     },
     "computedFields": []
   }'::jsonb                        AS "templateConfiguration",
@@ -419,9 +415,8 @@ SELECT
       "enableTimeStamp": false
     },
     "sortConfigs": {
-      "type": "FIXED",
-      "primarySortBy": "NAME_ASC",
-      "order": null
+      "sortBy": "",
+      "sortDirection": "asc"
     },
     "computedFields": []
   }'::jsonb                         AS "templateConfiguration",

@@ -50,10 +50,8 @@ export async function action({ request }: ActionFunctionArgs) {
     enablePageNumber,
     enableGeneratedBy,
     enableTimeStamp,
-    sortType,
-    primarySortBy,
-    sortOrder,
-
+    sortBy,
+    sortDirection,
     ...rest
   } = validation.data;
   const fields = fieldsJson ? JSON.parse(fieldsJson) : [];
@@ -80,9 +78,8 @@ export async function action({ request }: ActionFunctionArgs) {
       enableTimeStamp
     },
     sortConfigs: {
-      type: sortType ?? "FIXED",
-      primarySortBy: primarySortBy ?? "NAME_ASC",
-      order: sortOrder || null
+      sortBy: sortBy ?? "",
+      sortDirection: (sortDirection as "asc" | "desc") ?? "asc"
     }
   };
 

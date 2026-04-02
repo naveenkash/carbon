@@ -254,7 +254,9 @@ const SupplierQuotesTable = memo(
           primaryAction={
             permissions.can("create", "purchasing") && (
               <>
-                <ExportDropdown module="Purchasing" category="Quotes" />
+                {!!data.length && (
+                  <ExportDropdown module="Purchasing" category="Quotes" />
+                )}
                 <New label="Supplier Quote" to={path.to.newSupplierQuote} />
               </>
             )

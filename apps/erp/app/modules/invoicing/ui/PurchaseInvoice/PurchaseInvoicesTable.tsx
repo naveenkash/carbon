@@ -316,7 +316,9 @@ const PurchaseInvoicesTable = memo(
           primaryAction={
             permissions.can("create", "invoicing") && (
               <>
-                <ExportDropdown module="Purchasing" category="Invoices" />
+                {!!data.length && (
+                  <ExportDropdown module="Purchasing" category="Invoices" />
+                )}
                 <New label="Purchase Invoice" to={path.to.newPurchaseInvoice} />
               </>
             )

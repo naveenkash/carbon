@@ -3,6 +3,7 @@ import type { Database } from "@carbon/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { FunctionRegion } from "@supabase/supabase-js";
 import type { z } from "zod";
+import type { Category, Module } from "~/utils/field-registry";
 import type { GenericQueryFilters } from "~/utils/query";
 import { setGenericQueryFilters } from "~/utils/query";
 import { interpolateSequenceDate } from "~/utils/string";
@@ -116,11 +117,11 @@ export async function getTemplates(
   companyId: string,
   args?: GenericQueryFilters & {
     search: string | null;
-    module: string | null;
-    category: string | null;
+    module: Module | null;
+    category: Category | null;
   }
 ) {
-  let query = (client as any)
+  let query = client
     .from("templates")
     .select("*", { count: "exact" })
     .eq("companyId", companyId);
@@ -160,8 +161,8 @@ export async function upsertTemplate(
     | {
         id?: undefined;
         name: string;
-        module: string;
-        category?: string;
+        module: Module;
+        category?: Category;
         templateConfiguration: Record<string, unknown>;
         isDefault?: boolean;
         companyId: string;

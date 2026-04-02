@@ -53,9 +53,8 @@ const standardTemplateConfig = {
     enableTimeStamp: false
   },
   sortConfigs: {
-    type: "FIXED",
-    primarySortBy: "NAME_ASC",
-    order: null
+    sortBy: "",
+    sortDirection: "asc"
   },
   computedFields: []
 };

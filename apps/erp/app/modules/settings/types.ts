@@ -176,10 +176,9 @@ export type TemplateConfig = {
     enableGeneratedBy: boolean;
     enableTimeStamp: boolean;
   };
-  sortConfigs: {
-    type: string;
-    primarySortBy: string;
-    order: string | null;
+  sortConfigs?: {
+    sortBy: string;
+    sortDirection: "asc" | "desc";
   };
   computedFields: ComputedField[];
 };
@@ -202,9 +201,8 @@ export const DEFAULT_TEMPLATE_CONFIG: TemplateConfig = {
     enableTimeStamp: false
   },
   sortConfigs: {
-    type: "FIXED",
-    primarySortBy: "NAME_ASC",
-    order: null
+    sortBy: "",
+    sortDirection: "asc"
   },
   computedFields: []
 };

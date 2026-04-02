@@ -34,6 +34,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const fieldKeys = (raw?.fields ?? []).map((f) => f.key);
   const computedFields: ComputedField[] = raw?.computedFields ?? [];
+  const sortConfigs = raw?.sortConfigs;
 
   const exportResult = await runExportQuery(client, {
     module: template.module,
@@ -48,6 +49,25 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const sourceRows = exportResult.data ?? [];
   const rows = applyComputedFields(sourceRows, computedFields);
+
+  if (sortConfigs?.sortBy) {
+    const { sortBy, sortDirection } = sortConfigs;
+    rows.sort((a, b) => {
+      const aVal = a[sortBy];
+      const bVal = b[sortBy];
+      if (aVal == null && bVal == null) return 0;
+      if (aVal == null) return 1;
+      if (bVal == null) return -1;
+      let cmp: number;
+      if (typeof aVal === "number" && typeof bVal === "number") {
+        cmp = aVal - bVal;
+      } else {
+        cmp = String(aVal).localeCompare(String(bVal));
+      }
+      return sortDirection === "desc" ? -cmp : cmp;
+    });
+  }
+
   const sourceFields = exportResult.fields as ExportField[];
 
   const csv = buildCsvString(rows, sourceFields, computedFields);

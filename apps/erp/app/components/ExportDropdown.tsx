@@ -29,7 +29,7 @@ export function ExportDropdown({ module, category }: ExportDropdownProps) {
     fetcher.load(path.to.api.templates(module as unknown as string, category));
   }, [category, module]);
 
-  const templates = fetcher.data?.data ?? [];
+  const templates: Template[] = fetcher.data?.data ?? [];
 
   if (templates.length === 0) return null;
 
