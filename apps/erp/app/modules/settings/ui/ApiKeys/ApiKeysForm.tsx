@@ -112,7 +112,7 @@ const ApiKeyForm = ({
                 <DateTimePicker
                   name="expiresAt"
                   label="Expires At (optional)"
-                  minValue={now(getLocalTimeZone())}
+                  minValue={toCalendarDateTime(today(getLocalTimeZone()))}
                 />
 
                 <PermissionMatrix matrix={matrix} />
