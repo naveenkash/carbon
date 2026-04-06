@@ -1,6 +1,7 @@
 import {
   LuChartLine,
   LuCirclePlay,
+  LuGauge,
   LuListChecks,
   LuSquareChartGantt,
   LuSquareKanban,
@@ -20,6 +21,12 @@ const productionRoutes: AuthenticatedRouteGroup[] = [
         to: path.to.jobs,
         icon: <LuCirclePlay />,
         table: "job"
+      },
+      {
+        name: "OEE Dashboard",
+        to: path.to.oee,
+        icon: <LuGauge />,
+        role: "employee"
       },
       {
         name: "Procedures",
