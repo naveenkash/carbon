@@ -396,3 +396,32 @@ export async function verifyAuthSession(authSession: AuthSession) {
 
   return Boolean(authAccount);
 }
+
+export async function signInWithPasskey(
+  userId: string,
+  email: string
+): Promise<AuthSession | null> {
+  const serviceRole = getCarbonServiceRole();
+
+  // Generate a one-time magic link without sending an email
+  const { data: linkData, error: linkError } =
+    await serviceRole.auth.admin.generateLink({
+      type: "magiclink",
+      email,
+      options: { redirectTo: VERCEL_URL }
+    });
+
+  if (linkError || !linkData.properties?.hashed_token) return null;
+
+  // Verify the token server-side to obtain a Supabase session
+  const { data: sessionData, error: sessionError } =
+    await serviceRole.auth.verifyOtp({
+      token_hash: linkData.properties.hashed_token,
+      type: "magiclink"
+    });
+
+  if (sessionError || !sessionData.session) return null;
+
+  const companies = await getCompaniesForUser(serviceRole, userId);
+  return makeAuthSession(sessionData.session, companies[0] ?? "");
+}

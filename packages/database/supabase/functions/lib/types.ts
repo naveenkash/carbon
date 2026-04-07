@@ -2953,6 +2953,7 @@ export type Database = {
           supplierApproval: boolean
           supplierQuoteNotificationGroup: string[]
           timeCardEnabled: boolean
+          updateLeadTimesOnReceipt: boolean
           useMetric: boolean
         }
         Insert: {
@@ -2990,6 +2991,7 @@ export type Database = {
           supplierApproval?: boolean
           supplierQuoteNotificationGroup?: string[]
           timeCardEnabled?: boolean
+          updateLeadTimesOnReceipt?: boolean
           useMetric?: boolean
         }
         Update: {
@@ -3027,6 +3029,7 @@ export type Database = {
           supplierApproval?: boolean
           supplierQuoteNotificationGroup?: string[]
           timeCardEnabled?: boolean
+          updateLeadTimesOnReceipt?: boolean
           useMetric?: boolean
         }
         Relationships: [
@@ -21417,6 +21420,90 @@ export type Database = {
           },
         ]
       }
+      passkeyCredential: {
+        Row: {
+          aaguid: string
+          backedUp: boolean
+          counter: number
+          createdAt: string
+          credentialName: string
+          deviceType: string
+          id: string
+          lastUsedAt: string | null
+          publicKey: string
+          rpId: string
+          transports: string[] | null
+          userHandle: string | null
+          userId: string
+        }
+        Insert: {
+          aaguid?: string
+          backedUp?: boolean
+          counter?: number
+          createdAt?: string
+          credentialName?: string
+          deviceType: string
+          id: string
+          lastUsedAt?: string | null
+          publicKey: string
+          rpId: string
+          transports?: string[] | null
+          userHandle?: string | null
+          userId: string
+        }
+        Update: {
+          aaguid?: string
+          backedUp?: boolean
+          counter?: number
+          createdAt?: string
+          credentialName?: string
+          deviceType?: string
+          id?: string
+          lastUsedAt?: string | null
+          publicKey?: string
+          rpId?: string
+          transports?: string[] | null
+          userHandle?: string | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "passkeyCredential_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "passkeyCredential_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "passkeyCredential_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "passkeyCredential_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "passkeyCredential_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
+          },
+        ]
+      }
       paymentTerm: {
         Row: {
           active: boolean
@@ -30343,6 +30430,7 @@ export type Database = {
           title: string
           type: Database["public"]["Enums"]["riskRegisterType"]
           updatedAt: string | null
+          updatedBy: string | null
         }
         Insert: {
           assignee?: string | null
@@ -30361,6 +30449,7 @@ export type Database = {
           title: string
           type?: Database["public"]["Enums"]["riskRegisterType"]
           updatedAt?: string | null
+          updatedBy?: string | null
         }
         Update: {
           assignee?: string | null
@@ -30379,6 +30468,7 @@ export type Database = {
           title?: string
           type?: Database["public"]["Enums"]["riskRegisterType"]
           updatedAt?: string | null
+          updatedBy?: string | null
         }
         Relationships: [
           {
@@ -30520,6 +30610,41 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tools"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "riskRegister_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "riskRegister_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeesAcrossCompanies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "riskRegister_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "employeeSummary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "riskRegister_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "riskRegister_updatedBy_fkey"
+            columns: ["updatedBy"]
+            isOneToOne: false
+            referencedRelation: "userDefaults"
+            referencedColumns: ["userId"]
           },
         ]
       }
@@ -49345,14 +49470,14 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["supplierCountryCode"]
+            columns: ["customerCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
           },
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["customerCountryCode"]
+            columns: ["supplierCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
@@ -52488,7 +52613,7 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["shipmentCountryCode"]
+            columns: ["customerCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
@@ -52502,7 +52627,7 @@ export type Database = {
           },
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["customerCountryCode"]
+            columns: ["shipmentCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
@@ -53047,14 +53172,14 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["paymentCountryCode"]
+            columns: ["customerCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]
           },
           {
             foreignKeyName: "address_countryCode_fkey"
-            columns: ["customerCountryCode"]
+            columns: ["paymentCountryCode"]
             isOneToOne: false
             referencedRelation: "country"
             referencedColumns: ["alpha2"]

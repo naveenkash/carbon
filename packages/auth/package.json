@@ -15,6 +15,7 @@
     "./company.server": "./src/services/company.server.ts",
     "./session.server": "./src/services/session.server.ts",
     "./users.server": "./src/services/users.server.ts",
+    "./passkey.server": "./src/services/passkey.server.ts",
     "./verification.server": "./src/services/verification.server.ts",
     "./middleware/flash.server": "./src/middleware/flash.server.ts",
     "./middleware/flash.client": "./src/middleware/flash.client.ts"
@@ -45,6 +46,7 @@
   "sideEffects": false,
   "version": "*",
   "dependencies": {
+    "@simplewebauthn/server": "^13.1.0",
     "cookie": "1.1.1",
     "dompurify": "3.3.3",
     "nanoid": "5.1.7"

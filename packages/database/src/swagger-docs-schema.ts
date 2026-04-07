@@ -35284,6 +35284,9 @@ export default {
             $ref: "#/parameters/rowFilter.riskRegister.type",
           },
           {
+            $ref: "#/parameters/rowFilter.riskRegister.updatedBy",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -35391,6 +35394,9 @@ export default {
             $ref: "#/parameters/rowFilter.riskRegister.type",
           },
           {
+            $ref: "#/parameters/rowFilter.riskRegister.updatedBy",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -35450,6 +35456,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.riskRegister.type",
+          },
+          {
+            $ref: "#/parameters/rowFilter.riskRegister.updatedBy",
           },
           {
             $ref: "#/parameters/body.riskRegister",
@@ -55530,6 +55539,213 @@ export default {
         tags: ["note"],
       },
     },
+    "/passkeyCredential": {
+      get: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.id",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.userId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.publicKey",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.counter",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.deviceType",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.backedUp",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.transports",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.aaguid",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.rpId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.userHandle",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.credentialName",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.createdAt",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.lastUsedAt",
+          },
+          {
+            $ref: "#/parameters/select",
+          },
+          {
+            $ref: "#/parameters/order",
+          },
+          {
+            $ref: "#/parameters/range",
+          },
+          {
+            $ref: "#/parameters/rangeUnit",
+          },
+          {
+            $ref: "#/parameters/offset",
+          },
+          {
+            $ref: "#/parameters/limit",
+          },
+          {
+            $ref: "#/parameters/preferCount",
+          },
+        ],
+        responses: {
+          "200": {
+            description: "OK",
+            schema: {
+              items: {
+                $ref: "#/definitions/passkeyCredential",
+              },
+              type: "array",
+            },
+          },
+          "206": {
+            description: "Partial Content",
+          },
+        },
+        tags: ["passkeyCredential"],
+      },
+      post: {
+        parameters: [
+          {
+            $ref: "#/parameters/body.passkeyCredential",
+          },
+          {
+            $ref: "#/parameters/select",
+          },
+          {
+            $ref: "#/parameters/preferPost",
+          },
+        ],
+        responses: {
+          "201": {
+            description: "Created",
+          },
+        },
+        tags: ["passkeyCredential"],
+      },
+      delete: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.id",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.userId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.publicKey",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.counter",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.deviceType",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.backedUp",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.transports",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.aaguid",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.rpId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.userHandle",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.credentialName",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.createdAt",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.lastUsedAt",
+          },
+          {
+            $ref: "#/parameters/preferReturn",
+          },
+        ],
+        responses: {
+          "204": {
+            description: "No Content",
+          },
+        },
+        tags: ["passkeyCredential"],
+      },
+      patch: {
+        parameters: [
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.id",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.userId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.publicKey",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.counter",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.deviceType",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.backedUp",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.transports",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.aaguid",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.rpId",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.userHandle",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.credentialName",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.createdAt",
+          },
+          {
+            $ref: "#/parameters/rowFilter.passkeyCredential.lastUsedAt",
+          },
+          {
+            $ref: "#/parameters/body.passkeyCredential",
+          },
+          {
+            $ref: "#/parameters/preferReturn",
+          },
+        ],
+        responses: {
+          "204": {
+            description: "No Content",
+          },
+        },
+        tags: ["passkeyCredential"],
+      },
+    },
     "/materialSubstance": {
       get: {
         parameters: [
@@ -63052,6 +63268,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.timeCardEnabled",
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.updateLeadTimesOnReceipt",
+          },
+          {
             $ref: "#/parameters/select",
           },
           {
@@ -63216,6 +63435,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.timeCardEnabled",
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.updateLeadTimesOnReceipt",
+          },
+          {
             $ref: "#/parameters/preferReturn",
           },
         ],
@@ -63332,6 +63554,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.companySettings.timeCardEnabled",
+          },
+          {
+            $ref: "#/parameters/rowFilter.companySettings.updateLeadTimesOnReceipt",
           },
           {
             $ref: "#/parameters/body.companySettings",
@@ -86709,6 +86934,12 @@ export default {
           format: 'public."riskRegisterType"',
           type: "string",
         },
+        updatedBy: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string",
+        },
       },
       type: "object",
     },
@@ -96168,6 +96399,86 @@ export default {
       },
       type: "object",
     },
+    passkeyCredential: {
+      required: [
+        "id",
+        "userId",
+        "publicKey",
+        "counter",
+        "deviceType",
+        "backedUp",
+        "aaguid",
+        "rpId",
+        "credentialName",
+        "createdAt",
+      ],
+      properties: {
+        id: {
+          description: "Note:\nThis is a Primary Key.<pk/>",
+          format: "text",
+          type: "string",
+        },
+        userId: {
+          description:
+            "Note:\nThis is a Foreign Key to `user.id`.<fk table='user' column='id'/>",
+          format: "text",
+          type: "string",
+        },
+        publicKey: {
+          format: "text",
+          type: "string",
+        },
+        counter: {
+          default: 0,
+          format: "bigint",
+          type: "integer",
+        },
+        deviceType: {
+          format: "text",
+          type: "string",
+        },
+        backedUp: {
+          default: false,
+          format: "boolean",
+          type: "boolean",
+        },
+        transports: {
+          format: "text[]",
+          items: {
+            type: "string",
+          },
+          type: "array",
+        },
+        aaguid: {
+          default: "",
+          format: "text",
+          type: "string",
+        },
+        rpId: {
+          format: "text",
+          type: "string",
+        },
+        userHandle: {
+          format: "text",
+          type: "string",
+        },
+        credentialName: {
+          default: "Passkey",
+          format: "text",
+          type: "string",
+        },
+        createdAt: {
+          default: "now()",
+          format: "timestamp with time zone",
+          type: "string",
+        },
+        lastUsedAt: {
+          format: "timestamp with time zone",
+          type: "string",
+        },
+      },
+      type: "object",
+    },
     materialSubstance: {
       required: ["id", "name", "createdBy", "createdAt", "code"],
       properties: {
@@ -99983,6 +100294,7 @@ export default {
         "qualityIssueTarget",
         "consoleEnabled",
         "timeCardEnabled",
+        "updateLeadTimesOnReceipt",
       ],
       properties: {
         id: {
@@ -100179,6 +100491,11 @@ export default {
           type: "boolean",
         },
         timeCardEnabled: {
+          default: false,
+          format: "boolean",
+          type: "boolean",
+        },
+        updateLeadTimesOnReceipt: {
           default: false,
           format: "boolean",
           type: "boolean",
@@ -119659,6 +119976,12 @@ export default {
       in: "query",
       type: "string",
     },
+    "rowFilter.riskRegister.updatedBy": {
+      name: "updatedBy",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "body.shipment": {
       name: "shipment",
       description: "shipment",
@@ -130339,6 +130662,93 @@ export default {
       in: "query",
       type: "string",
     },
+    "body.passkeyCredential": {
+      name: "passkeyCredential",
+      description: "passkeyCredential",
+      required: false,
+      in: "body",
+      schema: {
+        $ref: "#/definitions/passkeyCredential",
+      },
+    },
+    "rowFilter.passkeyCredential.id": {
+      name: "id",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.userId": {
+      name: "userId",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.publicKey": {
+      name: "publicKey",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.counter": {
+      name: "counter",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.deviceType": {
+      name: "deviceType",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.backedUp": {
+      name: "backedUp",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.transports": {
+      name: "transports",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.aaguid": {
+      name: "aaguid",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.rpId": {
+      name: "rpId",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.userHandle": {
+      name: "userHandle",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.credentialName": {
+      name: "credentialName",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.createdAt": {
+      name: "createdAt",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.passkeyCredential.lastUsedAt": {
+      name: "lastUsedAt",
+      required: false,
+      in: "query",
+      type: "string",
+    },
     "body.materialSubstance": {
       name: "materialSubstance",
       description: "materialSubstance",
@@ -134766,6 +135176,12 @@ export default {
     },
     "rowFilter.companySettings.timeCardEnabled": {
       name: "timeCardEnabled",
+      required: false,
+      in: "query",
+      type: "string",
+    },
+    "rowFilter.companySettings.updateLeadTimesOnReceipt": {
+      name: "updateLeadTimesOnReceipt",
       required: false,
       in: "query",
       type: "string",
