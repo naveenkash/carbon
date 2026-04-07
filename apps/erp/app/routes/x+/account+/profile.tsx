@@ -59,7 +59,6 @@ type Passkey = {
 export async function loader({ request }: LoaderFunctionArgs) {
   const { client, userId } = await requirePermissions(request, {});
   const serviceRole = getCarbonServiceRole();
-
   const [user, passkeysResult] = await Promise.all([
     getAccount(client, userId),
     (serviceRole as any)
@@ -173,6 +172,11 @@ export async function action({ request }: ActionFunctionArgs) {
     const credentialName = (formData.get("credentialName") as string)?.trim();
     if (!credentialId || !credentialName) {
       return data(error(null, "Missing fields"), { status: 400 });
+    }
+    if (credentialName.length > 100) {
+      return data(error(null, "Passkey name must be 100 characters or fewer"), {
+        status: 400
+      });
     }
 
     const serviceRole = getCarbonServiceRole();

@@ -33,7 +33,7 @@ export async function action({ request }: ActionFunctionArgs) {
     .insert({
       id: credential.id,
       userId,
-      publicKey: Buffer.from(credential.publicKey).toString("base64"),
+      publicKey: Buffer.from(credential.publicKey).toString("base64url"),
       counter: credential.counter,
       transports: credential.transports ?? [],
       deviceType: credential.deviceType,

@@ -2,11 +2,9 @@ import { assertIsPost, error } from "@carbon/auth";
 import { signInWithPasskey } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { setCompanyId } from "@carbon/auth/company.server";
-import {
-  type StoredCredential,
-  verifyPasskeyAuthentication
-} from "@carbon/auth/passkey.server";
+import { verifyPasskeyAuthentication } from "@carbon/auth/passkey.server";
 import { setAuthSession } from "@carbon/auth/session.server";
+import type { WebAuthnCredential } from "@simplewebauthn/browser";
 import type { ActionFunctionArgs } from "react-router";
 import { data, redirect } from "react-router";
 import { path } from "~/utils/path";
@@ -50,14 +48,11 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 
-  const storedCredential: StoredCredential = {
+  const storedCredential: WebAuthnCredential = {
     id: credRow.id,
-    userId: credRow.userId,
-    publicKey: Buffer.from(credRow.publicKey, "base64"),
+    publicKey: new Uint8Array(Buffer.from(credRow.publicKey, "base64url")),
     counter: credRow.counter,
-    transports: credRow.transports ?? null,
-    aaguid: "",
-    credentialName: ""
+    transports: credRow.transports ?? null
   };
 
   try {
@@ -67,13 +62,27 @@ export async function action({ request }: ActionFunctionArgs) {
       storedCredential
     );
 
-    // Update counter + lastUsedAt (fire-and-forget)
-    void (serviceRole as any)
+    const returnedHandle = webAuthnResponse.response?.userHandle;
+    if (returnedHandle) {
+      const expectedHandle = Buffer.from(
+        new TextEncoder().encode(credRow.userId)
+      ).toString("base64url");
+      if (returnedHandle !== expectedHandle) {
+        return data(error(null, "userHandle mismatch"), { status: 401 });
+      }
+    }
+
+    const { error: counterError } = await (serviceRole as any)
       .from("passkeyCredential")
       .update({ counter: newCounter, lastUsedAt: new Date().toISOString() })
       .eq("id", credRow.id);
 
-    // Resolve user email for session creation
+    if (counterError) {
+      return data(error(null, "Failed to persist credential state"), {
+        status: 500
+      });
+    }
+
     const { data: authUser } = await serviceRole.auth.admin.getUserById(
       credRow.userId
     );
@@ -81,7 +90,6 @@ export async function action({ request }: ActionFunctionArgs) {
       return data(error(null, "User not found"), { status: 404 });
     }
 
-    // Create Supabase session via service role
     const authSession = await signInWithPasskey(
       credRow.userId,
       authUser.user.email
@@ -93,7 +101,12 @@ export async function action({ request }: ActionFunctionArgs) {
     const sessionCookie = await setAuthSession(request, { authSession });
     const companyIdCookie = setCompanyId(authSession.companyId);
 
-    return redirect(redirectTo ?? path.to.authenticatedRoot, {
+    const safeRedirect =
+      redirectTo && redirectTo.startsWith("/") && !redirectTo.startsWith("//")
+        ? redirectTo
+        : path.to.authenticatedRoot;
+
+    return redirect(safeRedirect, {
       headers: [
         ["Set-Cookie", sessionCookie],
         ["Set-Cookie", companyIdCookie]

@@ -1,53 +1,10 @@
-/**
- * passkey.server.ts
- *
- * Server-side WebAuthn / Passkey implementation using @simplewebauthn/server.
- *
- * WebAuthn flow overview:
- *
- *  REGISTRATION (adding a passkey to an existing account)
- *  ┌─────────┐        ┌────────────┐       ┌──────────────┐
- *  │ Browser │        │ Our Server │       │  Supabase DB │
- *  └────┬────┘        └─────┬──────┘       └──────┬───────┘
- *       │ POST /register/options             │              │
- *       │──────────────────>│                │              │
- *       │                   │ generateRegistrationOptions() │
- *       │                   │ store challenge in Redis       │
- *       │<──────────────────│ return options │              │
- *       │ navigator.credentials.create(opts) │              │
- *       │ (Touch ID / Face ID / PIN)         │              │
- *       │ POST /register/verify              │              │
- *       │──────────────────>│                │              │
- *       │                   │ verifyRegistrationResponse()  │
- *       │                   │────────────────────────────>  │
- *       │                   │            INSERT credential  │
- *       │<──────────────────│ { success }│              │
- *
- *  AUTHENTICATION (signing in with a passkey)
- *  ┌─────────┐        ┌────────────┐       ┌──────────────┐
- *  │ Browser │        │ Our Server │       │  Supabase DB │
- *  └────┬────┘        └─────┬──────┘       └──────┬───────┘
- *       │ POST /authenticate/options         │              │
- *       │──────────────────>│                │              │
- *       │                   │ generateAuthenticationOptions()
- *       │                   │ store challenge in Redis       │
- *       │<──────────────────│ { options, challengeId }       │
- *       │ navigator.credentials.get(opts)    │              │
- *       │ (browser shows passkey picker)     │              │
- *       │ POST /authenticate/verify          │              │
- *       │──────────────────>│                │              │
- *       │                   │ lookup credential by id ────> │
- *       │                   │ verifyAuthenticationResponse()│
- *       │                   │ signInWithPasskey(userId)      │
- *       │<──────────────────│ Set-Cookie (session)          │
- */
-
 import { redis } from "@carbon/kv";
 import {
   generateAuthenticationOptions,
   generateRegistrationOptions,
   verifyAuthenticationResponse,
-  verifyRegistrationResponse
+  verifyRegistrationResponse,
+  type WebAuthnCredential
 } from "@simplewebauthn/server";
 import type {
   AuthenticationResponseJSON,
@@ -80,28 +37,7 @@ const ORIGIN =
       ? VERCEL_URL
       : "http://localhost:3000";
 
-/** How long a challenge lives in Redis before it expires. */
 const CHALLENGE_TTL_SECONDS = 300; // 5 minutes
-
-// ── Types ────────────────────────────────────────────────────────────────────
-
-/**
- * The subset of a passkeyCredential DB row needed to verify an authentication
- * response. Loaded from the database and passed to verifyPasskeyAuthentication.
- */
-export type StoredCredential = {
-  /** base64url-encoded credential ID, used to look up the credential. */
-  id: string;
-  userId: string;
-  /** COSE-encoded public key bytes (stored as base64 TEXT in the DB). */
-  publicKey: Uint8Array;
-  /** Signature counter — incremented by the authenticator on every use. */
-  counter: number;
-  /** Transport hints (usb, nfc, ble, internal…) used to optimise future allow lists. */
-  transports: AuthenticatorTransportFuture[] | null;
-  aaguid: string;
-  credentialName: string;
-};
 
 // ── Challenge storage in Redis ───────────────────────────────────────────────
 //
@@ -137,13 +73,12 @@ export async function storeRegistrationChallenge(
 /**
  * Retrieve and immediately delete the registration challenge for a user.
  * Returns null if not found or expired — the caller should treat this as an error.
+ *
  */
 export async function getAndDeleteRegistrationChallenge(
   userId: string
 ): Promise<string | null> {
-  const challenge = await redis.get(regChallengeKey(userId));
-  if (challenge) await redis.del(regChallengeKey(userId));
-  return challenge;
+  return redis.getdel(regChallengeKey(userId));
 }
 
 /** Store an authentication challenge keyed by a random challengeId (not userId,
@@ -163,13 +98,12 @@ export async function storeAuthChallenge(
 /**
  * Retrieve and immediately delete the authentication challenge.
  * Returns null if not found or expired.
+ *
  */
 export async function getAndDeleteAuthChallenge(
   challengeId: string
 ): Promise<string | null> {
-  const challenge = await redis.get(authChallengeKey(challengeId));
-  if (challenge) await redis.del(authChallengeKey(challengeId));
-  return challenge;
+  return redis.getdel(authChallengeKey(challengeId));
 }
 
 // ── Registration ─────────────────────────────────────────────────────────────
@@ -196,8 +130,6 @@ export async function getPasskeyRegistrationOptions(
     rpID: RP_ID,
     userName: userEmail,
     userDisplayName: userDisplayName || userEmail,
-    // userID is stored by the authenticator as the "user handle" and echoed back
-    // during authentication — we use it to look up the user without needing their email.
     userID: new TextEncoder().encode(userId),
     attestationType: "none",
     excludeCredentials: existingCredentialIds.map((id) => ({
@@ -214,7 +146,6 @@ export async function getPasskeyRegistrationOptions(
     supportedAlgorithmIDs: [-7, -257]
   });
 
-  // Persist the challenge so we can verify it when the browser responds.
   await storeRegistrationChallenge(userId, options.challenge);
 
   return options;
@@ -230,7 +161,6 @@ export async function verifyPasskeyRegistration(
   userId: string,
   response: RegistrationResponseJSON
 ) {
-  // Consume the challenge — it's single-use.
   const challenge = await getAndDeleteRegistrationChallenge(userId);
   if (!challenge)
     throw new Error("Registration challenge not found or expired");
@@ -244,7 +174,6 @@ export async function verifyPasskeyRegistration(
     // hard-fail if the device skipped it (e.g. no biometrics enrolled).
     requireUserVerification: false
   });
-  console.log(verification, "--verification--");
 
   if (!verification.verified || !verification.registrationInfo) {
     throw new Error("Registration verification failed");
@@ -253,11 +182,9 @@ export async function verifyPasskeyRegistration(
   const { credential, aaguid, credentialDeviceType, credentialBackedUp } =
     verification.registrationInfo;
 
-  // The user handle is the userId bytes we encoded into options.userID.
-  // Some authenticators echo it back in response.userHandle; if not, we
-  // re-derive it from the userId so it's always stored consistently.
-  const userHandle =
-    response.response.userHandle ?? new TextEncoder().encode(userId);
+  const userHandle = Buffer.from(new TextEncoder().encode(userId)).toString(
+    "base64url"
+  );
 
   return {
     id: credential.id,
@@ -306,7 +233,7 @@ export async function getPasskeyAuthenticationOptions(challengeId: string) {
 export async function verifyPasskeyAuthentication(
   challengeId: string,
   response: AuthenticationResponseJSON,
-  credential: StoredCredential
+  credential: WebAuthnCredential
 ) {
   const challenge = await getAndDeleteAuthChallenge(challengeId);
   if (!challenge)
@@ -331,7 +258,6 @@ export async function verifyPasskeyAuthentication(
   }
 
   return {
-    /** Updated counter — persist this to the DB to detect cloned authenticators. */
     newCounter: verification.authenticationInfo.newCounter
   };
 }

@@ -2,6 +2,7 @@
   "name": "@carbon/auth",
   "devDependencies": {
     "@carbon/config": "*",
+    "@simplewebauthn/types": "^12.0.0",
     "@carbon/utils": "*",
     "@types/react": "^18.2.74",
     "tsup": "^8.5.1",
