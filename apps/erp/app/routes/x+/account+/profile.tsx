@@ -12,6 +12,13 @@ import {
   CardTitle,
   HStack,
   IconButton,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
   toast,
   VStack
 } from "@carbon/react";
@@ -161,14 +168,42 @@ export async function action({ request }: ActionFunctionArgs) {
     return data(success("Passkey removed"));
   }
 
+  if (formData.get("intent") === "renamePasskey") {
+    const credentialId = formData.get("credentialId") as string;
+    const credentialName = (formData.get("credentialName") as string)?.trim();
+    if (!credentialId || !credentialName) {
+      return data(error(null, "Missing fields"), { status: 400 });
+    }
+
+    const serviceRole = getCarbonServiceRole();
+    const { error: dbError } = await (serviceRole as any)
+      .from("passkeyCredential")
+      .update({ credentialName })
+      .eq("id", credentialId)
+      .eq("userId", userId);
+
+    if (dbError) {
+      return data(
+        error(dbError, "Failed to rename passkey"),
+        await flash(request, error(dbError, "Failed to rename passkey"))
+      );
+    }
+
+    return data(success("Passkey renamed"));
+  }
+
   return null;
 }
 
 export default function AccountProfile() {
   const { user, passkeys } = useLoaderData<typeof loader>();
   const deleteFetcher = useFetcher();
+  const renameFetcher = useFetcher();
   const { revalidate } = useRevalidator();
   const [registering, setRegistering] = useState(false);
+  const [selectedPasskey, setSelectedPasskey] = useState<Passkey | null>(null);
+  const [editedName, setEditedName] = useState("");
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const onAddPasskey = async () => {
     setRegistering(true);
@@ -206,11 +241,35 @@ export default function AccountProfile() {
     }
   };
 
-  const onDeletePasskey = (credentialId: string) => {
+  const openPasskeyDrawer = (pk: Passkey) => {
+    setSelectedPasskey(pk);
+    setEditedName(pk.credentialName);
+  };
+
+  const closePasskeyDrawer = () => {
+    setSelectedPasskey(null);
+    setEditedName("");
+  };
+
+  const onRenamePasskey = () => {
+    if (!selectedPasskey) return;
+    const formData = new FormData();
+    formData.append("intent", "renamePasskey");
+    formData.append("credentialId", selectedPasskey.id);
+    formData.append("credentialName", editedName);
+    renameFetcher.submit(formData, { method: "post" });
+    closePasskeyDrawer();
+    revalidate();
+  };
+
+  const onConfirmDelete = () => {
+    if (!confirmDeleteId) return;
     const formData = new FormData();
     formData.append("intent", "deletePasskey");
-    formData.append("credentialId", credentialId);
+    formData.append("credentialId", confirmDeleteId);
     deleteFetcher.submit(formData, { method: "post" });
+    setConfirmDeleteId(null);
+    closePasskeyDrawer();
   };
 
   return (
@@ -264,7 +323,8 @@ export default function AccountProfile() {
               {passkeys.map((pk) => (
                 <HStack
                   key={pk.id}
-                  className="justify-between p-3 rounded-md border border-border space-x-4"
+                  className="justify-between p-3 rounded-md border border-border space-x-4 cursor-pointer hover:bg-muted/40 transition-colors"
+                  onClick={() => openPasskeyDrawer(pk)}
                 >
                   <HStack spacing={3} className="items-start">
                     <LuFingerprint className="size-4 text-muted-foreground shrink-0 mt-1" />
@@ -296,9 +356,12 @@ export default function AccountProfile() {
                   </HStack>
 
                   <IconButton
-                    onClick={() => onDeletePasskey(pk.id)}
-                    aria-label="Delete pass key"
-                    type="submit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setConfirmDeleteId(pk.id);
+                    }}
+                    aria-label="Delete passkey"
+                    type="button"
                     variant="ghost"
                     icon={<LuTrash2 />}
                     className="cursor-pointer"
@@ -309,6 +372,110 @@ export default function AccountProfile() {
           )}
         </CardContent>
       </Card>
+
+      {/* Edit passkey modal */}
+      <Modal
+        open={!!selectedPasskey}
+        onOpenChange={(open) => {
+          if (!open) closePasskeyDrawer();
+        }}
+      >
+        <ModalContent size="small">
+          <ModalHeader>
+            <ModalTitle>Edit Passkey</ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <VStack spacing={4} className="w-full">
+              <VStack className="w-full" spacing={0}>
+                <label className="text-sm font-medium mb-1 block">Name</label>
+                <Input
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  placeholder="Passkey name"
+                />
+              </VStack>
+              {selectedPasskey && (
+                <VStack spacing={1} className="w-full">
+                  <p className="text-xs text-muted-foreground">
+                    Added{" "}
+                    {new Date(selectedPasskey.createdAt).toLocaleDateString(
+                      undefined,
+                      { year: "numeric", month: "long", day: "numeric" }
+                    )}
+                  </p>
+                  {selectedPasskey.lastUsedAt && (
+                    <p className="text-xs text-muted-foreground">
+                      Last used{" "}
+                      {new Date(selectedPasskey.lastUsedAt).toLocaleDateString(
+                        undefined,
+                        { year: "numeric", month: "long", day: "numeric" }
+                      )}
+                    </p>
+                  )}
+                  {selectedPasskey.backedUp && (
+                    <p className="text-xs text-muted-foreground">Synced</p>
+                  )}
+                </VStack>
+              )}
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={closePasskeyDrawer}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={onRenamePasskey}
+              isDisabled={
+                !editedName.trim() ||
+                editedName === selectedPasskey?.credentialName
+              }
+            >
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Delete confirmation modal */}
+      <Modal
+        open={!!confirmDeleteId}
+        onOpenChange={(open) => {
+          if (!open) setConfirmDeleteId(null);
+        }}
+      >
+        <ModalContent size="small">
+          <ModalHeader>
+            <ModalTitle>Delete Passkey</ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            Are you sure you want to delete this passkey? You won't be able to
+            use it to sign in anymore.
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setConfirmDeleteId(null)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={onConfirmDelete}
+              isLoading={deleteFetcher.state !== "idle"}
+              isDisabled={deleteFetcher.state !== "idle"}
+            >
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </VStack>
   );
 }
