@@ -277,7 +277,7 @@ export default function AccountProfile() {
   };
 
   return (
-    <VStack spacing={2}>
+    <VStack spacing={4}>
       <Card>
         <CardHeader>
           <CardTitle>Profile</CardTitle>
