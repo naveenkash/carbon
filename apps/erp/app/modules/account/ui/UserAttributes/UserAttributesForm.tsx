@@ -462,6 +462,7 @@ function TypedDisplay(
     onOpen: () => void;
   }
 ) {
+  const { company } = useUser();
   const {
     attribute,
     displayValue,
@@ -597,7 +598,7 @@ function TypedDisplay(
           <p className="text-muted-foreground self-center">{attribute.name}</p>
           {value ? (
             <a
-              href={getPrivateUrl(value.toString())}
+              href={getPrivateUrl(company.id, value.toString())}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-primary hover:underline"
@@ -755,10 +756,10 @@ function FileAttributeForm({
     setFile(fileUpload);
     toast.info(`Uploading ${fileUpload.name}`);
 
-    const fileName = `${company.id}/person/${userId}/${fileUpload.name}`;
+    const fileName = `person/${userId}/${fileUpload.name}`;
 
     const upload = await carbon?.storage
-      .from("private")
+      .from(company.id)
       .upload(fileName, fileUpload, {
         cacheControl: `${12 * 60 * 60}`,
         upsert: true

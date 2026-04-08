@@ -9,7 +9,7 @@ import { forwardRef } from "react";
 import { path } from "~/utils/path";
 
 type FilePreviewProps = ComponentPropsWithoutRef<typeof HoverCardContent> & {
-  bucket: "public" | "private";
+  bucket: "public" | string;
   pathToFile: string;
   type: "PDF" | "Image";
 };

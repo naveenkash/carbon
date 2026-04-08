@@ -146,10 +146,10 @@ export async function generateAndAttachSalesOrderPdf(args: {
   );
 
   // 2. Upload to Supabase storage
-  const documentFilePath = `${companyId}/opportunity/${opportunityId}/${fileName}`;
+  const documentFilePath = `opportunity/${opportunityId}/${fileName}`;
 
   const uploadResult = await serviceRole.storage
-    .from("private")
+    .from(companyId)
     .upload(documentFilePath, file, {
       cacheControl: `${12 * 60 * 60}`,
       contentType: "application/pdf",

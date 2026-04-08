@@ -11,7 +11,7 @@ import { path } from "~/utils/path";
 type DocumentPreviewProps = ComponentPropsWithoutRef<
   typeof HoverCardContent
 > & {
-  bucket: "public" | "private";
+  bucket: "public" | string;
   pathToFile: string;
   type: "PDF" | "Image";
 };

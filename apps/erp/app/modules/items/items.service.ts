@@ -536,9 +536,7 @@ export async function getItemFiles(
   itemId: string,
   companyId: string
 ) {
-  const result = await client.storage
-    .from("private")
-    .list(`${companyId}/parts/${itemId}`);
+  const result = await client.storage.from(companyId).list(`parts/${itemId}`);
   return result.data || [];
 }
 

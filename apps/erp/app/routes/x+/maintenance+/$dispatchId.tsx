@@ -36,8 +36,8 @@ async function getMaintenanceDispatchFiles(
   dispatchId: string
 ) {
   const result = await client.storage
-    .from("private")
-    .list(`${companyId}/maintenance/${dispatchId}`);
+    .from(companyId)
+    .list(`maintenance/${dispatchId}`);
   return result.data || [];
 }
 

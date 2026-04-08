@@ -311,6 +311,8 @@ function ReceiptLineItem({
   upload: (files: File[]) => Promise<void>;
   deleteFile: (file: StorageItem) => Promise<void>;
 }) {
+  const { company } = useUser();
+
   const [items] = useItems();
   const item = items.find((p) => p.id === line.itemId);
   const unitsOfMeasure = useUnitOfMeasure();
@@ -498,7 +500,7 @@ function ReceiptLineItem({
                           <span className="font-medium text-sm">
                             {isPreviewable ? (
                               <DocumentPreview
-                                bucket="private"
+                                bucket={company.id}
                                 pathToFile={getPath(file)}
                                 // @ts-expect-error
                                 type={getDocumentType(file.name)}
@@ -1108,14 +1110,9 @@ function useReceiptFiles(receiptId: string) {
   const { company } = useUser();
   const { carbon } = useCarbon();
 
-  const getPath = useCallback(
-    ({ name }: { name: string }, lineId: string) => {
-      return `${company.id}/inventory/${lineId}/${stripSpecialCharacters(
-        name
-      )}`;
-    },
-    [company.id]
-  );
+  const getPath = useCallback(({ name }: { name: string }, lineId: string) => {
+    return `inventory/${lineId}/${stripSpecialCharacters(name)}`;
+  }, []);
 
   const submit = useSubmit();
   const revalidator = useRevalidator();
@@ -1130,7 +1127,7 @@ function useReceiptFiles(receiptId: string) {
         const fileName = getPath({ name: file.name }, lineId);
         toast.info(`Uploading ${file.name}`);
         const fileUpload = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(fileName, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -1157,13 +1154,13 @@ function useReceiptFiles(receiptId: string) {
       }
       revalidator.revalidate();
     },
-    [carbon, revalidator, getPath, receiptId, submit]
+    [carbon, revalidator, getPath, receiptId, submit, company.id]
   );
 
   const deleteFile = useCallback(
     async (file: StorageItem, lineId: string) => {
       const fileDelete = await carbon?.storage
-        .from("private")
+        .from(company.id)
         .remove([getPath(file, lineId)]);
 
       if (!fileDelete || fileDelete.error) {
@@ -1174,7 +1171,7 @@ function useReceiptFiles(receiptId: string) {
       toast.success(`${file.name} deleted successfully`);
       revalidator.revalidate();
     },
-    [getPath, carbon?.storage, revalidator]
+    [getPath, carbon?.storage, revalidator, company.id]
   );
 
   return { upload, deleteFile, getPath };

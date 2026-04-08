@@ -722,8 +722,8 @@ export async function getOpportunityDocuments(
   opportunityId: string
 ) {
   const result = await client.storage
-    .from("private")
-    .list(`${companyId}/opportunity/${opportunityId}`);
+    .from(companyId)
+    .list(`opportunity/${opportunityId}`);
 
   return result.data?.map((f) => ({ ...f, bucket: "opportunity" })) ?? [];
 }
@@ -735,11 +735,9 @@ export async function getOpportunityLineDocuments(
   itemId?: string | null
 ) {
   const [opportunityLineResult, itemResult] = await Promise.all([
-    client.storage
-      .from("private")
-      .list(`${companyId}/opportunity-line/${lineId}`),
+    client.storage.from(companyId).list(`opportunity-line/${lineId}`),
     itemId
-      ? client.storage.from("private").list(`${companyId}/parts/${itemId}`)
+      ? client.storage.from(companyId).list(`parts/${itemId}`)
       : Promise.resolve({ data: [] })
   ]);
 

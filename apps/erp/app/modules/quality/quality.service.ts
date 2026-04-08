@@ -998,9 +998,7 @@ export async function getQualityFiles(
   id: string,
   companyId: string
 ) {
-  const result = await client.storage
-    .from("private")
-    .list(`${companyId}/quality/${id}`);
+  const result = await client.storage.from(companyId).list(`quality/${id}`);
   return result.data || [];
 }
 

@@ -84,10 +84,10 @@ const PartForm = ({ initialValues, type = "card", onClose }: PartFormProps) => {
 
     const modelId = nanoid();
     const fileExtension = file.name.split(".").pop();
-    const fileName = `${companyId}/models/${modelId}.${fileExtension}`;
+    const fileName = `models/${modelId}.${fileExtension}`;
 
     const [fileUpload, recordInsert] = await Promise.all([
-      carbon.storage.from("private").upload(fileName, file),
+      carbon.storage.from(companyId).upload(fileName, file),
       carbon.from("modelUpload").insert({
         id: modelId,
         modelPath: fileName,

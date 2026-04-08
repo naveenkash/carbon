@@ -73,7 +73,7 @@ export const UploadCSV = ({ table }: { table: keyof typeof importSchemas }) => {
 
   const uploadFile = async (file: File) => {
     toast.info(`Uploading ${file.name}`);
-    const fileName = `${company.id}/imports/${nanoid()}.csv`;
+    const fileName = `imports/${nanoid()}.csv`;
 
     if (!carbon) {
       setError("Carbon client not available");
@@ -84,7 +84,7 @@ export const UploadCSV = ({ table }: { table: keyof typeof importSchemas }) => {
     }
 
     const { data, error } = await carbon.storage
-      .from("private")
+      .from(company.id)
       .upload(fileName, file);
 
     if (error) {

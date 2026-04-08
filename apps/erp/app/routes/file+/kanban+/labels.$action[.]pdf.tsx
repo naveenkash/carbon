@@ -61,7 +61,11 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (Object.keys(thumbnailPaths).length > 0) {
     const thumbnailPromises = Object.entries(thumbnailPaths).map(
       async ([id, path]) => {
-        const base64 = await getBase64ImageFromSupabase(client, path);
+        const base64 = await getBase64ImageFromSupabase(
+          client,
+          companyId,
+          path
+        );
         return { id, data: base64 };
       }
     );

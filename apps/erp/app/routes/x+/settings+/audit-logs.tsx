@@ -136,7 +136,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
       try {
         const serviceRole = getCarbonServiceRole();
-        const downloadUrl = await getArchiveDownloadUrl(serviceRole, archiveId);
+        const downloadUrl = await getArchiveDownloadUrl(
+          serviceRole,
+          archiveId,
+          companyId
+        );
         // Redirect to the signed URL for download
         return redirect(downloadUrl);
       } catch (err) {

@@ -2,6 +2,7 @@ import { notFound } from "@carbon/auth";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { supportedModelTypes } from "@carbon/utils";
 import type { LoaderFunctionArgs } from "react-router";
+import { useUser } from "~/hooks";
 
 const supportedFileTypes: Record<string, string> = {
   pdf: "application/pdf",
@@ -25,6 +26,7 @@ const supportedFileTypes: Record<string, string> = {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const client = getCarbonServiceRole();
+  const { company } = useUser();
 
   const path = params["*"];
 
@@ -45,7 +47,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const contentType = supportedFileTypes[fileType];
 
   async function downloadFile() {
-    const result = await client.storage.from("private").download(`${path}`);
+    const result = await client.storage.from(company.id).download(`${path}`);
     if (result.error) {
       console.error(result.error);
       return null;

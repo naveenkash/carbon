@@ -19,14 +19,14 @@ export function ItemThumbnailUpload({
 
   const [thumbnailPath, setThumbnailPath] = useState<string | null>(() => {
     if (path) {
-      return getPrivateUrl(path);
+      return getPrivateUrl(company.id, path);
     }
     return null;
   });
 
   useEffect(() => {
-    setThumbnailPath(path ? getPrivateUrl(path) : null);
-  }, [path]);
+    setThumbnailPath(path ? getPrivateUrl(company.id, path) : null);
+  }, [path, company.id]);
 
   const onFileRemove = useCallback(async () => {
     if (!carbon) {
@@ -112,14 +112,10 @@ export function ItemThumbnailUpload({
           });
 
           const { data, error } = await carbon.storage
-            .from("private")
-            .upload(
-              `${company.id}/thumbnails/${itemId}/${fileName}`,
-              thumbnailFile,
-              {
-                upsert: true
-              }
-            );
+            .from(company.id)
+            .upload(`thumbnails/${itemId}/${fileName}`, thumbnailFile, {
+              upsert: true
+            });
 
           if (error) {
             toast.error("Failed to upload thumbnail");
@@ -139,7 +135,7 @@ export function ItemThumbnailUpload({
           }
 
           if (data) {
-            setThumbnailPath(getPrivateUrl(data.path));
+            setThumbnailPath(getPrivateUrl(company.id, data.path));
             toast.success("Thumbnail uploaded");
           }
         } catch (error) {

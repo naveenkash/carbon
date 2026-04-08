@@ -34,7 +34,7 @@ const filePath = "~/Downloads/test.stl";
   });
 
   const { error: uploadError } = await client.storage
-    .from("private")
+    .from(companyId)
     .upload(modelPath, fileBuffer, {
       contentType: "application/octet-stream",
     });

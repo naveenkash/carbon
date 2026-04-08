@@ -125,10 +125,8 @@ export async function action(args: ActionFunctionArgs) {
 
           for (const doc of topDocs) {
             const { data: fileData } = await client.storage
-              .from("private")
-              .download(
-                `${companyId}/supplier-interaction/${interactionId}/${doc.name}`
-              );
+              .from(companyId)
+              .download(`supplier-interaction/${interactionId}/${doc.name}`);
 
             if (fileData) {
               const arrayBuffer = await fileData.arrayBuffer();
@@ -155,10 +153,8 @@ export async function action(args: ActionFunctionArgs) {
 
             for (const doc of docs) {
               const { data: fileData } = await client.storage
-                .from("private")
-                .download(
-                  `${companyId}/supplier-interaction-line/${line.id}/${doc.name}`
-                );
+                .from(companyId)
+                .download(`supplier-interaction-line/${line.id}/${doc.name}`);
 
               if (fileData) {
                 const arrayBuffer = await fileData.arrayBuffer();

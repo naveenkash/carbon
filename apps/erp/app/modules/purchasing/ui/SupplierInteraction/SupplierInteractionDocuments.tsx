@@ -52,6 +52,8 @@ const SupplierInteractionDocuments = ({
   isReadOnly,
   type
 }: SupplierInteractionDocumentsProps) => {
+  const { company } = useUser();
+
   const { canDelete, download, deleteAttachment, getPath, upload } =
     useSupplierInteractionDocuments({
       interactionId,
@@ -108,7 +110,7 @@ const SupplierInteractionDocuments = ({
                             getDocumentType(attachment.name)
                           ) ? (
                             <DocumentPreview
-                              bucket="private"
+                              bucket={company.id}
                               pathToFile={getPath(attachment)}
                               // @ts-ignore
                               type={getDocumentType(attachment.name)}
@@ -206,19 +208,17 @@ export const useSupplierInteractionDocuments = ({
 
   const getPath = useCallback(
     (attachment: { name: string }) => {
-      return `${
-        company.id
-      }/supplier-interaction/${interactionId}/${stripSpecialCharacters(
+      return `supplier-interaction/${interactionId}/${stripSpecialCharacters(
         attachment.name
       )}`;
     },
-    [company.id, interactionId]
+    [interactionId]
   );
 
   const deleteAttachment = useCallback(
     async (attachment: FileObject) => {
       const result = await carbon?.storage
-        .from("private")
+        .from(company.id)
         .remove([getPath(attachment)]);
 
       if (!result || result.error) {
@@ -229,12 +229,15 @@ export const useSupplierInteractionDocuments = ({
       toast.success(`${attachment.name} deleted successfully`);
       revalidator.revalidate();
     },
-    [carbon?.storage, getPath, revalidator]
+    [carbon?.storage, getPath, revalidator, company.id]
   );
 
   const download = useCallback(
     async (attachment: FileObject) => {
-      const url = path.to.file.previewFile(`private/${getPath(attachment)}`);
+      const url = path.to.file.previewFile(
+        `${company.id}/${getPath(attachment)}`
+      );
+
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -251,7 +254,7 @@ export const useSupplierInteractionDocuments = ({
         console.error(error);
       }
     },
-    [getPath]
+    [getPath, company.id]
   );
 
   const createDocumentRecord = useCallback(
@@ -293,7 +296,7 @@ export const useSupplierInteractionDocuments = ({
         toast.info(`Uploading ${file.name}`);
 
         const fileUpload = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(fileName, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -312,7 +315,7 @@ export const useSupplierInteractionDocuments = ({
       }
       revalidator.revalidate();
     },
-    [getPath, createDocumentRecord, carbon, revalidator]
+    [getPath, createDocumentRecord, carbon, revalidator, company.id]
   );
 
   return {
@@ -358,6 +361,8 @@ type OptimisticFileObject = Omit<
   "owner" | "updated_at" | "created_at" | "last_accessed_at" | "buckets"
 >;
 export const usePendingItems = () => {
+  const { company } = useUser();
+
   type PendingItem = ReturnType<typeof useFetchers>[number] & {
     formData: FormData;
   };
@@ -375,7 +380,7 @@ export const usePendingItems = () => {
         const newItem: OptimisticFileObject = {
           id: path,
           name: name,
-          bucket_id: "private",
+          bucket_id: company.id,
           metadata: {
             size,
             mimetype: getDocumentType(name)

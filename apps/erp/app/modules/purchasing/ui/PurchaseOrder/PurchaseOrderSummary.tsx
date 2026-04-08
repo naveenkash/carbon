@@ -53,6 +53,7 @@ const LineItems = ({
   lines: PurchaseOrderLine[];
   shouldConvertCurrency: boolean;
 }) => {
+  const { company } = useUser();
   const [items] = useItems();
   const { orderId } = useParams();
   if (!orderId) throw new Error("Could not find orderId");
@@ -96,7 +97,7 @@ const LineItems = ({
                 <img
                   alt={itemReadableId!}
                   className="w-24 h-24 bg-gradient-to-bl from-muted to-muted/40 rounded-lg"
-                  src={getPrivateUrl(line.thumbnailPath)}
+                  src={getPrivateUrl(company.id, line.thumbnailPath)}
                 />
               ) : (
                 <div className="w-24 h-24 bg-gradient-to-bl from-muted to-muted/40 rounded-lg p-4">

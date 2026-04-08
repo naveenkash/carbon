@@ -79,9 +79,9 @@ const Suggestion = () => {
         return;
       }
 
-      const fileName = `${companyId}/suggestions/${nanoid()}.${fileExtension}`;
+      const fileName = `suggestions/${nanoid()}.${fileExtension}`;
       const imageUpload = await carbon.storage
-        .from("private")
+        .from(companyId)
         .upload(fileName, file, {
           cacheControl: `${12 * 60 * 60}`,
           upsert: true

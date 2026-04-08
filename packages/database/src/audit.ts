@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { auditConfig, getAuditableTableNames } from "./audit.config.ts";
+import { getAuditableTableNames } from "./audit.config.ts";
 import type {
   AuditLogArchive,
   AuditLogEntry,
@@ -305,7 +305,8 @@ export async function getAuditLogArchives(
  */
 export async function getArchiveDownloadUrl(
   client: SupabaseClient,
-  archiveId: string
+  archiveId: string,
+  companyId: string
 ): Promise<string> {
   // First get the archive record to get the path
   const { data: archive, error: fetchError } = await client
@@ -320,7 +321,7 @@ export async function getArchiveDownloadUrl(
 
   // Generate signed URL (1 hour expiry)
   const { data, error } = await client.storage
-    .from(auditConfig.archiveBucket)
+    .from(companyId)
     .createSignedUrl((archive as { archivePath: string }).archivePath, 3600);
 
   if (error || !data?.signedUrl) {

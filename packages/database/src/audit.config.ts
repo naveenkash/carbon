@@ -334,11 +334,8 @@ export const auditConfig = {
   /** Retention period before archival (days) */
   retentionDays: 30,
 
-  /** Archive storage path template */
-  archivePath: "audit-logs/{companyId}/{year}/{month}.jsonl.gz",
-
-  /** Storage bucket name for archives */
-  archiveBucket: "private"
+  /** Archive storage path template within company bucket */
+  archivePath: "audit-logs/{year}/{month}.jsonl.gz"
 } as const;
 
 // ---------------------------------------------------------------------------

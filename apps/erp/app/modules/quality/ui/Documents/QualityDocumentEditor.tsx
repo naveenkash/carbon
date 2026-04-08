@@ -65,9 +65,9 @@ export default function QualityDocumentEditor() {
 
   const onUploadImage = async (file: File) => {
     const ext = file.name.split(".").pop();
-    const storagePath = `${companyId}/parts/${nanoid()}.${ext}`;
+    const storagePath = `parts/${nanoid()}.${ext}`;
     const result = await carbon?.storage
-      .from("private")
+      .from(companyId)
       .upload(storagePath, file);
 
     if (result?.error) {
@@ -75,7 +75,7 @@ export default function QualityDocumentEditor() {
       throw new Error(result.error.message);
     }
     if (!result?.data) throw new Error("Failed to upload image");
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   const isDraft = loaderData?.document?.status === "Draft";

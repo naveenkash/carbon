@@ -1639,8 +1639,8 @@ export const getParams = (request: Request) => {
   return searchParams.toString();
 };
 
-export const getPrivateUrl = (path: string) => {
-  return `/file/preview/private/${path}`;
+export const getPrivateUrl = (companyId: string, path: string) => {
+  return `/file/preview/${companyId}/${path}`;
 };
 
 export const getPublicModelUrl = (path: string) => {

@@ -48,9 +48,9 @@ const ShipmentNotes = ({
 
   const onUploadImage = async (file: File) => {
     const fileType = file.name.split(".").pop();
-    const fileName = `${companyId}/inventory/${id}/${nanoid()}.${fileType}`;
+    const fileName = `inventory/${id}/${nanoid()}.${fileType}`;
 
-    const result = await carbon?.storage.from("private").upload(fileName, file);
+    const result = await carbon?.storage.from(companyId).upload(fileName, file);
 
     if (result?.error) {
       toast.error("Failed to upload image");
@@ -61,7 +61,7 @@ const ShipmentNotes = ({
       throw new Error("Failed to upload image");
     }
 
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   const onUpdateExternalNotes = useDebounce(

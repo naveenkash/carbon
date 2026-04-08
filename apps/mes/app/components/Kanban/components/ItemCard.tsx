@@ -38,6 +38,7 @@ import { TodoStatusIcon } from "~/assets/icons/TodoStatusIcon";
 import Avatar from "~/components/Avatar";
 import EmployeeAvatar from "~/components/EmployeeAvatar";
 import { DeadlineIcon } from "~/components/Icons";
+import { useUser } from "~/hooks";
 import { getPrivateUrl, path } from "~/utils/path";
 import type { DisplaySettings, Item } from "../types";
 
@@ -85,6 +86,7 @@ export function ItemCard({
   showSalesOrder,
   showThumbnail
 }: ItemCardProps) {
+  const { company } = useUser();
   const routeData = useRouteData<{
     customers: { id: string; name: string }[];
   }>("/x/operations");
@@ -179,7 +181,7 @@ export function ItemCard({
           {showThumbnail && item.thumbnailPath && (
             <div className="flex justify-center">
               <img
-                src={getPrivateUrl(item.thumbnailPath)}
+                src={getPrivateUrl(company.id, item.thumbnailPath)}
                 alt={item.title}
                 className="w-full h-auto rounded-lg"
               />

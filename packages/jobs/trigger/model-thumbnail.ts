@@ -52,8 +52,8 @@ export const modelThumbnailTask = task({
     console.log("Uploading thumbnail", { fileName });
 
     const { data, error } = await client.storage
-      .from("private")
-      .upload(`${companyId}/thumbnails/${modelId}/${fileName}`, thumbnailFile, {
+      .from(companyId)
+      .upload(`thumbnails/${modelId}/${fileName}`, thumbnailFile, {
         upsert: true,
       });
 

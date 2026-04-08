@@ -438,8 +438,8 @@ export async function getReceiptFiles(
 ): Promise<{ data: StorageItem[]; error: string | null }> {
   const promises = lineIds.map((lineId) =>
     client.storage
-      .from("private")
-      .list(`${companyId}/inventory/${lineId}`)
+      .from(companyId)
+      .list(`inventory/${lineId}`)
       .then((result) => ({
         ...result,
         lineId
@@ -625,8 +625,8 @@ export async function getShipmentFiles(
 ): Promise<{ data: StorageItem[]; error: string | null }> {
   const promises = lineIds.map((lineId) =>
     client.storage
-      .from("private")
-      .list(`${companyId}/inventory/${lineId}`)
+      .from(companyId)
+      .list(`inventory/${lineId}`)
       .then((result) => ({
         ...result,
         lineId

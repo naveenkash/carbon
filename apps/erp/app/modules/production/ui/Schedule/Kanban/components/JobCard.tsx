@@ -37,6 +37,7 @@ import {
 import { RiProgress8Line } from "react-icons/ri";
 import { Link } from "react-router";
 import { Assignee, EmployeeAvatarGroup } from "~/components";
+import { useUser } from "~/hooks";
 import { getDeadlineIcon } from "~/modules/production/ui/Jobs/Deadline";
 import { useCustomers } from "~/stores";
 import { getPrivateUrl, path } from "~/utils/path";
@@ -88,6 +89,7 @@ type JobCardProps = {
 };
 
 export function JobCard({ item, isOverlay, progressByItemId }: JobCardProps) {
+  const { company } = useUser();
   // biome-ignore lint/correctness/noUnusedVariables: suppressed due to migration
   const { displaySettings, selectedGroup, setSelectedGroup, tags } =
     useKanban();
@@ -249,7 +251,7 @@ export function JobCard({ item, isOverlay, progressByItemId }: JobCardProps) {
         {displaySettings.showThumbnail && item.thumbnailPath && (
           <div className="flex justify-center">
             <img
-              src={getPrivateUrl(item.thumbnailPath)}
+              src={getPrivateUrl(company.id, item.thumbnailPath)}
               alt={item.itemDescription}
               className="w-full h-auto rounded-lg"
             />

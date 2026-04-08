@@ -61,20 +61,18 @@ const useJobDocuments = ({
   const getPath = useCallback(
     (file: { name: string }, bucket: "job" | "parts" = "job") => {
       if (bucket === "parts" && itemId) {
-        return `${company.id}/parts/${itemId}/${stripSpecialCharacters(
-          file.name
-        )}`;
+        return `parts/${itemId}/${stripSpecialCharacters(file.name)}`;
       }
-      return `${company.id}/job/${jobId}/${stripSpecialCharacters(file.name)}`;
+      return `job/${jobId}/${stripSpecialCharacters(file.name)}`;
     },
-    [company.id, jobId, itemId]
+    [jobId, itemId]
   );
 
   const deleteFile = useCallback(
     async (file: FileObject & { bucket?: string }) => {
       const bucket = file.bucket === "parts" ? "parts" : "job";
       const fileDelete = await carbon?.storage
-        .from("private")
+        .from(company.id)
         .remove([getPath(file, bucket as "job" | "parts")]);
 
       if (!fileDelete || fileDelete.error) {
@@ -85,7 +83,7 @@ const useJobDocuments = ({
       toast.success(`${file.name} deleted successfully`);
       revalidator.revalidate();
     },
-    [getPath, carbon?.storage, revalidator]
+    [getPath, carbon?.storage, revalidator, company.id]
   );
 
   const deleteModel = useCallback(async () => {
@@ -110,7 +108,10 @@ const useJobDocuments = ({
         return;
       }
 
-      const url = path.to.file.previewFile(`private/${model.modelPath}`);
+      const modelSubpath = model.modelPath?.startsWith(`${company.id}/`)
+        ? model.modelPath.slice(company.id.length + 1)
+        : model.modelPath;
+      const url = path.to.file.previewFile(`${company.id}/${modelSubpath}`);
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -128,7 +129,7 @@ const useJobDocuments = ({
       }
     },
 
-    []
+    [company.id]
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
@@ -136,7 +137,7 @@ const useJobDocuments = ({
     async (file: FileObject & { bucket?: string }) => {
       const bucket = file.bucket === "parts" ? "parts" : "job";
       const url = path.to.file.previewFile(
-        `private/${getPath(file, bucket as "job" | "parts")}`
+        `${company.id}/${getPath(file, bucket as "job" | "parts")}`
       );
       try {
         const response = await fetch(url);
@@ -210,7 +211,7 @@ const useJobDocuments = ({
         const fileName = getPath(file, bucket);
 
         const fileUpload = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(fileName, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -229,7 +230,7 @@ const useJobDocuments = ({
       }
       revalidator.revalidate();
     },
-    [getPath, createDocumentRecord, carbon, revalidator, itemId]
+    [getPath, createDocumentRecord, carbon, revalidator, itemId, company.id]
   );
 
   const moveFile = useCallback(
@@ -258,7 +259,7 @@ const useJobDocuments = ({
         // Download the file first
         const sourcePath = getPath(file, currentBucket);
         const { data: downloadData } = await carbon.storage
-          .from("private")
+          .from(company.id)
           .download(sourcePath);
 
         if (!downloadData) {
@@ -269,7 +270,7 @@ const useJobDocuments = ({
         // Upload to new location
         const targetPath = getPath(file, targetBucket);
         const { error: uploadError } = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(targetPath, downloadData, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -282,7 +283,7 @@ const useJobDocuments = ({
 
         // Delete from old location
         const { error: deleteError } = await carbon.storage
-          .from("private")
+          .from(company.id)
           .remove([sourcePath]);
 
         if (deleteError) {
@@ -301,7 +302,7 @@ const useJobDocuments = ({
         console.error(error);
       }
     },
-    [carbon, itemId, getPath, revalidator]
+    [carbon, itemId, getPath, revalidator, company.id]
   );
 
   return {
@@ -335,6 +336,8 @@ const JobDocuments = ({
   bucket = "job",
   isReadOnly
 }: JobDocumentsProps) => {
+  const { company } = useUser();
+
   const {
     canDelete,
     canUpdate,
@@ -472,7 +475,7 @@ const JobDocuments = ({
                                   : "job";
                               window.open(
                                 path.to.file.previewFile(
-                                  `${"private"}/${getPath(
+                                  `${company.id}/${getPath(
                                     file,
                                     bucket as "job" | "parts"
                                   )}`
@@ -486,7 +489,7 @@ const JobDocuments = ({
                         >
                           {["PDF", "Image"].includes(type) ? (
                             <DocumentPreview
-                              bucket="private"
+                              bucket={company.id}
                               pathToFile={getPath(
                                 file,
                                 (file as any).bucket === "parts"
@@ -634,6 +637,8 @@ const JobDocumentForm = ({
 };
 
 const usePendingItems = () => {
+  const { company } = useUser();
+
   type PendingItem = ReturnType<typeof useFetchers>[number] & {
     formData: FormData;
   };
@@ -651,8 +656,8 @@ const usePendingItems = () => {
         const newItem: OptimisticFileObject = {
           id: path,
           name: name,
-          bucket_id: "private",
-          bucket: "private",
+          bucket_id: company.id,
+          bucket: company.id,
           metadata: {
             size,
             mimetype: getDocumentType(name)

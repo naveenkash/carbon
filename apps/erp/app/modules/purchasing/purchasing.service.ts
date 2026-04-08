@@ -548,8 +548,8 @@ export async function getSupplierInteractionDocuments(
   interactionId: string
 ) {
   const result = await client.storage
-    .from("private")
-    .list(`${companyId}/supplier-interaction/${interactionId}`);
+    .from(companyId)
+    .list(`supplier-interaction/${interactionId}`);
 
   return (
     result.data?.map((f) => ({ ...f, bucket: "supplier-interaction" })) ?? []
@@ -562,8 +562,8 @@ export async function getSupplierInteractionLineDocuments(
   lineId: string
 ) {
   const result = await client.storage
-    .from("private")
-    .list(`${companyId}/supplier-interaction-line/${lineId}`);
+    .from(companyId)
+    .list(`supplier-interaction-line/${lineId}`);
 
   return (
     result.data?.map((f) => ({ ...f, bucket: "supplier-interaction-line" })) ??

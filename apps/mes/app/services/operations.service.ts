@@ -202,9 +202,7 @@ const getItemFiles = async (
   items: Array<{ itemId: string }>
 ) => {
   const getFile = async (id: string) => {
-    const res = await client.storage
-      .from("private")
-      .list(`${companyId}/parts/${id}`);
+    const res = await client.storage.from(companyId).list(`parts/${id}`);
 
     if (res.error || !res.data) return null;
 
@@ -229,9 +227,9 @@ export async function getJobFiles(
 
     const [opportunityLineFiles, jobFiles, itemFiles] = await Promise.all([
       client.storage
-        .from("private")
-        .list(`${companyId}/opportunity-line/${opportunityLine}`),
-      client.storage.from("private").list(`${companyId}/job/${job.id}`),
+        .from(companyId)
+        .list(`opportunity-line/${opportunityLine}`),
+      client.storage.from(companyId).list(`job/${job.id}`),
       getItemFiles(client, companyId, items)
     ]);
 
@@ -246,7 +244,7 @@ export async function getJobFiles(
     ];
   } else {
     const [jobFiles, itemFiles] = await Promise.all([
-      client.storage.from("private").list(`${companyId}/job/${job.id}`),
+      client.storage.from(companyId).list(`job/${job.id}`),
       getItemFiles(client, companyId, items)
     ]);
 

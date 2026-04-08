@@ -77,11 +77,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .slice(0, -5)}.pdf`
             );
 
-            const documentFilePath = `${companyId}/opportunity/${salesOrder.opportunityId}/${fileName}`;
+            const documentFilePath = `opportunity/${salesOrder.opportunityId}/${fileName}`;
 
             // Upload the PDF to storage
             const documentFileUpload = await serviceRole.storage
-              .from("private")
+              .from(companyId)
               .upload(documentFilePath, file, {
                 cacheControl: `${12 * 60 * 60}`,
                 contentType: "application/pdf",

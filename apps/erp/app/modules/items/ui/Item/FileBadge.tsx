@@ -2,6 +2,7 @@ import { Badge, cn, HStack } from "@carbon/react";
 import { LuDownload } from "react-icons/lu";
 import { DocumentPreview } from "~/components";
 import DocumentIcon from "~/components/DocumentIcon";
+import { useUser } from "~/hooks";
 import type { MethodItemType } from "~/modules/shared";
 import { getDocumentType } from "~/modules/shared";
 import type { ItemFile } from "../../types";
@@ -21,12 +22,13 @@ export function FileBadge({
   className
 }: FileBadgeProps) {
   const { getPath, download } = useItemDocuments({ itemId, type: itemType });
+  const { company } = useUser();
   const type = getDocumentType(file.name);
   return (
     <HStack className="group" spacing={1}>
       {["PDF", "Image"].includes(type) ? (
         <DocumentPreview
-          bucket="private"
+          bucket={company.id}
           pathToFile={getPath(file)}
           // @ts-ignore
           type={type}

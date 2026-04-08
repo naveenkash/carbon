@@ -60,9 +60,9 @@ export function MaintenanceDispatchNotes({
 
   const onUploadImage = async (file: File) => {
     const fileType = file.name.split(".").pop();
-    const fileName = `${companyId}/maintenance/${nanoid()}.${fileType}`;
+    const fileName = `maintenance/${nanoid()}.${fileType}`;
 
-    const result = await carbon?.storage.from("private").upload(fileName, file);
+    const result = await carbon?.storage.from(companyId).upload(fileName, file);
 
     if (result?.error) {
       toast.error("Failed to upload image");
@@ -73,7 +73,7 @@ export function MaintenanceDispatchNotes({
       throw new Error("Failed to upload image");
     }
 
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   const onUpdateContent = useDebounce(
@@ -191,9 +191,9 @@ function MaintenanceFilesContent({
 
   const getFilePath = useCallback(
     (fileName: string) => {
-      return `${company.id}/maintenance/${dispatchId}/${stripSpecialCharacters(fileName)}`;
+      return `maintenance/${dispatchId}/${stripSpecialCharacters(fileName)}`;
     },
-    [company.id, dispatchId]
+    [dispatchId]
   );
 
   const upload = useCallback(
@@ -207,7 +207,7 @@ function MaintenanceFilesContent({
         const filePath = getFilePath(file.name);
 
         const result = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(filePath, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -221,13 +221,13 @@ function MaintenanceFilesContent({
       }
       revalidator.revalidate();
     },
-    [carbon, getFilePath, revalidator]
+    [carbon, getFilePath, revalidator, company.id]
   );
 
   const download = useCallback(
     async (file: FileObject) => {
       const filePath = getFilePath(file.name);
-      const url = path.to.file.previewFile(`private/${filePath}`);
+      const url = path.to.file.previewFile(`${company.id}/${filePath}`);
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -244,7 +244,7 @@ function MaintenanceFilesContent({
         console.error(error);
       }
     },
-    [getFilePath]
+    [getFilePath, company.id]
   );
 
   const deleteFile = useCallback(
@@ -255,7 +255,7 @@ function MaintenanceFilesContent({
       }
 
       const filePath = getFilePath(file.name);
-      const result = await carbon.storage.from("private").remove([filePath]);
+      const result = await carbon.storage.from(company.id).remove([filePath]);
 
       if (result.error) {
         toast.error(result.error.message || "Error deleting file");
@@ -265,7 +265,7 @@ function MaintenanceFilesContent({
       toast.success(`${file.name} deleted successfully`);
       revalidator.revalidate();
     },
-    [carbon, getFilePath, revalidator]
+    [carbon, getFilePath, revalidator, company.id]
   );
 
   const onDrop = useCallback(
@@ -313,7 +313,7 @@ function MaintenanceFilesContent({
                         if (["PDF", "Image"].includes(type)) {
                           window.open(
                             path.to.file.previewFile(
-                              `private/${getFilePath(file.name)}`
+                              `${company.id}/${getFilePath(file.name)}`
                             ),
                             "_blank"
                           );
@@ -324,7 +324,7 @@ function MaintenanceFilesContent({
                     >
                       {["PDF", "Image"].includes(type) ? (
                         <DocumentPreview
-                          bucket="private"
+                          bucket={company.id}
                           pathToFile={getFilePath(file.name)}
                           // @ts-expect-error
                           type={type}

@@ -116,11 +116,11 @@ async function archiveCompanyLogs(
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
   const timestamp = `${year}-${month}-${day}`;
-  const archivePath = `audit-logs/${companyId}/${year}/${month}/${timestamp}.jsonl.gz`;
+  const archivePath = `audit-logs/${year}/${month}/${timestamp}.jsonl.gz`;
 
   // Upload to storage
   const { error: uploadError } = await client.storage
-    .from(auditConfig.archiveBucket)
+    .from(companyId)
     .upload(archivePath, gzipped, {
       contentType: "application/gzip",
       upsert: true,
@@ -146,7 +146,7 @@ async function archiveCompanyLogs(
 
   if (archiveError) {
     // Try to clean up uploaded file
-    await client.storage.from(auditConfig.archiveBucket).remove([archivePath]);
+    await client.storage.from(companyId).remove([archivePath]);
     throw new Error(`Failed to record archive: ${archiveError.message}`);
   }
 

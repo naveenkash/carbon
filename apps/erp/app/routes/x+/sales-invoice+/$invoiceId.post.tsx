@@ -142,10 +142,10 @@ export async function action(args: ActionFunctionArgs) {
         .slice(0, -5)}.pdf`
     );
 
-    const documentFilePath = `${companyId}/opportunity/${salesInvoice.data.opportunityId}/${fileName}`;
+    const documentFilePath = `opportunity/${salesInvoice.data.opportunityId}/${fileName}`;
 
     const documentFileUpload = await serviceRole.storage
-      .from("private")
+      .from(companyId)
       .upload(documentFilePath, file, {
         cacheControl: `${12 * 60 * 60}`,
         contentType: "application/pdf",

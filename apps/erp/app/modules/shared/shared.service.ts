@@ -626,13 +626,14 @@ export async function getApprovalsForUser(
 
 export async function getBase64ImageFromSupabase(
   client: SupabaseClient<Database>,
+  companyId: string,
   path: string
 ) {
   function arrayBufferToBase64(buffer: ArrayBuffer): string {
     return Buffer.from(buffer).toString("base64");
   }
 
-  const { data, error } = await client.storage.from("private").download(path);
+  const { data, error } = await client.storage.from(companyId).download(path);
   if (error) {
     return null;
   }

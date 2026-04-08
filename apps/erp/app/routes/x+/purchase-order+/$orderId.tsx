@@ -172,10 +172,10 @@ export async function action(args: ActionFunctionArgs) {
               .slice(0, -5)}.pdf`
           );
 
-          const documentFilePath = `${companyId}/supplier-interaction/${purchaseOrder.data.supplierInteractionId}/${fileName}`;
+          const documentFilePath = `supplier-interaction/${purchaseOrder.data.supplierInteractionId}/${fileName}`;
 
           const documentFileUpload = await serviceRole.storage
-            .from("private")
+            .from(companyId)
             .upload(documentFilePath, file, {
               cacheControl: `${12 * 60 * 60}`,
               contentType: "application/pdf",

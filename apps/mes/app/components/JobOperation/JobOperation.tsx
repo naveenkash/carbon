@@ -1442,7 +1442,7 @@ export const JobOperation = ({
                                             ) {
                                               window.open(
                                                 path.to.file.previewFile(
-                                                  `${"private"}/${getFilePath(
+                                                  `${companyId}/${getFilePath(
                                                     file
                                                   )}`
                                                 ),
@@ -1453,7 +1453,7 @@ export const JobOperation = ({
                                         >
                                           {["PDF", "Image"].includes(type) ? (
                                             <FilePreview
-                                              bucket="private"
+                                              bucket={companyId}
                                               pathToFile={getFilePath(file)}
                                               // @ts-ignore
                                               type={getFileType(file.name)}

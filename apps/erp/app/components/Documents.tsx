@@ -97,7 +97,7 @@ const Documents = ({
   const deleteFile = useCallback(
     async (file: StorageItem) => {
       const fileDelete = await carbon?.storage
-        .from("private")
+        .from(company.id)
         .remove([getReadPath(file)]);
 
       if (!fileDelete || fileDelete.error) {
@@ -108,7 +108,7 @@ const Documents = ({
       toast.success(`${file.name} deleted successfully`);
       revalidator.revalidate();
     },
-    [carbon?.storage, getReadPath, revalidator]
+    [carbon?.storage, getReadPath, revalidator, company.id]
   );
 
   const downloadModel = useCallback(
@@ -118,7 +118,7 @@ const Documents = ({
         return;
       }
 
-      const url = path.to.file.previewFile(`private/${model.modelPath}`);
+      const url = path.to.file.previewFile(`${company.id}/${model.modelPath}`);
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -136,7 +136,7 @@ const Documents = ({
       }
     },
 
-    []
+    [company.id]
   );
 
   const deleteModel = useCallback(async () => {
@@ -165,7 +165,9 @@ const Documents = ({
 
   const download = useCallback(
     async (file: StorageItem) => {
-      const url = path.to.file.previewFile(`private/${getReadPath(file)}`);
+      const url = path.to.file.previewFile(
+        `${company.id}/${getReadPath(file)}`
+      );
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -182,7 +184,7 @@ const Documents = ({
         console.error(error);
       }
     },
-    [getReadPath]
+    [getReadPath, company.id]
   );
 
   const upload = useCallback(
@@ -196,7 +198,7 @@ const Documents = ({
         const fileName = getWritePath({ name: file.name });
         toast.info(`Uploading ${file.name}`);
         const fileUpload = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(fileName, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -233,7 +235,8 @@ const Documents = ({
       revalidator,
       submit,
       sourceDocument,
-      sourceDocumentId
+      sourceDocumentId,
+      company.id
     ]
   );
 
@@ -355,7 +358,7 @@ const Documents = ({
                           if (["PDF", "Image"].includes(type)) {
                             window.open(
                               path.to.file.previewFile(
-                                `${"private"}/${getReadPath(file)}`
+                                `${company.id}/${getReadPath(file)}`
                               ),
                               "_blank"
                             );
@@ -366,7 +369,7 @@ const Documents = ({
                       >
                         {isPreviewable ? (
                           <DocumentPreview
-                            bucket="private"
+                            bucket={company.id}
                             pathToFile={getReadPath(file)}
                             // @ts-ignore
                             type={getDocumentType(file.name)}
@@ -436,6 +439,8 @@ const Documents = ({
 export default Documents;
 
 const usePendingItems = () => {
+  const { company } = useUser();
+
   type PendingItem = ReturnType<typeof useFetchers>[number] & {
     formData: FormData;
   };
@@ -453,8 +458,8 @@ const usePendingItems = () => {
         const newItem: OptimisticFileObject = {
           id: path,
           name: name,
-          bucket_id: "private",
-          bucket: "private",
+          bucket_id: company.id,
+          bucket: company.id,
           metadata: {
             size,
             mimetype: getDocumentType(name)

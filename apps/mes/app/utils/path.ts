@@ -164,8 +164,8 @@ export const removeSubdomain = (url?: string): string => {
   return domain;
 };
 
-export const getPrivateUrl = (path: string) => {
-  return `/file/preview/private/${path}`;
+export const getPrivateUrl = (companyId: string, path: string) => {
+  return `/file/preview/${companyId}/${path}`;
 };
 
 export const getStoragePath = (bucket: string, path: string) => {

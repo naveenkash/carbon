@@ -9,7 +9,6 @@ export function useFiles(job: Job) {
 
   const getFilePath = useCallback(
     (file: StorageItem) => {
-      const companyId = user.company.id;
       const { bucket } = file;
       let id: string | null = "";
 
@@ -25,14 +24,16 @@ export function useFiles(job: Job) {
           break;
       }
 
-      return `${companyId}/${bucket}/${id}/${file.name}`;
+      return `${bucket}/${id}/${file.name}`;
     },
-    [job.id, job.itemId, job.quoteLineId, job.salesOrderLineId, user.company.id]
+    [job.id, job.itemId, job.quoteLineId, job.salesOrderLineId]
   );
 
   const downloadFile = useCallback(
     async (file: StorageItem) => {
-      const url = path.to.file.previewFile(`private/${getFilePath(file)}`);
+      const url = path.to.file.previewFile(
+        `${user.company.id}/${getFilePath(file)}`
+      );
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -49,7 +50,7 @@ export function useFiles(job: Job) {
         console.error(error);
       }
     },
-    [getFilePath]
+    [getFilePath, user.company.id]
   );
 
   const downloadModel = useCallback(
@@ -59,7 +60,12 @@ export function useFiles(job: Job) {
         return;
       }
 
-      const url = path.to.file.previewFile(`private/${model.modelPath}`);
+      const modelSubpath = model.modelPath?.startsWith(`${user.company.id}/`)
+        ? model.modelPath.slice(user.company.id.length + 1)
+        : model.modelPath;
+      const url = path.to.file.previewFile(
+        `${user.company.id}/${modelSubpath}`
+      );
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -76,7 +82,7 @@ export function useFiles(job: Job) {
         console.error(error);
       }
     },
-    []
+    [user.company.id]
   );
 
   return {

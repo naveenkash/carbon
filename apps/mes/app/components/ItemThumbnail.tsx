@@ -1,6 +1,7 @@
 import { cn } from "@carbon/react";
 import { cva } from "class-variance-authority";
 import { LuSquareStack } from "react-icons/lu";
+import { useUser } from "~/hooks";
 import { getPrivateUrl } from "~/utils/path";
 import { MethodItemTypeIcon } from "./Icons";
 
@@ -75,6 +76,7 @@ const ItemThumbnail = ({
   size = "md",
   onClick
 }: ItemThumbnailProps) => {
+  const { company } = useUser();
   return thumbnailPath ? (
     <img
       alt="thumbnail"
@@ -82,7 +84,7 @@ const ItemThumbnail = ({
         itemVariants({ size, withPadding: false }),
         thumbnailPath && "cursor-pointer"
       )}
-      src={getPrivateUrl(thumbnailPath)}
+      src={getPrivateUrl(company.id, thumbnailPath)}
       onClick={onClick}
     />
   ) : (

@@ -47,6 +47,7 @@ import { Link } from "react-router";
 import { z } from "zod";
 import { Assignee, CustomerAvatar, EmployeeAvatarGroup } from "~/components";
 import { Tags } from "~/components/Form";
+import { useUser } from "~/hooks";
 import { useTags } from "~/hooks/useTags";
 import { getDeadlineIcon } from "~/modules/production/ui/Jobs/Deadline";
 import { JobOperationStatus } from "~/modules/production/ui/Jobs/JobOperationStatus";
@@ -97,6 +98,7 @@ type ItemCardProps = {
 };
 
 export function ItemCard({ item, isOverlay, progressByItemId }: ItemCardProps) {
+  const { company } = useUser();
   const { displaySettings, selectedGroup, setSelectedGroup, tags } =
     useKanban();
   const {
@@ -264,7 +266,7 @@ export function ItemCard({ item, isOverlay, progressByItemId }: ItemCardProps) {
         {displaySettings.showThumbnail && item.thumbnailPath && (
           <div className="flex justify-center">
             <img
-              src={getPrivateUrl(item.thumbnailPath)}
+              src={getPrivateUrl(company.id, item.thumbnailPath)}
               alt={item.itemDescription}
               className="w-full h-auto rounded-lg"
             />

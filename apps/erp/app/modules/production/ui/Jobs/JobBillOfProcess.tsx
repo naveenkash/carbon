@@ -593,9 +593,9 @@ const JobBillOfProcess = ({
 
   const onUploadImage = async (file: File) => {
     const fileType = file.name.split(".").pop();
-    const fileName = `${companyId}/parts/${selectedItemId}/${nanoid()}.${fileType}`;
+    const fileName = `parts/${selectedItemId}/${nanoid()}.${fileType}`;
     const result = await carbon?.storage
-      .from("private")
+      .from(companyId)
       .upload(fileName, file, { upsert: true });
 
     if (result?.error) {
@@ -606,7 +606,7 @@ const JobBillOfProcess = ({
       throw new Error("Failed to upload image");
     }
 
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   const [productionEvents, setProductionEvents] = useState<
@@ -1135,9 +1135,9 @@ function StepsForm({
 
   const onUploadImage = async (file: File) => {
     const fileType = file.name.split(".").pop();
-    const fileName = `${companyId}/parts/${nanoid()}.${fileType}`;
+    const fileName = `parts/${nanoid()}.${fileType}`;
 
-    const result = await carbon?.storage.from("private").upload(fileName, file);
+    const result = await carbon?.storage.from(companyId).upload(fileName, file);
 
     if (result?.error) {
       toast.error("Failed to upload image");
@@ -1148,7 +1148,7 @@ function StepsForm({
       throw new Error("Failed to upload image");
     }
 
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   if (isDisabled && temporaryItems[operationId]) {
@@ -1439,9 +1439,9 @@ function StepsListItem({
 
   const onUploadImage = async (file: File) => {
     const fileType = file.name.split(".").pop();
-    const fileName = `${companyId}/parts/${nanoid()}.${fileType}`;
+    const fileName = `parts/${nanoid()}.${fileType}`;
 
-    const result = await carbon?.storage.from("private").upload(fileName, file);
+    const result = await carbon?.storage.from(companyId).upload(fileName, file);
 
     if (result?.error) {
       toast.error("Failed to upload image");
@@ -1452,7 +1452,7 @@ function StepsListItem({
       throw new Error("Failed to upload image");
     }
 
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   if (!id) return null;
@@ -1743,6 +1743,7 @@ function PreviewStepRecord({
   attribute: JobOperationStep;
   record: any;
 }) {
+  const { company } = useUser();
   const unitOfMeasures = useUnitOfMeasure();
   const [employees] = usePeople();
   const numberFormatter = useNumberFormatter();
@@ -1792,7 +1793,7 @@ function PreviewStepRecord({
         <div className="flex justify-end gap-2 text-xs">
           <LuPaperclip className="size-4 text-muted-foreground" />
           <a
-            href={getPrivateUrl(record.value)}
+            href={getPrivateUrl(company.id, record.value)}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -1806,7 +1807,7 @@ function PreviewStepRecord({
             <>
               <LuPaperclip className="size-4 text-muted-foreground" />
               <a
-                href={getPrivateUrl(record.value)}
+                href={getPrivateUrl(company.id, record.value)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs"

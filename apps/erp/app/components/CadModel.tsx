@@ -70,10 +70,10 @@ const CadModel = ({
         toast.info(`Uploading ${file.name}`);
       }
       const fileExtension = file.name.split(".").pop();
-      const fileName = `${companyId}/models/${modelId}.${fileExtension}`;
+      const fileName = `models/${modelId}.${fileExtension}`;
 
       const modelUpload = await carbon.storage
-        .from("private")
+        .from(companyId)
         .upload(fileName, file, {
           upsert: true
         });
@@ -125,7 +125,7 @@ const CadModel = ({
           <ModelViewer
             key={modelPath}
             file={file}
-            url={modelPath ? getPrivateUrl(modelPath) : null}
+            url={modelPath ? getPrivateUrl(companyId, modelPath) : null}
             mode={mode}
             className={viewerClassName}
           />

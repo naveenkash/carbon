@@ -114,6 +114,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       if (item.data.thumbnailPath || item.data.modelUpload?.thumbnailPath) {
         thumbnail = await getBase64ImageFromSupabase(
           serviceRole,
+          companyId,
           item.data.thumbnailPath ?? item.data.modelUpload?.thumbnailPath ?? ""
         );
       }

@@ -69,21 +69,16 @@ export let loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 
   let path = params["*"];
-  let bucket = "private"; // TODO: refactor to use companyId when we separate the storage buckets
+  const bucket = customer.data.companyId;
 
   if (!path) throw new Error("Path not found");
 
   path = decodeURIComponent(path);
 
-  const pathMatch = params["*"]?.match(/^([^/]+)\/job\/([^/]+)\/[^/]+$/);
-  const companyId = pathMatch?.[1];
-  const operationId = pathMatch?.[2];
+  const pathMatch = params["*"]?.match(/^job\/([^/]+)\/[^/]+$/);
+  const operationId = pathMatch?.[1];
 
   const fileType = path.split(".").pop()?.toLowerCase();
-
-  if (companyId !== customer.data.companyId) {
-    return new Response(null, { status: 403 });
-  }
 
   if (!operationId) {
     return new Response(null, { status: 403 });
@@ -111,10 +106,6 @@ export let loader = async ({ params, request }: LoaderFunctionArgs) => {
   )
     throw new Error(`File type ${fileType} not supported`);
   const contentType = supportedFileTypes[fileType];
-
-  if (!path.includes(customer.data.companyId)) {
-    return new Response(null, { status: 403 });
-  }
 
   async function downloadFile() {
     const result = await serviceRole.storage.from(bucket!).download(`${path}`);

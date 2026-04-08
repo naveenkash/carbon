@@ -127,12 +127,14 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
             if (!path) {
               return null;
             }
-            return getBase64ImageFromSupabase(serviceRole, path).then(
-              (data) => ({
-                id,
-                data
-              })
-            );
+            return getBase64ImageFromSupabase(
+              serviceRole,
+              customer.data.companyId,
+              path
+            ).then((data) => ({
+              id,
+              data
+            }));
           })
         )
       : []

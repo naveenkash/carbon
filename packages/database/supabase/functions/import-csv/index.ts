@@ -135,7 +135,7 @@ serve(async (req: Request) => {
       companyId
     );
 
-    const csvFile = await client.storage.from("private").download(filePath);
+    const csvFile = await client.storage.from(companyId).download(filePath);
     if (!csvFile.data) {
       throw new Error("Failed to download file");
     }

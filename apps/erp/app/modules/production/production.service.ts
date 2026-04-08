@@ -727,23 +727,19 @@ export async function getJobDocuments(
         data: null;
         error: StorageError;
       }
-  >[] = [client.storage.from("private").list(`${companyId}/job/${job.id}`)];
+  >[] = [client.storage.from(companyId).list(`job/${job.id}`)];
 
   // Add opportunity line files if available
   if (job.salesOrderLineId || job.quoteLineId) {
     const opportunityLine = job.salesOrderLineId || job.quoteLineId;
     promises.push(
-      client.storage
-        .from("private")
-        .list(`${companyId}/opportunity-line/${opportunityLine}`)
+      client.storage.from(companyId).list(`opportunity-line/${opportunityLine}`)
     );
   }
 
   // Add parts files if itemId is available
   if (job.itemId) {
-    promises.push(
-      client.storage.from("private").list(`${companyId}/parts/${job.itemId}`)
-    );
+    promises.push(client.storage.from(companyId).list(`parts/${job.itemId}`));
   }
 
   const results = await Promise.all(promises);
@@ -766,9 +762,7 @@ export const getPartDocuments = async (
   ...items: Array<{ itemId: string }>
 ) => {
   const getFile = async (id: string) => {
-    const res = await client.storage
-      .from("private")
-      .list(`${companyId}/parts/${id}`);
+    const res = await client.storage.from(companyId).list(`parts/${id}`);
 
     if (res.error || !res.data) return null;
 
@@ -795,9 +789,9 @@ export async function getJobDocumentsWithItemId(
 
     const [opportunityLineFiles, jobFiles] = await Promise.all([
       client.storage
-        .from("private")
-        .list(`${companyId}/opportunity-line/${opportunityLine}`),
-      client.storage.from("private").list(`${companyId}/job/${job.id}`)
+        .from(companyId)
+        .list(`opportunity-line/${opportunityLine}`),
+      client.storage.from(companyId).list(`job/${job.id}`)
     ]);
 
     // Combine and return both sets of files
@@ -811,7 +805,7 @@ export async function getJobDocumentsWithItemId(
     ];
   } else {
     const [jobFiles] = await Promise.all([
-      client.storage.from("private").list(`${companyId}/job/${job.id}`)
+      client.storage.from(companyId).list(`job/${job.id}`)
     ]);
 
     return [

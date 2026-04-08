@@ -8,7 +8,7 @@ import DocumentView from "~/modules/documents/ui/Documents/DocumentView";
 import { path } from "~/utils/path";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { client } = await requirePermissions(request, {
+  const { client, companyId } = await requirePermissions(request, {
     view: "documents"
   });
 
@@ -25,17 +25,27 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }
 
   return {
-    document: document.data
+    document: document.data,
+    companyId
   };
 }
 
 export default function ViewDocumentRoute() {
-  const { document } = useLoaderData<typeof loader>();
+  const { document, companyId } = useLoaderData<typeof loader>();
 
   let name = document.name;
   if (name) name = name.split(".").slice(0, -1).join(".");
 
+  // Normalize path: strip companyId prefix if present (legacy DB records)
+  const normalizedDocument = document.path?.startsWith(`${companyId}/`)
+    ? { ...document, path: document.path.slice(companyId.length + 1) }
+    : document;
+
   return (
-    <DocumentView key={document.id} bucket={"private"} document={document} />
+    <DocumentView
+      key={document.id}
+      bucket={companyId}
+      document={normalizedDocument}
+    />
   );
 }

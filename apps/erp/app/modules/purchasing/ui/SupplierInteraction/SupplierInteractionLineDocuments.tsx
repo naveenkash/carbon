@@ -61,19 +61,17 @@ const useSupplierInteractionLineDocuments = ({
 
   const getPath = useCallback(
     (file: { name: string }) => {
-      return `${
-        company.id
-      }/supplier-interaction-line/${lineId}/${stripSpecialCharacters(
+      return `supplier-interaction-line/${lineId}/${stripSpecialCharacters(
         file.name
       )}`;
     },
-    [company.id, lineId]
+    [lineId]
   );
 
   const deleteFile = useCallback(
     async (file: ItemFile) => {
       const fileDelete = await carbon?.storage
-        .from("private")
+        .from(company.id)
         .remove([getPath(file)]);
 
       if (!fileDelete || fileDelete.error) {
@@ -84,12 +82,12 @@ const useSupplierInteractionLineDocuments = ({
       toast.success(`${file.name} deleted successfully`);
       revalidator.revalidate();
     },
-    [getPath, carbon?.storage, revalidator]
+    [getPath, carbon?.storage, revalidator, company.id]
   );
 
   const download = useCallback(
     async (file: ItemFile) => {
-      const url = path.to.file.previewFile(`private/${getPath(file)}`);
+      const url = path.to.file.previewFile(`${company.id}/${getPath(file)}`);
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -106,7 +104,7 @@ const useSupplierInteractionLineDocuments = ({
         console.error(error);
       }
     },
-    [getPath]
+    [getPath, company.id]
   );
 
   const createDocumentRecord = useCallback(
@@ -147,7 +145,7 @@ const useSupplierInteractionLineDocuments = ({
         const fileName = getPath(file);
 
         const fileUpload = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(fileName, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -165,7 +163,7 @@ const useSupplierInteractionLineDocuments = ({
       }
       revalidator.revalidate();
     },
-    [getPath, createDocumentRecord, carbon, revalidator]
+    [getPath, createDocumentRecord, carbon, revalidator, company.id]
   );
 
   return {
@@ -194,6 +192,8 @@ const SupplierInteractionLineDocuments = ({
   lineId,
   type
 }: SupplierInteractionLineDocumentsProps) => {
+  const { company } = useUser();
+
   const { canDelete, download, deleteFile, getPath, upload } =
     useSupplierInteractionLineDocuments({
       id,
@@ -263,7 +263,7 @@ const SupplierInteractionLineDocuments = ({
                             if (["PDF", "Image"].includes(type)) {
                               window.open(
                                 path.to.file.previewFile(
-                                  `${"private"}/${getPath(file)}`
+                                  `${company.id}/${getPath(file)}`
                                 ),
                                 "_blank"
                               );
@@ -274,7 +274,7 @@ const SupplierInteractionLineDocuments = ({
                         >
                           {["PDF", "Image"].includes(type) ? (
                             <DocumentPreview
-                              bucket="private"
+                              bucket={company.id}
                               pathToFile={getPath(file)}
                               // @ts-ignore
                               type={type}
@@ -377,6 +377,8 @@ const SupplierInteractionLineDocumentForm = ({
 };
 
 const usePendingItems = () => {
+  const { company } = useUser();
+
   type PendingItem = ReturnType<typeof useFetchers>[number] & {
     formData: FormData;
   };
@@ -394,8 +396,8 @@ const usePendingItems = () => {
         const newItem: OptimisticFileObject = {
           id: path,
           name: name,
-          bucket_id: "private",
-          bucket: "private",
+          bucket_id: company.id,
+          bucket: company.id,
           metadata: {
             size,
             mimetype: getDocumentType(name)

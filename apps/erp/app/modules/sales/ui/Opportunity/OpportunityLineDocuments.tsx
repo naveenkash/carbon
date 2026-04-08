@@ -68,22 +68,18 @@ const useOpportunityLineDocuments = ({
       bucket: "opportunity-line" | "parts" = "opportunity-line"
     ) => {
       if (bucket === "parts" && itemId) {
-        return `${company.id}/parts/${itemId}/${stripSpecialCharacters(
-          file.name
-        )}`;
+        return `parts/${itemId}/${stripSpecialCharacters(file.name)}`;
       }
-      return `${company.id}/opportunity-line/${lineId}/${stripSpecialCharacters(
-        file.name
-      )}`;
+      return `opportunity-line/${lineId}/${stripSpecialCharacters(file.name)}`;
     },
-    [company.id, lineId, itemId]
+    [lineId, itemId]
   );
 
   const deleteFile = useCallback(
     async (file: FileObject & { bucket?: string }) => {
       const bucket = file.bucket === "parts" ? "parts" : "opportunity-line";
       const fileDelete = await carbon?.storage
-        .from("private")
+        .from(company.id)
         .remove([getPath(file, bucket as "opportunity-line" | "parts")]);
 
       if (!fileDelete || fileDelete.error) {
@@ -94,7 +90,7 @@ const useOpportunityLineDocuments = ({
       toast.success(`${file.name} deleted successfully`);
       revalidator.revalidate();
     },
-    [getPath, carbon?.storage, revalidator]
+    [getPath, carbon?.storage, revalidator, company.id]
   );
 
   const deleteModel = useCallback(
@@ -158,7 +154,10 @@ const useOpportunityLineDocuments = ({
         return;
       }
 
-      const url = path.to.file.previewFile(`private/${model.modelPath}`);
+      const modelSubpath = model.modelPath?.startsWith(`${company.id}/`)
+        ? model.modelPath.slice(company.id.length + 1)
+        : model.modelPath;
+      const url = path.to.file.previewFile(`${company.id}/${modelSubpath}`);
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -176,7 +175,7 @@ const useOpportunityLineDocuments = ({
       }
     },
 
-    []
+    [company.id]
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
@@ -184,7 +183,7 @@ const useOpportunityLineDocuments = ({
     async (file: FileObject & { bucket?: string }) => {
       const bucket = file.bucket === "parts" ? "parts" : "opportunity-line";
       const url = path.to.file.previewFile(
-        `private/${getPath(file, bucket as "opportunity-line" | "parts")}`
+        `${company.id}/${getPath(file, bucket as "opportunity-line" | "parts")}`
       );
       try {
         const response = await fetch(url);
@@ -261,7 +260,7 @@ const useOpportunityLineDocuments = ({
         const fileName = getPath(file, bucket);
 
         const fileUpload = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(fileName, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -280,7 +279,7 @@ const useOpportunityLineDocuments = ({
       }
       revalidator.revalidate();
     },
-    [getPath, createDocumentRecord, carbon, revalidator, itemId]
+    [getPath, createDocumentRecord, carbon, revalidator, itemId, company.id]
   );
 
   const moveFile = useCallback(
@@ -310,7 +309,7 @@ const useOpportunityLineDocuments = ({
         // Download the file first
         const sourcePath = getPath(file, currentBucket);
         const { data: downloadData } = await carbon.storage
-          .from("private")
+          .from(company.id)
           .download(sourcePath);
 
         if (!downloadData) {
@@ -321,7 +320,7 @@ const useOpportunityLineDocuments = ({
         // Upload to new location
         const targetPath = getPath(file, targetBucket);
         const { error: uploadError } = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(targetPath, downloadData, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -334,7 +333,7 @@ const useOpportunityLineDocuments = ({
 
         // Delete from old location
         const { error: deleteError } = await carbon.storage
-          .from("private")
+          .from(company.id)
           .remove([sourcePath]);
 
         if (deleteError) {
@@ -353,7 +352,7 @@ const useOpportunityLineDocuments = ({
         console.error(error);
       }
     },
-    [carbon, itemId, getPath, revalidator]
+    [carbon, itemId, getPath, revalidator, company.id]
   );
 
   return {
@@ -389,6 +388,8 @@ const OpportunityLineDocuments = ({
   type,
   isReadOnly: isReadOnlyProp
 }: OpportunityLineDocumentsProps) => {
+  const { company } = useUser();
+
   const {
     canDelete: canDeleteBase,
     canUpdate: canUpdateBase,
@@ -535,7 +536,7 @@ const OpportunityLineDocuments = ({
                                   : "opportunity-line";
                               window.open(
                                 path.to.file.previewFile(
-                                  `${"private"}/${getPath(
+                                  `${company.id}/${getPath(
                                     file,
                                     bucket as "opportunity-line" | "parts"
                                   )}`
@@ -549,7 +550,7 @@ const OpportunityLineDocuments = ({
                         >
                           {["PDF", "Image"].includes(type) ? (
                             <DocumentPreview
-                              bucket="private"
+                              bucket={company.id}
                               pathToFile={getPath(
                                 file,
                                 (file as any).bucket === "parts"
@@ -700,6 +701,8 @@ const OpportunityLineDocumentForm = ({
 };
 
 const usePendingItems = () => {
+  const { company } = useUser();
+
   type PendingItem = ReturnType<typeof useFetchers>[number] & {
     formData: FormData;
   };
@@ -717,8 +720,8 @@ const usePendingItems = () => {
         const newItem: OptimisticFileObject = {
           id: path,
           name: name,
-          bucket_id: "private",
-          bucket: "private",
+          bucket_id: company.id,
+          bucket: company.id,
           metadata: {
             size,
             mimetype: getDocumentType(name)

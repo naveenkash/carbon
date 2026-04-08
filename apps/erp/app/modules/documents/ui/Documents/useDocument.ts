@@ -15,6 +15,9 @@ export const useDocument = () => {
   const { carbon } = useCarbon();
   const [params, setParams] = useUrlParams();
   const user = useUser();
+  const {
+    company: { id: companyId }
+  } = user;
 
   const canDelete = useCallback(
     (doc: DocumentType) => {
@@ -71,7 +74,10 @@ export const useDocument = () => {
     async (doc: DocumentType) => {
       if (!doc.path) throw new Error("Document path is undefined");
 
-      const url = path.to.file.previewFile(`private/${doc.path}`);
+      const docSubpath = doc.path?.startsWith(`${companyId}/`)
+        ? doc.path.slice(companyId.length + 1)
+        : doc.path;
+      const url = path.to.file.previewFile(`${companyId}/${docSubpath}`);
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -90,7 +96,7 @@ export const useDocument = () => {
 
       await insertTransaction(doc, "Download");
     },
-    [insertTransaction]
+    [insertTransaction, companyId]
   );
 
   const view = useCallback(
@@ -161,7 +167,7 @@ export const useDocument = () => {
   const makePreview = useCallback(
     async (doc: DocumentType) => {
       if (!doc.path) throw new Error("Document path is undefined");
-      const result = await carbon?.storage.from("private").download(doc.path);
+      const result = await carbon?.storage.from(companyId).download(doc.path);
 
       if (!result || result.error) {
         toast.error(result?.error?.message || "Error previewing file");
@@ -170,7 +176,7 @@ export const useDocument = () => {
 
       return window.URL.createObjectURL(result.data);
     },
-    [carbon]
+    [carbon, companyId]
   );
 
   const removeLabel = useCallback(

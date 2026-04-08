@@ -136,7 +136,7 @@ const JobOperationStepRecordsTable = memo(
                     <div className="flex gap-2 text-xs">
                       <LuPaperclip className="size-4 text-muted-foreground" />
                       <a
-                        href={getPrivateUrl(record.value)}
+                        href={getPrivateUrl(record.companyId, record.value)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -153,7 +153,7 @@ const JobOperationStepRecordsTable = memo(
                       <>
                         <LuPaperclip className="size-4 text-muted-foreground" />
                         <a
-                          href={getPrivateUrl(record.value)}
+                          href={getPrivateUrl(record.companyId, record.value)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-xs"

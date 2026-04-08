@@ -237,7 +237,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     for (const doc of rfqDocs) {
       const { data: fileData } = await client.storage
-        .from("private")
+        .from(companyId)
         .download(`${companyId}/supplier-interaction/${rfqId}/${doc.name}`);
 
       if (fileData) {
@@ -259,7 +259,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
       for (const doc of lineDocs) {
         const { data: fileData } = await client.storage
-          .from("private")
+          .from(companyId)
           .download(
             `${companyId}/supplier-interaction-line/${line.id}/${doc.name}`
           );

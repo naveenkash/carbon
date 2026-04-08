@@ -41,7 +41,12 @@ import {
 import { Link, useParams } from "react-router";
 import { CustomerAvatar, Hyperlink, MethodIcon } from "~/components";
 import { Confirm } from "~/components/Modals";
-import { usePercentFormatter, usePermissions, useRouteData } from "~/hooks";
+import {
+  usePercentFormatter,
+  usePermissions,
+  useRouteData,
+  useUser
+} from "~/hooks";
 import JobStatus from "~/modules/production/ui/Jobs/JobStatus";
 import { getPrivateUrl, path } from "~/utils/path";
 import { isSalesOrderLocked } from "../../sales.models";
@@ -325,6 +330,7 @@ function LineItems({
   const { orderId } = useParams();
   if (!orderId) throw new Error("Could not find orderId");
 
+  const { company } = useUser();
   const percentFormatter = usePercentFormatter();
   const [openItems, setOpenItems] = useState<string[]>([]);
   const todaysDate = useMemo(() => today(getLocalTimeZone()), []);
@@ -361,7 +367,7 @@ function LineItems({
                 <img
                   alt={line.itemReadableId!}
                   className="w-24 h-24 bg-gradient-to-bl from-muted to-muted/40 rounded-lg"
-                  src={getPrivateUrl(line.thumbnailPath)}
+                  src={getPrivateUrl(company.id, line.thumbnailPath)}
                 />
               ) : (
                 <div className="w-24 h-24 bg-gradient-to-bl from-muted to-muted/40 rounded-lg p-4">

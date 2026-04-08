@@ -79,10 +79,10 @@ export async function action(args: ActionFunctionArgs) {
       `${quote.data.quoteId} - ${new Date().toISOString().slice(0, -5)}.pdf`
     );
 
-    const documentFilePath = `${companyId}/opportunity/${quote.data.opportunityId}/${fileName}`;
+    const documentFilePath = `opportunity/${quote.data.opportunityId}/${fileName}`;
 
     const documentFileUpload = await client.storage
-      .from("private")
+      .from(companyId)
       .upload(documentFilePath, file, {
         cacheControl: `${12 * 60 * 60}`,
         contentType: "application/pdf",

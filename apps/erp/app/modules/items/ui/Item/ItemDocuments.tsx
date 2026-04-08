@@ -49,6 +49,8 @@ const ItemDocuments = ({
   modelUpload,
   type
 }: ItemDocumentsProps) => {
+  const { company } = useUser();
+
   const {
     canDelete,
     download,
@@ -168,7 +170,7 @@ const ItemDocuments = ({
                           if (["PDF", "Image"].includes(type)) {
                             window.open(
                               path.to.file.previewFile(
-                                `${"private"}/${getPath(file)}`
+                                `${company.id}/${getPath(file)}`
                               ),
                               "_blank"
                             );
@@ -179,7 +181,7 @@ const ItemDocuments = ({
                       >
                         {["PDF", "Image"].includes(type) ? (
                           <DocumentPreview
-                            bucket="private"
+                            bucket={company.id}
                             pathToFile={getPath(file)}
                             // @ts-ignore
                             type={type}
@@ -290,17 +292,15 @@ export const useItemDocuments = ({ itemId, type }: Props) => {
   const canDelete = permissions.can("delete", "parts");
   const getPath = useCallback(
     (file: { name: string }) => {
-      return `${company.id}/parts/${itemId}/${stripSpecialCharacters(
-        file.name
-      )}`;
+      return `parts/${itemId}/${stripSpecialCharacters(file.name)}`;
     },
-    [company.id, itemId]
+    [itemId]
   );
 
   const deleteFile = useCallback(
     async (file: FileObject) => {
       const fileDelete = await carbon?.storage
-        .from("private")
+        .from(company.id)
         .remove([getPath(file)]);
 
       if (!fileDelete || fileDelete.error) {
@@ -311,7 +311,7 @@ export const useItemDocuments = ({ itemId, type }: Props) => {
       toast.success("File deleted successfully");
       revalidator.revalidate();
     },
-    [getPath, carbon?.storage, revalidator]
+    [getPath, carbon?.storage, revalidator, company.id]
   );
 
   const deleteModel = useCallback(async () => {
@@ -341,7 +341,10 @@ export const useItemDocuments = ({ itemId, type }: Props) => {
         return;
       }
 
-      const url = path.to.file.previewFile(`private/${model.modelPath}`);
+      const modelSubpath = model.modelPath?.startsWith(`${company.id}/`)
+        ? model.modelPath.slice(company.id.length + 1)
+        : model.modelPath;
+      const url = path.to.file.previewFile(`${company.id}/${modelSubpath}`);
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -359,12 +362,12 @@ export const useItemDocuments = ({ itemId, type }: Props) => {
       }
     },
 
-    []
+    [company.id]
   );
 
   const download = useCallback(
     async (file: FileObject) => {
-      const url = path.to.file.previewFile(`private/${getPath(file)}`);
+      const url = path.to.file.previewFile(`${company.id}/${getPath(file)}`);
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -382,7 +385,7 @@ export const useItemDocuments = ({ itemId, type }: Props) => {
       }
     },
 
-    [getPath]
+    [getPath, company.id]
   );
 
   const getModelPath = useCallback((model: ModelUpload) => {
@@ -404,7 +407,7 @@ export const useItemDocuments = ({ itemId, type }: Props) => {
         const fileName = getPath(file);
 
         const fileUpload = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(fileName, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -431,7 +434,7 @@ export const useItemDocuments = ({ itemId, type }: Props) => {
       }
       revalidator.revalidate();
     },
-    [getPath, carbon, revalidator, submit, type, itemId]
+    [getPath, carbon, revalidator, submit, type, itemId, company.id]
   );
 
   return {
@@ -447,6 +450,8 @@ export const useItemDocuments = ({ itemId, type }: Props) => {
 };
 
 const usePendingItems = () => {
+  const { company } = useUser();
+
   type PendingItem = ReturnType<typeof useFetchers>[number] & {
     formData: FormData;
   };
@@ -464,8 +469,8 @@ const usePendingItems = () => {
         const newItem: OptimisticFileObject = {
           id: path,
           name: name,
-          bucket_id: "private",
-          bucket: "private",
+          bucket_id: company.id,
+          bucket: company.id,
           metadata: {
             size,
             mimetype: getDocumentType(name)

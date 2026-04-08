@@ -789,13 +789,13 @@ async function uploadModelFile(
   try {
     const modelId = nanoid();
     const fileExtension = file.name.split(".").pop();
-    const modelPath = `${companyId}/models/${modelId}.${fileExtension}`;
+    const modelPath = `models/${modelId}.${fileExtension}`;
 
     console.log(`Uploading CAD model ${file.name} to ${modelPath}`);
 
     // Upload model to storage
     const modelUpload = await carbon.storage
-      .from("private")
+      .from(companyId)
       .upload(modelPath, file, {
         upsert: true
       });
@@ -872,14 +872,12 @@ async function uploadFileToItem(
   if (file.name === "flat.step") return false;
 
   try {
-    const storagePath = `${companyId}/parts/${itemId}/${stripSpecialCharacters(
-      file.name
-    )}`;
+    const storagePath = `parts/${itemId}/${stripSpecialCharacters(file.name)}`;
 
     console.log(`Uploading ${file.name} to ${storagePath}`);
 
     const fileUpload = await carbon.storage
-      .from("private")
+      .from(companyId)
       .upload(storagePath, file, {
         cacheControl: `${12 * 60 * 60}`,
         upsert: true
@@ -1935,10 +1933,10 @@ async function downloadAndUploadThumbnail(
       type: contentType
     });
 
-    // Upload to private bucket
-    const storagePath = `${companyId}/thumbnails/${itemId}/${fileName}`;
+    // Upload to company bucket
+    const storagePath = `thumbnails/${itemId}/${fileName}`;
     const { data, error } = await carbon.storage
-      .from("private")
+      .from(companyId)
       .upload(storagePath, thumbnailFile, {
         upsert: true
       });

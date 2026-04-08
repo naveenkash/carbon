@@ -131,12 +131,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
                   if (!path) {
                     return null;
                   }
-                  return getBase64ImageFromSupabase(serviceRole, path).then(
-                    (data) => ({
-                      id,
-                      data
-                    })
-                  );
+                  return getBase64ImageFromSupabase(
+                    serviceRole,
+                    companyId,
+                    path
+                  ).then((data) => ({
+                    id,
+                    data
+                  }));
                 })
               )
             : []
@@ -250,12 +252,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
                   if (!path) {
                     return null;
                   }
-                  return getBase64ImageFromSupabase(serviceRole, path).then(
-                    (data) => ({
-                      id,
-                      data
-                    })
-                  );
+                  return getBase64ImageFromSupabase(
+                    serviceRole,
+                    companyId,
+                    path
+                  ).then((data) => ({
+                    id,
+                    data
+                  }));
                 })
               )
             : []
@@ -364,12 +368,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
                   if (!path) {
                     return null;
                   }
-                  return getBase64ImageFromSupabase(client, path).then(
-                    (data) => ({
-                      id,
-                      data
-                    })
-                  );
+                  return getBase64ImageFromSupabase(
+                    client,
+                    companyId,
+                    path
+                  ).then((data) => ({
+                    id,
+                    data
+                  }));
                 })
               )
             : []

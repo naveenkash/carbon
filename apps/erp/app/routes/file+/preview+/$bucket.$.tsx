@@ -50,23 +50,27 @@ export let loader = async ({ request, params }: LoaderFunctionArgs) => {
   }
   const contentType = supportedFileTypes[fileType];
 
-  // Check if the decoded path includes companyId for security
-  const decodedPath = decodeURIComponent(path);
-  if (!decodedPath.includes(companyId)) {
+  // Check that the bucket matches the user's companyId for security
+  if (bucket !== companyId) {
     return new Response(null, { status: 403 });
   }
 
-  const serviceRole = await getCarbonServiceRole();
+  const serviceRole = getCarbonServiceRole();
 
   async function downloadFile() {
     if (!path) throw new Error("Path not found");
-    // Use the original encoded path for the storage API call
+    // Try company bucket first (new format)
     const result = await serviceRole.storage.from(bucket!).download(path);
-    if (result.error) {
-      console.error(result.error);
-      return null;
-    }
-    return result.data;
+    if (!result.error) return result.data;
+
+    // Fallback: try legacy private bucket with companyId prefix (pre-migration files)
+    const legacyResult = await serviceRole.storage
+      .from("private")
+      .download(`${bucket}/${path}`);
+    if (!legacyResult.error) return legacyResult.data;
+
+    console.error("Company bucket error:", result.error);
+    return null;
   }
 
   let fileData = await downloadFile();

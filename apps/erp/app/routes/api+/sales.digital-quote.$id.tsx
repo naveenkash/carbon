@@ -147,10 +147,10 @@ export async function action(args: ActionFunctionArgs) {
       }
 
       if (file && file instanceof File) {
-        const purchaseOrderDocumentPath = `${companySettings.data.id}/opportunity/${quote.data.opportunityId}/${file.name}`;
+        const purchaseOrderDocumentPath = `opportunity/${quote.data.opportunityId}/${file.name}`;
 
         const fileUpload = await serviceRole.storage
-          .from("private")
+          .from(companySettings.data.id)
           .upload(purchaseOrderDocumentPath, file);
 
         if (fileUpload.error) {

@@ -80,10 +80,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       ? await Promise.all(
           Object.entries(thumbnailPaths).map(([lineId, path]) => {
             if (!path) return null;
-            return getBase64ImageFromSupabase(client, path).then((data) => ({
-              id: lineId,
-              data
-            }));
+            return getBase64ImageFromSupabase(client, companyId, path).then(
+              (data) => ({
+                id: lineId,
+                data
+              })
+            );
           })
         )
       : []

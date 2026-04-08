@@ -399,9 +399,9 @@ const QuoteBillOfProcess = ({
 
   const onUploadImage = async (file: File) => {
     const fileType = file.name.split(".").pop();
-    const fileName = `${companyId}/opportunity-line/${selectedItemId}/${nanoid()}.${fileType}`;
+    const fileName = `opportunity-line/${selectedItemId}/${nanoid()}.${fileType}`;
     const result = await carbon?.storage
-      .from("private")
+      .from(companyId)
       .upload(fileName, file, { upsert: true });
 
     if (result?.error) {
@@ -412,7 +412,7 @@ const QuoteBillOfProcess = ({
       throw new Error("Failed to upload image");
     }
 
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   const onToggleItem = (id: string) => {
@@ -934,9 +934,9 @@ function AttributesForm({
 
   const onUploadImage = async (file: File) => {
     const fileType = file.name.split(".").pop();
-    const fileName = `${companyId}/parts/${nanoid()}.${fileType}`;
+    const fileName = `parts/${nanoid()}.${fileType}`;
 
-    const result = await carbon?.storage.from("private").upload(fileName, file);
+    const result = await carbon?.storage.from(companyId).upload(fileName, file);
 
     if (result?.error) {
       toast.error("Failed to upload image");
@@ -947,7 +947,7 @@ function AttributesForm({
       throw new Error("Failed to upload image");
     }
 
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   const typeOptions = useMemo(
@@ -1237,9 +1237,9 @@ function AttributesListItem({
 
   const onUploadImage = async (file: File) => {
     const fileType = file.name.split(".").pop();
-    const fileName = `${companyId}/parts/${nanoid()}.${fileType}`;
+    const fileName = `parts/${nanoid()}.${fileType}`;
 
-    const result = await carbon?.storage.from("private").upload(fileName, file);
+    const result = await carbon?.storage.from(companyId).upload(fileName, file);
 
     if (result?.error) {
       toast.error("Failed to upload image");
@@ -1250,7 +1250,7 @@ function AttributesListItem({
       throw new Error("Failed to upload image");
     }
 
-    return getPrivateUrl(result.data.path);
+    return getPrivateUrl(companyId, result.data.path);
   };
 
   if (!id) return null;

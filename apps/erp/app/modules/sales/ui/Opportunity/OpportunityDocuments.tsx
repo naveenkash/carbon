@@ -197,6 +197,7 @@ const DraggableCell = ({
   download: (attachment: FileObject) => void;
   getPath: (attachment: FileObject) => string;
 }) => {
+  const { company } = useUser();
   const context = useDndContext();
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: attachment.id,
@@ -232,7 +233,9 @@ const DraggableCell = ({
           onClick={() => {
             if (isPreviewable) {
               window.open(
-                path.to.file.previewFile(`private/${getPath(attachment)}`),
+                path.to.file.previewFile(
+                  `${company.id}/${getPath(attachment)}`
+                ),
                 "_blank"
               );
             } else {
@@ -242,7 +245,7 @@ const DraggableCell = ({
         >
           {isPreviewable ? (
             <DocumentPreview
-              bucket="private"
+              bucket={company.id}
               pathToFile={getPath(attachment)}
               // @ts-ignore
               type={getDocumentType(attachment.name)}
@@ -289,19 +292,17 @@ export const useOpportunityDocuments = ({
 
   const getPath = useCallback(
     (attachment: { name: string }) => {
-      return `${
-        company.id
-      }/opportunity/${opportunityId}/${stripSpecialCharacters(
+      return `opportunity/${opportunityId}/${stripSpecialCharacters(
         attachment.name
       )}`;
     },
-    [company.id, opportunityId]
+    [opportunityId]
   );
 
   const deleteAttachment = useCallback(
     async (attachment: FileObject) => {
       const result = await carbon?.storage
-        .from("private")
+        .from(company.id)
         .remove([getPath(attachment)]);
 
       if (!result || result.error) {
@@ -312,12 +313,14 @@ export const useOpportunityDocuments = ({
       toast.success(`${attachment.name} deleted successfully`);
       revalidator.revalidate();
     },
-    [carbon?.storage, getPath, revalidator]
+    [carbon?.storage, getPath, revalidator, company.id]
   );
 
   const download = useCallback(
     async (attachment: FileObject) => {
-      const url = path.to.file.previewFile(`private/${getPath(attachment)}`);
+      const url = path.to.file.previewFile(
+        `${company.id}/${getPath(attachment)}`
+      );
       try {
         const response = await fetch(url);
         const blob = await response.blob();
@@ -334,7 +337,7 @@ export const useOpportunityDocuments = ({
         console.error(error);
       }
     },
-    [getPath]
+    [getPath, company.id]
   );
 
   const createDocumentRecord = useCallback(
@@ -376,7 +379,7 @@ export const useOpportunityDocuments = ({
         toast.info(`Uploading ${file.name}`);
 
         const fileUpload = await carbon.storage
-          .from("private")
+          .from(company.id)
           .upload(fileName, file, {
             cacheControl: `${12 * 60 * 60}`,
             upsert: true
@@ -395,7 +398,7 @@ export const useOpportunityDocuments = ({
       }
       revalidator.revalidate();
     },
-    [getPath, createDocumentRecord, carbon, revalidator]
+    [getPath, createDocumentRecord, carbon, revalidator, company.id]
   );
 
   return {
@@ -439,6 +442,8 @@ type OptimisticFileObject = Omit<
   "owner" | "updated_at" | "created_at" | "last_accessed_at" | "buckets"
 >;
 export const usePendingItems = () => {
+  const { company } = useUser();
+
   type PendingItem = ReturnType<typeof useFetchers>[number] & {
     formData: FormData;
   };
@@ -456,7 +461,7 @@ export const usePendingItems = () => {
         const newItem: OptimisticFileObject = {
           id: path,
           name: name,
-          bucket_id: "private",
+          bucket_id: company.id,
           metadata: {
             size,
             mimetype: getDocumentType(name)

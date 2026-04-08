@@ -230,6 +230,8 @@ export function StepsListItem({
 }
 
 function ItemsSummaryTable({ itemsIds }: { itemsIds: string[] }) {
+  const { company } = useUser();
+  const companyId = company.id;
   const [allItems] = useItems();
   const items = useMemo(() => {
     return itemsIds.map((id) => allItems.find((item) => item.id === id));
@@ -248,7 +250,7 @@ function ItemsSummaryTable({ itemsIds }: { itemsIds: string[] }) {
                     onClick={() => {
                       if (item?.thumbnailPath) {
                         window.open(
-                          getPrivateUrl(item.thumbnailPath),
+                          getPrivateUrl(companyId, item.thumbnailPath),
                           "_blank"
                         );
                       }
@@ -369,10 +371,10 @@ export function RecordModal({
     setFile(fileUpload);
     toast.info(`Uploading ${fileUpload.name}`);
 
-    const fileName = `${company.id}/job/${attribute.operationId}/${fileUpload.name}`;
+    const fileName = `job/${attribute.operationId}/${fileUpload.name}`;
 
     const upload = await carbon?.storage
-      .from("private")
+      .from(company.id)
       .upload(fileName, fileUpload, {
         cacheControl: `${12 * 60 * 60}`,
         upsert: true

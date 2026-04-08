@@ -77,7 +77,6 @@ const SupplierQuoteCompareDrawer = ({
   const fetcher = useFetcher<ComparisonData>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state !== "idle";
-
   const { company } = useUser();
   const baseCurrency = company?.baseCurrencyCode ?? "USD";
   const formatter = useCurrencyFormatter({ currency: baseCurrency });
@@ -664,6 +663,8 @@ const LineSelectionView = ({
   setSelectedLines,
   formatter
 }: LineSelectionViewProps) => {
+  const { company } = useUser();
+
   const pricingByLine = useMemo(
     () =>
       lines.reduce<Record<string, SupplierQuoteLinePrice[]>>((acc, line) => {
@@ -683,7 +684,7 @@ const LineSelectionView = ({
                 <img
                   alt={line.itemReadableId!}
                   className="w-24 h-24 bg-gradient-to-bl from-muted to-muted/40 rounded-lg"
-                  src={getPrivateUrl(line.thumbnailPath)}
+                  src={getPrivateUrl(company.id, line.thumbnailPath)}
                 />
               ) : (
                 <div className="w-24 h-24 bg-gradient-to-bl from-muted to-muted/40 rounded-lg p-4">

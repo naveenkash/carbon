@@ -214,7 +214,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   if (is3DModel) {
     const modelId = nanoid();
     const fileExtension = fileName.split(".").pop();
-    newPath = `${companyId}/models/${modelId}.${fileExtension}`;
+    newPath = `models/${modelId}.${fileExtension}`;
 
     // Create model record
     const modelRecord = await client.from("modelUpload").insert({
@@ -263,7 +263,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     // Move the file to the new path
     const move = await client.storage
-      .from("private")
+      .from(companyId)
       .move(documentPath, newPath);
 
     if (move.error) {
@@ -278,10 +278,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
       modelId
     });
   } else {
-    newPath = `${companyId}/opportunity-line/${targetLineId}/${fileName}`;
+    newPath = `opportunity-line/${targetLineId}/${fileName}`;
     // Move the file to the new path
     const move = await client.storage
-      .from("private")
+      .from(companyId)
       .move(documentPath, newPath);
 
     if (move.error) {

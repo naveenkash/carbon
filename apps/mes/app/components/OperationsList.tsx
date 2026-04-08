@@ -26,6 +26,7 @@ import {
 } from "react-icons/lu";
 import { Link } from "react-router";
 import EmployeeAvatar from "~/components/EmployeeAvatar";
+import { useUser } from "~/hooks";
 import type { Operation, OperationSettings } from "~/services/types";
 import { getPrivateUrl, path } from "~/utils/path";
 import { DeadlineIcon, OperationStatusIcon } from "./Icons";
@@ -91,6 +92,7 @@ function OperationCard({
   showStatus,
   showThumbnail
 }: OperationCardProps) {
+  const { company } = useUser();
   const isOverdue =
     operation.jobDeadlineType !== "No Deadline" && operation.jobDueDate
       ? new Date(operation.jobDueDate) < new Date()
@@ -130,7 +132,7 @@ function OperationCard({
           {showThumbnail && operation.thumbnailPath && (
             <div className="flex justify-center">
               <img
-                src={getPrivateUrl(operation.thumbnailPath)}
+                src={getPrivateUrl(company.id, operation.thumbnailPath)}
                 alt={operation.jobReadableId}
                 className="w-full h-auto rounded-lg"
               />

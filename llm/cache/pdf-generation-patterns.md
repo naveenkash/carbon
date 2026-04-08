@@ -54,7 +54,7 @@ export async function getBase64ImageFromSupabase(
   client: SupabaseClient<Database>,
   path: string
 ) {
-  const { data, error } = await client.storage.from("private").download(path);
+  const { data, error } = await client.storage.from(companyId).download(path);
   if (error) return null;
 
   const arrayBuffer = await data.arrayBuffer();
