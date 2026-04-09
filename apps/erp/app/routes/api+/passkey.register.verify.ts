@@ -1,4 +1,4 @@
-import { assertIsPost, error } from "@carbon/auth";
+import { assertIsPost, error, isAuthProviderEnabled } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { verifyPasskeyRegistration } from "@carbon/auth/passkey.server";
@@ -7,6 +7,10 @@ import { data } from "react-router";
 
 export async function action({ request }: ActionFunctionArgs) {
   assertIsPost(request);
+
+  if (!isAuthProviderEnabled("passkey")) {
+    return data(error(null, "Passkeys are disabled"), { status: 404 });
+  }
 
   const { userId } = await requirePermissions(request, {});
 

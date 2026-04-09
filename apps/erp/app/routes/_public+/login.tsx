@@ -1,5 +1,4 @@
 import {
-  AUTH_PROVIDERS,
   assertIsPost,
   CarbonEdition,
   CLOUDFLARE_TURNSTILE_SECRET_KEY,
@@ -7,6 +6,7 @@ import {
   CONTROLLED_ENVIRONMENT,
   carbonClient,
   error,
+  isAuthProviderEnabled,
   magicLinkValidator,
   RATE_LIMIT
 } from "@carbon/auth";
@@ -61,10 +61,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     throw redirect(path.to.authenticatedRoot);
   }
 
-  const providers = AUTH_PROVIDERS.split(",");
+  const hasOutlookAuth = isAuthProviderEnabled("azure");
+  const hasGoogleAuth = isAuthProviderEnabled("google");
+  const hasPasskeyAuth = isAuthProviderEnabled("passkey");
 
   return {
-    providers
+    hasOutlookAuth,
+    hasGoogleAuth,
+    hasPasskeyAuth
   };
 }
 
@@ -160,9 +164,8 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function LoginRoute() {
-  const { providers } = useLoaderData<typeof loader>();
-  const hasOutlookAuth = providers.includes("azure");
-  const hasGoogleAuth = providers.includes("google");
+  const { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth } =
+    useLoaderData<typeof loader>();
 
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
@@ -196,6 +199,7 @@ export default function LoginRoute() {
 
   // Detect passkey support and start conditional UI (autofill) on mount
   useMount(() => {
+    if (!hasPasskeyAuth) return;
     if (!browserSupportsWebAuthn()) return;
 
     const checkAndStart = async () => {
@@ -384,25 +388,6 @@ export default function LoginRoute() {
                 </Alert>
               )}
 
-              {passkeySupported && (
-                <Button
-                  type="button"
-                  size="lg"
-                  className="w-full"
-                  onClick={onSignInWithPasskey}
-                  isDisabled={passkeyLoading || fetcher.state !== "idle"}
-                  isLoading={passkeyLoading}
-                  variant="secondary"
-                  leftIcon={<LuFingerprint className="size-4" />}
-                >
-                  Sign in with Passkey
-                </Button>
-              )}
-              {passkeySupported && (hasGoogleAuth || hasOutlookAuth) && (
-                <div className="py-1 w-full">
-                  <Separator />
-                </div>
-              )}
               {hasGoogleAuth && (
                 <Button
                   type="button"
@@ -436,11 +421,26 @@ export default function LoginRoute() {
                 </div>
               )}
 
+              {hasPasskeyAuth && passkeySupported && (
+                <Button
+                  type="button"
+                  size="lg"
+                  className="w-full"
+                  onClick={onSignInWithPasskey}
+                  isDisabled={passkeyLoading || fetcher.state !== "idle"}
+                  isLoading={passkeyLoading}
+                  variant="secondary"
+                  leftIcon={<LuFingerprint className="size-4" />}
+                >
+                  Sign in with Passkey
+                </Button>
+              )}
+
               <Input
                 name="email"
                 label=""
                 placeholder="Email Address"
-                autoComplete="email webauthn"
+                autoComplete={hasPasskeyAuth ? "email webauthn" : "email"}
               />
 
               <Submit

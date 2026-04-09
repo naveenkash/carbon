@@ -105,11 +105,18 @@ export function getEnv(
  * Server env
  */
 
+export type AuthProvider = "email" | "google" | "azure" | "passkey";
+
 export const AUTH_PROVIDERS =
   getEnv("AUTH_PROVIDERS", {
     isRequired: false,
     isSecret: false
-  }) ?? "email,google,azure";
+  }) ?? "email,google,azure,passkey";
+
+export function isAuthProviderEnabled(provider: AuthProvider) {
+  const AUTH_PROVIDERS_LIST = AUTH_PROVIDERS.split(",").map((p) => p.trim());
+  return AUTH_PROVIDERS_LIST.includes(provider);
+}
 
 const CARBON_EDITION = getEnv("CARBON_EDITION", {
   isRequired: false,

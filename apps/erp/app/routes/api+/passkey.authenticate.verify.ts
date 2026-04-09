@@ -1,4 +1,4 @@
-import { assertIsPost, error } from "@carbon/auth";
+import { assertIsPost, error, isAuthProviderEnabled } from "@carbon/auth";
 import { signInWithPasskey } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { setCompanyId } from "@carbon/auth/company.server";
@@ -11,6 +11,10 @@ import { path } from "~/utils/path";
 
 export async function action({ request }: ActionFunctionArgs) {
   assertIsPost(request);
+
+  if (!isAuthProviderEnabled("passkey")) {
+    return data(error(null, "Passkeys are disabled"), { status: 404 });
+  }
 
   let body: { credential: any; challengeId: string; redirectTo?: string };
   try {

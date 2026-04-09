@@ -1,4 +1,9 @@
-import { assertIsPost, error, success } from "@carbon/auth";
+import {
+  assertIsPost,
+  error,
+  isAuthProviderEnabled,
+  success
+} from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
@@ -204,17 +209,25 @@ export default function AccountProfile() {
   const deleteFetcher = useFetcher();
   const renameFetcher = useFetcher();
   const { revalidate } = useRevalidator();
+  const passkeysEnabled = isAuthProviderEnabled("passkey");
   const [registering, setRegistering] = useState(false);
   const [selectedPasskey, setSelectedPasskey] = useState<Passkey | null>(null);
   const [editedName, setEditedName] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  console.log({ passkeysEnabled });
 
   const onAddPasskey = async () => {
+    if (!passkeysEnabled) {
+      toast.error("Passkeys are disabled");
+      return;
+    }
     setRegistering(true);
     try {
       const optRes = await fetch("/api/passkey/register/options", {
         method: "POST"
       });
+      console.log(optRes, "--optRes--");
+
       if (!optRes.ok) throw new Error("Failed to get options");
       const options = await optRes.json();
 
@@ -295,87 +308,99 @@ export default function AccountProfile() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <HStack className="justify-between">
-            <div>
-              <CardTitle>Passkeys</CardTitle>
-              <CardDescription>
-                Sign in with biometrics instead of a magic link. Passkeys are
-                secured by Face ID, Touch ID, or your device PIN.
-              </CardDescription>
-            </div>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={onAddPasskey}
-              isDisabled={registering}
-              isLoading={registering}
-              leftIcon={<LuFingerprint className="size-4" />}
-            >
-              Add Passkey
-            </Button>
-          </HStack>
-        </CardHeader>
-        <CardContent>
-          {passkeys.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              No passkeys registered yet.
-            </p>
-          ) : (
-            <HStack spacing={2}>
-              {passkeys.map((pk) => (
-                <HStack
-                  key={pk.id}
-                  className="justify-between p-3 rounded-md border border-border space-x-4 cursor-pointer hover:bg-muted/40 transition-colors"
-                  onClick={() => openPasskeyDrawer(pk)}
+      {passkeysEnabled && (
+        <Card>
+          <CardHeader>
+            <HStack className="justify-between">
+              <div>
+                <CardTitle>Passkeys</CardTitle>
+                <CardDescription>
+                  Sign in with biometrics instead of a magic link. Passkeys are
+                  secured by Face ID, Touch ID, or your device PIN.
+                  {!passkeysEnabled && (
+                    <span> Passkeys are currently disabled.</span>
+                  )}
+                </CardDescription>
+              </div>
+              {passkeysEnabled && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={onAddPasskey}
+                  isDisabled={registering}
+                  isLoading={registering}
+                  leftIcon={<LuFingerprint className="size-4" />}
                 >
-                  <HStack spacing={3} className="items-start">
-                    <LuFingerprint className="size-4 text-muted-foreground shrink-0 mt-1" />
-                    <VStack spacing={0}>
-                      <p className="text-sm font-medium">{pk.credentialName}</p>
-                      <p className="text-xs text-muted-foreground">
-                        Added{" "}
-                        {new Date(pk.createdAt).toLocaleDateString(undefined, {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric"
-                        })}
-                        {pk.lastUsedAt && (
-                          <>
-                            {" · "}Last used{" "}
-                            {new Date(pk.lastUsedAt).toLocaleDateString(
-                              undefined,
-                              {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric"
-                              }
-                            )}
-                          </>
-                        )}
-                        {pk.backedUp && " · Synced"}
-                      </p>
-                    </VStack>
-                  </HStack>
-
-                  <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setConfirmDeleteId(pk.id);
-                    }}
-                    aria-label="Delete passkey"
-                    type="button"
-                    variant="ghost"
-                    icon={<LuTrash2 />}
-                    className="cursor-pointer"
-                  />
-                </HStack>
-              ))}
+                  Add Passkey
+                </Button>
+              )}
             </HStack>
-          )}
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent>
+            {passkeys.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No passkeys registered yet.
+              </p>
+            ) : (
+              <HStack spacing={2}>
+                {passkeys.map((pk) => (
+                  <HStack
+                    key={pk.id}
+                    className="justify-between p-3 rounded-md border border-border space-x-4 cursor-pointer hover:bg-muted/40 transition-colors"
+                    onClick={() => openPasskeyDrawer(pk)}
+                  >
+                    <HStack spacing={3} className="items-start">
+                      <LuFingerprint className="size-4 text-muted-foreground shrink-0 mt-1" />
+                      <VStack spacing={0}>
+                        <p className="text-sm font-medium">
+                          {pk.credentialName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Added{" "}
+                          {new Date(pk.createdAt).toLocaleDateString(
+                            undefined,
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric"
+                            }
+                          )}
+                          {pk.lastUsedAt && (
+                            <>
+                              {" · "}Last used{" "}
+                              {new Date(pk.lastUsedAt).toLocaleDateString(
+                                undefined,
+                                {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric"
+                                }
+                              )}
+                            </>
+                          )}
+                          {pk.backedUp && " · Synced"}
+                        </p>
+                      </VStack>
+                    </HStack>
+
+                    <IconButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setConfirmDeleteId(pk.id);
+                      }}
+                      aria-label="Delete passkey"
+                      type="button"
+                      variant="ghost"
+                      icon={<LuTrash2 />}
+                      className="cursor-pointer"
+                    />
+                  </HStack>
+                ))}
+              </HStack>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Edit passkey modal */}
       <Modal
