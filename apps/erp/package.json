@@ -133,6 +133,7 @@
     "sync:novu": "npx novu@latest sync ",
     "lint": "biome lint --write ",
     "start": "NODE_ENV=production react-router-serve ./build/server/index.js",
+    "test": "vitest run",
     "typecheck": "tsgo --noEmit",
     "types": "tsgo --noEmit",
     "typegen": "react-router typegen"

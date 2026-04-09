@@ -57,19 +57,44 @@ export let loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   const serviceRole = getCarbonServiceRole();
 
+  async function downloadFromBucket(bucketId: string, objectPath: string) {
+    const bucketClient = serviceRole.storage.from(bucketId);
+    const direct = await bucketClient.download(objectPath);
+    if (!direct.error) return direct.data;
+
+    // Fallback: use signed URL (some Supabase local setups reject direct /object downloads)
+    if (typeof (bucketClient as any).createSignedUrl === "function") {
+      const signed = await (bucketClient as any).createSignedUrl(
+        objectPath,
+        60
+      );
+
+      if (!signed.error && signed.data?.signedUrl) {
+        const resp = await fetch(signed.data.signedUrl);
+        if (resp.ok) return await resp.blob();
+      }
+    }
+
+    return null;
+  }
+
   async function downloadFile() {
     if (!path) throw new Error("Path not found");
     // Try company bucket first (new format)
-    const result = await serviceRole.storage.from(bucket!).download(path);
-    if (!result.error) return result.data;
+    const companyData = await downloadFromBucket(bucket!, path);
+    if (companyData) return companyData;
 
     // Fallback: try legacy private bucket with companyId prefix (pre-migration files)
-    const legacyResult = await serviceRole.storage
-      .from("private")
-      .download(`${bucket}/${path}`);
-    if (!legacyResult.error) return legacyResult.data;
+    const legacyData = await downloadFromBucket("private", `${bucket}/${path}`);
+    if (legacyData) return legacyData;
 
-    console.error("Company bucket error:", result.error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Storage download failed (new + legacy)", {
+        companyBucket: bucket,
+        path,
+        legacyPath: `${bucket}/${path}`
+      });
+    }
     return null;
   }
 

@@ -110,7 +110,7 @@ import type {
   TrackedInput
 } from "~/services/types";
 import { useItems } from "~/stores";
-import { path } from "~/utils/path";
+import { getPrivateUrl, path } from "~/utils/path";
 import ItemThumbnail from "../ItemThumbnail";
 import { OperationChat } from "./components/Chat";
 import {
@@ -1618,9 +1618,10 @@ export const JobOperation = ({
             <ModelViewer
               file={null}
               key={`model-${operation.itemModelPath ?? job.modelPath}`}
-              url={`/file/preview/private/${
+              url={getPrivateUrl(
+                companyId,
                 operation.itemModelPath ?? job.modelPath
-              }`}
+              )}
               mode={mode}
               className="rounded-none"
             />

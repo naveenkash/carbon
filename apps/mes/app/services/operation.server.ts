@@ -1,3 +1,4 @@
+import { SESSION_SECRET } from "@carbon/auth";
 import { createCookieSessionStorage } from "react-router";
 
 const MES_FILTERS_KEY = "mes-filters";
@@ -5,8 +6,11 @@ const MES_FILTERS_KEY = "mes-filters";
 const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: MES_FILTERS_KEY,
+    httpOnly: true,
     path: "/",
-    secure: false
+    sameSite: "lax",
+    secrets: [SESSION_SECRET!],
+    secure: process.env.NODE_ENV === "production"
   }
 });
 

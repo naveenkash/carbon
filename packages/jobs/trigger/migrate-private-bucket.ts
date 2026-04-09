@@ -17,17 +17,19 @@ export const migratePrivateBucket = task({
 
     logger.info("Starting migration", { dryRun, targetCompanyId });
 
-    const { data: companies,error: companyError } = await client
+    const { data: companies, error: companyError } = await client
       .from("company")
       .select("id")
       .order("id");
 
-      if (companyError) throw new Error(`Failed to list companies: ${companyError.message}`);
+    if (companyError) {
+      throw new Error(`Failed to list companies: ${companyError.message}`);
+    }
 
     if (!companies?.length) {
       logger.info("No companies found");
-      return { migrated: 0, failed: 0, skipped: 0 }
-      }
+      return { migrated: 0, failed: 0, skipped: 0 };
+    }
 
     const companiesToMigrate = targetCompanyId
       ? companies.filter((c) => c.id === targetCompanyId)
@@ -226,3 +228,11 @@ async function migrateFile(
 
   return "ok";
 }
+
+export const __testing = {
+  runWithConcurrency,
+  withRetry,
+  migrateCompany,
+  processFileOrFolder,
+  migrateFile,
+};
