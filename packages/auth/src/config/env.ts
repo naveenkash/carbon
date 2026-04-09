@@ -111,7 +111,7 @@ export const AUTH_PROVIDERS =
   getEnv("AUTH_PROVIDERS", {
     isRequired: false,
     isSecret: false
-  }) ?? "email,google,azure,passkey";
+  }) ?? "email,google,azure";
 
 export function isAuthProviderEnabled(provider: AuthProvider) {
   const AUTH_PROVIDERS_LIST = AUTH_PROVIDERS.split(",").map((p) => p.trim());
