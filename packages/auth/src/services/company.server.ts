@@ -6,17 +6,16 @@ const cookieName = "companyId";
 const isTestEdition = CarbonEdition === Edition.Test;
 
 export function setCompanyId(companyId: string | null) {
-  if (!companyId) {
-    return cookie.serialize(cookieName, "", {
-      path: "/",
-      expires: new Date(0),
-      domain: isTestEdition ? undefined : DOMAIN
-    });
+  const cookieOptions: cookie.SerializeOptions = {
+    path: "/"
+  };
+  if (DOMAIN && !DOMAIN.startsWith("localhost")) {
+    cookieOptions.domain = isTestEdition ? undefined : DOMAIN;
   }
-
-  return cookie.serialize(cookieName, companyId, {
-    path: "/",
-    maxAge: 31536000, // 1 year
-    domain: isTestEdition ? undefined : DOMAIN
-  });
+  if (!companyId) {
+    cookieOptions.expires = new Date(0);
+    return cookie.serialize(cookieName, "", cookieOptions);
+  }
+  cookieOptions.maxAge = 31536000;
+  return cookie.serialize(cookieName, companyId, cookieOptions);
 }
