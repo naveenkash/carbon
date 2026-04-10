@@ -3073,3 +3073,27 @@ export async function upsertDemandProjections(
     error: hasError ? results.find((r) => r.error)?.error : null
   };
 }
+
+/**
+ * Trigger a job scheduling task via Inngest.
+ * Supports both initial scheduling and rescheduling.
+ */
+export async function triggerJobSchedule(
+  jobId: string,
+  companyId: string,
+  userId: string,
+  mode: "initial" | "reschedule" = "reschedule",
+  direction: "backward" | "forward" = "backward"
+) {
+  const { trigger } = await import("@carbon/jobs");
+
+  await trigger("schedule-job", {
+    jobId,
+    companyId,
+    userId,
+    mode,
+    direction
+  });
+
+  return { success: true };
+}
