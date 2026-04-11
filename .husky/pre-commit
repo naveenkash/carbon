@@ -3,6 +3,15 @@
 
 npx lint-staged
 
+# Compile lingui translations if any relevant files were modified
+if git diff --cached --name-only | grep -qE '\.(tsx?|jsx?)$|\.po$'; then
+  echo "Compiling translations..."
+  npm run lingui:compile
+  
+  # Add compiled locale files to the commit
+  git add packages/locale/locales/**/*.mjs packages/locale/locales/**/*.po
+fi
+
 # Regenerate MCP tools if any .service.ts file was modified
 if git diff --cached --name-only | grep -q '\.service\.ts$'; then
   npx tsx scripts/generate-mcp.ts
