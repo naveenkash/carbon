@@ -2,6 +2,7 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { VStack } from "@carbon/react";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { getWarehouseTransfers } from "~/modules/inventory";
@@ -11,7 +12,7 @@ import { path } from "~/utils/path";
 import { getGenericQueryFilters } from "~/utils/query";
 
 export const handle: Handle = {
-  breadcrumb: "Warehouse Transfers",
+  breadcrumb: msg`Warehouse Transfers`,
   to: path.to.warehouseTransfers
 };
 
@@ -26,15 +27,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [warehouseTransfers] = await Promise.all([
-    getWarehouseTransfers(client, companyId, {
-      search,
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+  const warehouseTransfers = await getWarehouseTransfers(client, companyId, {
+    search,
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (warehouseTransfers.error) {
     throw redirect(

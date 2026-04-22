@@ -2,6 +2,7 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { VStack } from "@carbon/react";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { getAccountCategories } from "~/modules/accounting";
@@ -11,7 +12,7 @@ import { path } from "~/utils/path";
 import { getGenericQueryFilters } from "~/utils/query";
 
 export const handle: Handle = {
-  breadcrumb: "Categories",
+  breadcrumb: msg`Categories`,
   to: path.to.accountingCategories
 };
 
@@ -27,16 +28,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [categories] = await Promise.all([
-    getAccountCategories(client, companyId, {
-      search,
+  const categories = await getAccountCategories(client, companyId, {
+    search,
 
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (categories.error) {
     redirect(

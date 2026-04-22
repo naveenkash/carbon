@@ -26,6 +26,7 @@ import {
 } from "@carbon/react";
 import { ItarLoginDisclaimer } from "@carbon/remix";
 import { Edition } from "@carbon/utils";
+import { Trans, useLingui } from "@lingui/react/macro";
 import {
   browserSupportsWebAuthn,
   startAuthentication
@@ -117,6 +118,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function LoginRoute() {
+  const { t } = useLingui();
   const { hasOutlookAuth, hasGoogleAuth, hasPasskeyAuth } =
     useLoaderData<typeof loader>();
 
@@ -266,7 +268,7 @@ export default function LoginRoute() {
       <div className="flex justify-center mb-4">
         <img
           src={CONTROLLED_ENVIRONMENT ? "/flag.png" : "/carbon-logo-mark.svg"}
-          alt="Carbon Logo"
+          alt={t`Carbon Logo`}
           className="w-36"
         />
       </div>
@@ -274,9 +276,13 @@ export default function LoginRoute() {
         {fetcher.data?.success === true ? (
           <>
             <VStack spacing={4} className="items-center justify-center">
-              <Heading size="h3">Check your email</Heading>
+              <Heading size="h3">
+                <Trans>Check your email</Trans>
+              </Heading>
               <p className="text-muted-foreground tracking-tight text-sm">
-                We've sent you a magic link to sign in to your account.
+                <Trans>
+                  We've sent you a magic link to sign in to your account.
+                </Trans>
               </p>
             </VStack>
           </>
@@ -292,7 +298,9 @@ export default function LoginRoute() {
               {fetcher.data?.success === false && fetcher.data?.message && (
                 <Alert variant="destructive">
                   <LuCircleAlert className="w-4 h-4" />
-                  <AlertTitle>Authentication Error</AlertTitle>
+                  <AlertTitle>
+                    <Trans>Authentication Error</Trans>
+                  </AlertTitle>
                   <AlertDescription>{fetcher.data?.message}</AlertDescription>
                 </Alert>
               )}
@@ -307,7 +315,7 @@ export default function LoginRoute() {
                   variant="secondary"
                   leftIcon={<GoogleIcon />}
                 >
-                  Sign in with Google
+                  <Trans>Sign in with Google</Trans>
                 </Button>
               )}
               {hasOutlookAuth && (
@@ -320,7 +328,7 @@ export default function LoginRoute() {
                   variant="secondary"
                   leftIcon={<OutlookIcon className="size-6" />}
                 >
-                  Sign in with Outlook
+                  <Trans>Sign in with Outlook</Trans>
                 </Button>
               )}
 
@@ -346,7 +354,7 @@ export default function LoginRoute() {
               <Input
                 name="email"
                 label=""
-                placeholder="Email Address"
+                placeholder={t`Email Address`}
                 autoComplete={hasPasskeyAuth ? "email webauthn" : "email"}
               />
 
@@ -358,7 +366,7 @@ export default function LoginRoute() {
                 withBlocker={false}
                 variant="secondary"
               >
-                Sign in with Email
+                <Trans>Sign in with Email</Trans>
               </Submit>
             </VStack>
           </ValidatedForm>
@@ -368,24 +376,26 @@ export default function LoginRoute() {
         {CONTROLLED_ENVIRONMENT && <ItarLoginDisclaimer />}
         {CarbonEdition !== Edition.Community && (
           <p>
-            By signing in, you agree to the{" "}
-            <a
-              href="https://carbon.ms/terms"
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a
-              href="https://carbon.ms/privacy"
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              Privacy Policy.
-            </a>
+            <Trans>
+              By signing in, you agree to the{" "}
+              <a
+                href="https://carbon.ms/terms"
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://carbon.ms/privacy"
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                Privacy Policy.
+              </a>
+            </Trans>
           </p>
         )}
       </div>

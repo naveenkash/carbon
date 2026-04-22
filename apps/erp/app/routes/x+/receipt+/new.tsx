@@ -2,7 +2,7 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
-import { FunctionRegion } from "@supabase/supabase-js";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 import type { ReceiptSourceDocument } from "~/modules/inventory";
@@ -11,7 +11,7 @@ import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
 export const handle: Handle = {
-  breadcrumb: "Receipts",
+  breadcrumb: msg`Receipts`,
   to: path.to.receipts
 };
 
@@ -41,8 +41,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           purchaseOrderId: sourceDocumentId,
           receiptId: undefined,
           userId: userId
-        },
-        region: FunctionRegion.UsEast1
+        }
       });
       if (!purchaseOrderReceipt.data || purchaseOrderReceipt.error) {
         throw redirect(
@@ -65,8 +64,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           warehouseTransferId: sourceDocumentId,
           receiptId: undefined,
           userId: userId
-        },
-        region: FunctionRegion.UsEast1
+        }
       });
       if (!warehouseTransferReceipt.data || warehouseTransferReceipt.error) {
         throw redirect(
@@ -88,8 +86,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           companyId,
           locationId: defaults.data?.locationId,
           userId: userId
-        },
-        region: FunctionRegion.UsEast1
+        }
       });
 
       if (!defaultReceipt.data || defaultReceipt.error) {

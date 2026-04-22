@@ -27,6 +27,9 @@ import {
   toast,
   VStack
 } from "@carbon/react";
+import { getPreferenceHeaders } from "@carbon/remix";
+import { msg } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { startRegistration } from "@simplewebauthn/browser";
 import { useState } from "react";
 import { LuFingerprint, LuTrash2 } from "react-icons/lu";
@@ -39,17 +42,23 @@ import {
   useRevalidator
 } from "react-router";
 import {
+  accountLanguageValidator,
   accountProfileValidator,
   getAccount,
   updateAvatar,
   updatePublicAccount
 } from "~/modules/account";
-import { ProfileForm, ProfilePhotoForm } from "~/modules/account/ui/Profile";
+import {
+  ProfileForm,
+  ProfileLanguageForm,
+  ProfilePhotoForm
+} from "~/modules/account/ui/Profile";
+import { setLocale } from "~/services/locale.server";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
 export const handle: Handle = {
-  breadcrumb: "Profile",
+  breadcrumb: msg`Profile`,
   to: path.to.profile
 };
 
@@ -82,7 +91,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   return {
     user: user.data,
-    passkeys: (passkeysResult.data ?? []) as Passkey[]
+    passkeys: (passkeysResult.data ?? []) as Passkey[],
+    locale: getPreferenceHeaders(request).locale
   };
 }
 
@@ -118,6 +128,29 @@ export async function action({ request }: ActionFunctionArgs) {
       );
 
     return data({}, await flash(request, success("Updated profile")));
+  }
+
+  if (formData.get("intent") === "locale") {
+    const validation = await validator(accountLanguageValidator).validate(
+      formData
+    );
+
+    if (validation.error) {
+      return validationError(validation.error);
+    }
+
+    const localeCookie = setLocale(validation.data.locale);
+    const flashHeaders = await flash(request, success("Updated language"));
+
+    return data(
+      {},
+      {
+        headers: [
+          ["Set-Cookie", localeCookie],
+          ["Set-Cookie", flashHeaders.headers["Set-Cookie"]]
+        ]
+      }
+    );
   }
 
   if (formData.get("intent") === "photo") {
@@ -205,7 +238,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function AccountProfile() {
-  const { user, passkeys } = useLoaderData<typeof loader>();
+  const { user, passkeys, locale } = useLoaderData<typeof loader>();
   const deleteFetcher = useFetcher();
   const renameFetcher = useFetcher();
   const { revalidate } = useRevalidator();
@@ -293,18 +326,24 @@ export default function AccountProfile() {
     <VStack spacing={4}>
       <Card>
         <CardHeader>
-          <CardTitle>Profile</CardTitle>
+          <CardTitle>
+            <Trans>Profile</Trans>
+          </CardTitle>
           <CardDescription>
-            This information will be visible to all users, so be careful what
-            you share.
+            <Trans>
+              This information will be visible to all users, so be careful what
+              you share.
+            </Trans>
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 w-full mb-8">
             {/* @ts-expect-error TS2322 */}
             <ProfileForm user={user} />
             <ProfilePhotoForm user={user} />
           </div>
+
+          <ProfileLanguageForm locale={locale} />
         </CardContent>
       </Card>
 

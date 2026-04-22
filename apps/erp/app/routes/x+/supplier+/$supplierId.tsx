@@ -2,6 +2,7 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect } from "react-router";
 import {
@@ -17,7 +18,7 @@ import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
 export const handle: Handle = {
-  breadcrumb: "Suppliers",
+  breadcrumb: msg`Suppliers`,
   to: path.to.suppliers
 };
 
@@ -29,11 +30,25 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { supplierId } = params;
   if (!supplierId) throw new Error("Could not find supplierId");
 
-  const [supplier, contacts, locations, tags] = await Promise.all([
-    getSupplier(client, supplierId),
+  const serviceRole = getCarbonServiceRole();
+  // Kick off approval in parallel — it only needs supplier.status, so we chain
+  // off the supplier fetch rather than waiting for the whole Promise.all to
+  // settle.
+  const supplierPromise = getSupplier(client, supplierId);
+  const [supplier, contacts, locations, tags, approval] = await Promise.all([
+    supplierPromise,
     getSupplierContacts(client, supplierId),
     getSupplierLocations(client, supplierId),
-    getTagsList(client, companyId, "supplier")
+    getTagsList(client, companyId, "supplier"),
+    supplierPromise.then((s) =>
+      getSupplierApprovalContext(
+        serviceRole,
+        supplierId,
+        s.data?.status ?? null,
+        companyId,
+        userId
+      )
+    )
   ]);
 
   if (supplier.error) {
@@ -45,16 +60,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       )
     );
   }
-
-  const serviceRole = getCarbonServiceRole();
-  const status = supplier.data?.status ?? null;
-  const approval = await getSupplierApprovalContext(
-    serviceRole,
-    supplierId,
-    status,
-    companyId,
-    userId
-  );
 
   return {
     supplier: supplier.data,

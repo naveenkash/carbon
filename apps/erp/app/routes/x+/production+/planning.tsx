@@ -2,14 +2,15 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { ResizablePanel, ResizablePanelGroup, VStack } from "@carbon/react";
-import { getLocalTimeZone, startOfWeek, today } from "@internationalized/date";
+import { getLocalTimeZone, today } from "@internationalized/date";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import type { ProductionPlanningItem } from "~/modules/production";
 import { getProductionPlanning } from "~/modules/production";
 import ProductionPlanningTable from "~/modules/production/ui/Planning/ProductionPlanningTable";
 import { getLocationsList } from "~/modules/resources";
-import { getPeriods } from "~/modules/shared/shared.service";
+import { getOrCreatePeriods } from "~/modules/shared/shared.server";
 import { getUserDefaults } from "~/modules/users/users.server";
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
@@ -18,7 +19,7 @@ import { getGenericQueryFilters } from "~/utils/query";
 const WEEKS_TO_PLAN = 12 * 4;
 
 export const handle: Handle = {
-  breadcrumb: "Planning",
+  breadcrumb: msg`Planning`,
   to: path.to.productionPlanning
 };
 
@@ -66,35 +67,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
     locationId = locations.data?.[0].id as string;
   }
 
-  const startDate = startOfWeek(today(getLocalTimeZone()), "en-US");
-  const endDate = startDate.add({ weeks: WEEKS_TO_PLAN });
-  const periods = await getPeriods(client, {
-    startDate: startDate.toString(),
-    endDate: endDate.toString()
-  });
+  const periods = await getOrCreatePeriods(
+    today(getLocalTimeZone()),
+    WEEKS_TO_PLAN
+  );
 
-  if (periods.error) {
-    redirect(
-      path.to.authenticatedRoot,
-      await flash(request, error(periods.error, "Failed to load periods"))
-    );
-  }
-
-  const [items] = await Promise.all([
-    getProductionPlanning(
-      client,
-      locationId,
-      companyId,
-      periods.data?.map((p) => p.id) ?? [],
-      {
-        search,
-        limit,
-        offset,
-        sorts,
-        filters
-      }
-    )
-  ]);
+  const items = await getProductionPlanning(
+    client,
+    locationId,
+    companyId,
+    periods.map((p) => p.id),
+    {
+      search,
+      limit,
+      offset,
+      sorts,
+      filters
+    }
+  );
 
   if (items.error) {
     redirect(
@@ -106,7 +96,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     items: (items.data ?? []) as ProductionPlanningItem[],
     count: items.count ?? 0,
-    periods: periods.data ?? [],
+    periods,
     locationId
   };
 }

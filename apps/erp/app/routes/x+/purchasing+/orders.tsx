@@ -2,6 +2,7 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { VStack } from "@carbon/react";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { getPurchaseOrders } from "~/modules/purchasing";
@@ -11,7 +12,7 @@ import { path } from "~/utils/path";
 import { getGenericQueryFilters } from "~/utils/query";
 
 export const handle: Handle = {
-  breadcrumb: "Orders",
+  breadcrumb: msg`Orders`,
   to: path.to.purchaseOrders
 };
 
@@ -30,17 +31,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [purchasOrders] = await Promise.all([
-    getPurchaseOrders(client, companyId, {
-      search,
-      status,
-      supplierId,
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+  const purchasOrders = await getPurchaseOrders(client, companyId, {
+    search,
+    status,
+    supplierId,
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (purchasOrders.error) {
     redirect(

@@ -4,9 +4,10 @@ import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
 import type { Database } from "@carbon/database";
 import { validationError, validator } from "@carbon/form";
+import { trigger } from "@carbon/jobs";
 import { NotificationEvent } from "@carbon/notifications";
+import { msg } from "@lingui/core/macro";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { tasks } from "@trigger.dev/sdk";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData, useParams } from "react-router";
 import { PanelProvider, ResizablePanels } from "~/components/Layout/Panels";
@@ -97,7 +98,7 @@ async function getQualityDocumentApprovalContext(
 }
 
 export const handle: Handle = {
-  breadcrumb: "Policy & Procedure",
+  breadcrumb: msg`Policy & Procedure`,
   to: path.to.qualityDocuments,
   module: "quality"
 };
@@ -181,7 +182,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const companyId = approvalRequest.data?.companyId;
   if (requestedBy && companyId && requestedBy !== userId) {
     try {
-      await tasks.trigger("notify", {
+      await trigger("notify", {
         event:
           decision === "Approved"
             ? NotificationEvent.ApprovalApproved
@@ -215,9 +216,22 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const { id } = params;
   if (!id) throw new Error("Could not find id");
 
-  const [document, tags] = await Promise.all([
-    getQualityDocument(client, id),
-    getTagsList(client, companyId, "qualityDocument")
+  const serviceRole = getCarbonServiceRole();
+  // Kick off approval in parallel — it only needs document.status, so we chain
+  // off the document fetch rather than waiting for Promise.all to settle.
+  const documentPromise = getQualityDocument(client, id);
+  const [document, tags, approval] = await Promise.all([
+    documentPromise,
+    getTagsList(client, companyId, "qualityDocument"),
+    documentPromise.then((d) =>
+      getQualityDocumentApprovalContext(
+        serviceRole,
+        id,
+        d.data?.status ?? null,
+        companyId,
+        userId
+      )
+    )
   ]);
 
   if (document.error) {
@@ -226,16 +240,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       await flash(request, error(document.error, "Failed to load document"))
     );
   }
-
-  const serviceRole = getCarbonServiceRole();
-  const status = document.data?.status ?? null;
-  const approval = await getQualityDocumentApprovalContext(
-    serviceRole,
-    id,
-    status,
-    companyId,
-    userId
-  );
 
   return {
     document: document.data,

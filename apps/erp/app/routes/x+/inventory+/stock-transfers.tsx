@@ -2,6 +2,7 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { VStack } from "@carbon/react";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { getStockTransfers } from "~/modules/inventory";
@@ -13,7 +14,7 @@ import { path } from "~/utils/path";
 import { getGenericQueryFilters } from "~/utils/query";
 
 export const handle: Handle = {
-  breadcrumb: "Stock Transfers",
+  breadcrumb: msg`Stock Transfers`,
   to: path.to.stockTransfers
 };
 
@@ -59,16 +60,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     locationId = locations.data?.[0].id as string;
   }
 
-  const [stockTransfers] = await Promise.all([
-    getStockTransfers(client, companyId, {
-      locationId,
-      search,
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+  const stockTransfers = await getStockTransfers(client, companyId, {
+    locationId,
+    search,
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (stockTransfers.error) {
     console.error(stockTransfers.error);

@@ -2,18 +2,18 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { VStack } from "@carbon/react";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { getMaterialDimensions } from "~/modules/items";
 import MaterialDimensionsTable from "~/modules/items/ui/MaterialDimensions/MaterialDimensionsTable";
 import { getCompanySettings } from "~/modules/settings/settings.service";
-
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 import { getGenericQueryFilters } from "~/utils/query";
 
 export const handle: Handle = {
-  breadcrumb: "Dimensions",
+  breadcrumb: msg`Dimensions`,
   to: path.to.materialDimensions
 };
 
@@ -31,16 +31,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const settings = await getCompanySettings(client, companyId);
 
-  const [materialDimensions] = await Promise.all([
-    getMaterialDimensions(client, companyId, {
-      limit,
-      offset,
-      sorts,
-      search,
-      filters,
-      isMetric: settings?.data?.useMetric ?? false
-    })
-  ]);
+  const materialDimensions = await getMaterialDimensions(client, companyId, {
+    limit,
+    offset,
+    sorts,
+    search,
+    filters,
+    isMetric: settings?.data?.useMetric ?? false
+  });
 
   if (materialDimensions.error) {
     console.error(materialDimensions.error);

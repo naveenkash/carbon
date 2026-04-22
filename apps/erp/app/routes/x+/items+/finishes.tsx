@@ -2,17 +2,17 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { VStack } from "@carbon/react";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { getMaterialFinishes } from "~/modules/items";
 import MaterialFinishesTable from "~/modules/items/ui/MaterialFinishes/MaterialFinishesTable";
-
 import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 import { getGenericQueryFilters } from "~/utils/query";
 
 export const handle: Handle = {
-  breadcrumb: "Finishes",
+  breadcrumb: msg`Finishes`,
   to: path.to.materialFinishes
 };
 
@@ -28,15 +28,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [materialFinishes] = await Promise.all([
-    getMaterialFinishes(client, companyId, {
-      limit,
-      offset,
-      sorts,
-      search,
-      filters
-    })
-  ]);
+  const materialFinishes = await getMaterialFinishes(client, companyId, {
+    limit,
+    offset,
+    sorts,
+    search,
+    filters
+  });
 
   if (materialFinishes.error) {
     console.error(materialFinishes.error);

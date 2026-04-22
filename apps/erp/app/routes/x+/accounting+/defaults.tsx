@@ -3,6 +3,7 @@ import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { validationError, validator } from "@carbon/form";
 import { ScrollArea, VStack } from "@carbon/react";
+import { msg } from "@lingui/core/macro";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { data, redirect, useLoaderData } from "react-router";
 import { useRouteData } from "~/hooks";
@@ -20,7 +21,7 @@ import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
 export const handle: Handle = {
-  breadcrumb: "Defaults",
+  breadcrumb: msg`Defaults`,
   to: path.to.accountingDefaults
 };
 
@@ -29,9 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     view: "accounting"
   });
 
-  const [defaultAccounts] = await Promise.all([
-    getDefaultAccounts(client, companyId)
-  ]);
+  const defaultAccounts = await getDefaultAccounts(client, companyId);
 
   if (defaultAccounts.error || !defaultAccounts.data) {
     throw redirect(

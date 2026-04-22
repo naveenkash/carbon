@@ -17,6 +17,7 @@ import {
   useDisclosure
 } from "@carbon/react";
 import { getItemReadableId } from "@carbon/utils";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useEffect, useMemo, useState } from "react";
 import { flushSync } from "react-dom";
 import {
@@ -27,6 +28,7 @@ import {
   LuPanelLeft,
   LuPanelRight,
   LuShoppingCart,
+  LuTicketX,
   LuTrash
 } from "react-icons/lu";
 import { Link, useFetcher, useParams } from "react-router";
@@ -42,13 +44,16 @@ import { useSuppliers } from "~/stores/suppliers";
 import { path } from "~/utils/path";
 import { isPurchaseInvoiceLocked } from "../../invoicing.models";
 import PurchaseInvoicePostModal from "./PurchaseInvoicePostModal";
+import PurchaseInvoiceVoidModal from "./PurchaseInvoiceVoidModal";
 
 const PurchaseInvoiceHeader = () => {
+  const { t } = useLingui();
   const permissions = usePermissions();
   const settings = useSettings();
   const { invoiceId } = useParams();
   const { company } = useUser();
   const postingModal = useDisclosure();
+  const voidModal = useDisclosure();
   const deleteModal = useDisclosure();
   const { trigger: auditLogTrigger, drawer: auditLogDrawer } = useAuditLog({
     entityType: "purchaseInvoice",
@@ -95,6 +100,11 @@ const PurchaseInvoiceHeader = () => {
   const { purchaseInvoice } = routeData;
   const { toggleExplorer, toggleProperties } = usePanels();
   const isPosted = purchaseInvoice.postingDate !== null;
+  const isVoided = purchaseInvoice.status === "Voided";
+  const hasPayment =
+    purchaseInvoice.status === "Paid" ||
+    purchaseInvoice.status === "Partially Paid";
+  const canVoid = isPosted && !isVoided && !hasPayment;
 
   const [relatedDocs, setRelatedDocs] = useState<{
     purchaseOrders: { id: string; readableId: string }[];
@@ -174,11 +184,11 @@ const PurchaseInvoiceHeader = () => {
 
   return (
     <>
-      <div className="flex flex-shrink-0 items-center justify-between p-2 bg-card border-b h-[50px] overflow-x-auto scrollbar-hide">
+      <div className="flex flex-shrink-0 items-center justify-between p-2 bg-background border-b h-[50px] overflow-x-auto scrollbar-hide">
         <HStack className="w-full justify-between">
           <HStack>
             <IconButton
-              aria-label="Toggle Explorer"
+              aria-label={t`Toggle Explorer`}
               icon={<LuPanelLeft />}
               onClick={toggleExplorer}
               variant="ghost"
@@ -192,7 +202,7 @@ const PurchaseInvoiceHeader = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <IconButton
-                  aria-label="More options"
+                  aria-label={t`More options`}
                   icon={<LuEllipsisVertical />}
                   variant="secondary"
                   size="sm"
@@ -213,7 +223,7 @@ const PurchaseInvoiceHeader = () => {
                   onClick={deleteModal.onOpen}
                 >
                   <DropdownMenuIcon icon={<LuTrash />} />
-                  Delete Purchase Invoice
+                  <Trans>Delete Purchase Invoice</Trans>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -222,7 +232,9 @@ const PurchaseInvoiceHeader = () => {
               status={routeData?.purchaseInvoice?.status}
             />
             {settings?.supplierApproval && !isSupplierApproved && (
-              <Status color="red">Unapproved Supplier</Status>
+              <Status color="red">
+                <Trans>Unapproved Supplier</Trans>
+              </Status>
             )}
           </HStack>
           <HStack>
@@ -233,7 +245,7 @@ const PurchaseInvoiceHeader = () => {
                     relatedDocs.purchaseOrders[0].id
                   )}
                 >
-                  Purchase Order
+                  <Trans>Purchase Order</Trans>
                 </Link>
               </Button>
             )}
@@ -241,7 +253,7 @@ const PurchaseInvoiceHeader = () => {
             {relatedDocs.receipts.length === 1 && (
               <Button variant="secondary" leftIcon={<LuHandCoins />} asChild>
                 <Link to={path.to.receipt(relatedDocs.receipts[0].id)}>
-                  Receipt
+                  <Trans>Receipt</Trans>
                 </Link>
               </Button>
             )}
@@ -250,7 +262,7 @@ const PurchaseInvoiceHeader = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="secondary" leftIcon={<LuShoppingCart />}>
-                    Purchase Orders
+                    <Trans>Purchase Orders</Trans>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -269,7 +281,7 @@ const PurchaseInvoiceHeader = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="secondary" leftIcon={<LuHandCoins />}>
-                    Receipts
+                    <Trans>Receipts</Trans>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -298,54 +310,69 @@ const PurchaseInvoiceHeader = () => {
                 !isSupplierApproved
               }
             >
-              Post
+              <Trans>Post</Trans>
             </Button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="secondary"
-                  isDisabled={
-                    purchaseInvoice.status === "Draft" ||
-                    purchaseInvoice.status === "Pending" ||
-                    !permissions.can("update", "invoicing")
-                  }
-                  leftIcon={<LuHandCoins />}
-                  rightIcon={<LuChevronDown />}
-                >
-                  Payment
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuRadioGroup
-                  value={purchaseInvoice.status ?? "Draft"}
-                  onValueChange={handleStatusChange}
-                >
-                  {(["Paid", "Partially Paid", "Voided"] as const).map(
-                    (status) => (
-                      <DropdownMenuRadioItem
-                        disabled={
-                          !permissions.can("update", "invoicing") ||
-                          ![
-                            "Submitted",
-                            "Paid",
-                            "Partially Paid",
-                            "Voided"
-                          ].includes(purchaseInvoice.status ?? "")
-                        }
-                        key={status}
-                        value={status}
-                      >
-                        <PurchaseInvoicingStatus status={status} />
-                      </DropdownMenuRadioItem>
-                    )
-                  )}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {isPosted && (
+              <Button
+                leftIcon={<LuTicketX />}
+                variant="destructive"
+                onClick={voidModal.onOpen}
+                isDisabled={!canVoid || !permissions.can("update", "invoicing")}
+              >
+                <Trans>Void</Trans>
+              </Button>
+            )}
+
+            {(() => {
+              const isPaymentDisabled =
+                purchaseInvoice.status === "Draft" ||
+                purchaseInvoice.status === "Pending" ||
+                isVoided ||
+                !permissions.can("update", "invoicing");
+
+              if (isPaymentDisabled) {
+                return (
+                  <Button
+                    variant="secondary"
+                    isDisabled
+                    leftIcon={<LuHandCoins />}
+                    rightIcon={<LuChevronDown />}
+                  >
+                    <Trans>Payment</Trans>
+                  </Button>
+                );
+              }
+
+              return (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="secondary"
+                      leftIcon={<LuHandCoins />}
+                      rightIcon={<LuChevronDown />}
+                    >
+                      <Trans>Payment</Trans>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuRadioGroup
+                      value={purchaseInvoice.status ?? "Draft"}
+                      onValueChange={handleStatusChange}
+                    >
+                      {(["Paid", "Partially Paid"] as const).map((status) => (
+                        <DropdownMenuRadioItem key={status} value={status}>
+                          <PurchaseInvoicingStatus status={status} />
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              );
+            })()}
 
             <IconButton
-              aria-label="Toggle Properties"
+              aria-label={t`Toggle Properties`}
               icon={<LuPanelRight />}
               onClick={toggleProperties}
               variant="ghost"
@@ -362,12 +389,15 @@ const PurchaseInvoiceHeader = () => {
           linesToReceive={linesNotAssociatedWithPO}
         />
       )}
+      {voidModal.isOpen && (
+        <PurchaseInvoiceVoidModal onClose={voidModal.onClose} />
+      )}
       {deleteModal.isOpen && (
         <ConfirmDelete
           action={path.to.deletePurchaseInvoice(invoiceId)}
           isOpen={deleteModal.isOpen}
           name={routeData?.purchaseInvoice?.invoiceId ?? "purchase invoice"}
-          text={`Are you sure you want to delete ${routeData?.purchaseInvoice?.invoiceId}? This cannot be undone.`}
+          text={t`Are you sure you want to delete ${routeData?.purchaseInvoice?.invoiceId}? This cannot be undone.`}
           onCancel={() => {
             deleteModal.onClose();
           }}

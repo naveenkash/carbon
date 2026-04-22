@@ -5,7 +5,7 @@ import { flash } from "@carbon/auth/session.server";
 import { notifyIssueCreated } from "@carbon/ee/notifications";
 import { validationError, validator } from "@carbon/form";
 import { getLocalTimeZone, today } from "@internationalized/date";
-import { FunctionRegion } from "@supabase/supabase-js";
+import { msg } from "@lingui/core/macro";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { redirect, useLoaderData } from "react-router";
 import { useUrlParams, useUser } from "~/hooks";
@@ -18,7 +18,6 @@ import {
   upsertIssue
 } from "~/modules/quality";
 import IssueForm from "~/modules/quality/ui/Issue/IssueForm";
-
 import { getNextSequence } from "~/modules/settings";
 import { getCompanyIntegrations } from "~/modules/settings/settings.server";
 import { setCustomFields } from "~/utils/form";
@@ -26,7 +25,7 @@ import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
 export const handle: Handle = {
-  breadcrumb: "Issues",
+  breadcrumb: msg`Issues`,
   to: path.to.issues
 };
 
@@ -110,8 +109,7 @@ export async function action({ request }: ActionFunctionArgs) {
       id: ncrId,
       companyId,
       userId
-    },
-    region: FunctionRegion.UsEast1
+    }
   });
 
   if (tasks.error) {

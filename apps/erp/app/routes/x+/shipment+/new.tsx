@@ -2,7 +2,7 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { flash } from "@carbon/auth/session.server";
-import { FunctionRegion } from "@supabase/supabase-js";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 import type { ShipmentSourceDocument } from "~/modules/inventory";
@@ -11,7 +11,7 @@ import type { Handle } from "~/utils/handle";
 import { path } from "~/utils/path";
 
 export const handle: Handle = {
-  breadcrumb: "Shipments",
+  breadcrumb: msg`Shipments`,
   to: path.to.shipments
 };
 
@@ -41,8 +41,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           salesOrderId: sourceDocumentId,
           shipmentId: undefined,
           userId: userId
-        },
-        region: FunctionRegion.UsEast1
+        }
       });
       if (!salesOrderShipment.data || salesOrderShipment.error) {
         console.error(salesOrderShipment.error);
@@ -67,8 +66,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           purchaseOrderId: sourceDocumentId,
           shipmentId: undefined,
           userId: userId
-        },
-        region: FunctionRegion.UsEast1
+        }
       });
       if (!purchaseOrderShipment.data || purchaseOrderShipment.error) {
         console.error(purchaseOrderShipment.error);
@@ -92,8 +90,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           warehouseTransferId: sourceDocumentId,
           shipmentId: undefined,
           userId: userId
-        },
-        region: FunctionRegion.UsEast1
+        }
       });
       if (!warehouseTransferShipment.data || warehouseTransferShipment.error) {
         console.error(warehouseTransferShipment.error);
@@ -118,8 +115,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           companyId,
           locationId: defaults.data?.locationId,
           userId: userId
-        },
-        region: FunctionRegion.UsEast1
+        }
       });
 
       if (!defaultShipment.data || defaultShipment.error) {

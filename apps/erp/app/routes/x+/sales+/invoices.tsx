@@ -2,6 +2,7 @@ import { error } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { flash } from "@carbon/auth/session.server";
 import { VStack } from "@carbon/react";
+import { msg } from "@lingui/core/macro";
 import type { LoaderFunctionArgs } from "react-router";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { getSalesInvoices } from "~/modules/invoicing";
@@ -11,7 +12,7 @@ import { path } from "~/utils/path";
 import { getGenericQueryFilters } from "~/utils/query";
 
 export const handle: Handle = {
-  breadcrumb: "Invoices",
+  breadcrumb: msg`Invoices`,
   to: path.to.salesInvoices
 };
 
@@ -28,16 +29,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { limit, offset, sorts, filters } =
     getGenericQueryFilters(searchParams);
 
-  const [salesInvoices] = await Promise.all([
-    getSalesInvoices(client, companyId, {
-      search,
-      customerId,
-      limit,
-      offset,
-      sorts,
-      filters
-    })
-  ]);
+  const salesInvoices = await getSalesInvoices(client, companyId, {
+    search,
+    customerId,
+    limit,
+    offset,
+    sorts,
+    filters
+  });
 
   if (salesInvoices.error) {
     redirect(

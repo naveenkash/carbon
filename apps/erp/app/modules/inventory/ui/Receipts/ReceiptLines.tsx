@@ -36,6 +36,7 @@ import {
 } from "@carbon/react";
 import type { TrackedEntityAttributes } from "@carbon/utils";
 import { labelSizes } from "@carbon/utils";
+import { Trans, useLingui } from "@lingui/react/macro";
 import type { PostgrestResponse } from "@supabase/supabase-js";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -60,7 +61,7 @@ import { DocumentPreview, Empty, ItemThumbnail } from "~/components";
 import DocumentIcon from "~/components/DocumentIcon";
 import { Enumerable } from "~/components/Enumerable";
 import FileDropzone from "~/components/FileDropzone";
-import { useShelves } from "~/components/Form/Shelf";
+import { useStorageUnits } from "~/components/Form/StorageUnit";
 import { useUnitOfMeasure } from "~/components/Form/UnitOfMeasure";
 import { ConfirmDelete } from "~/components/Modals";
 import { useRouteData, useUser } from "~/hooks";
@@ -70,7 +71,7 @@ import type {
   Receipt,
   ReceiptLine
 } from "~/modules/inventory";
-import { ShelfForm, splitValidator } from "~/modules/inventory";
+import { StorageUnitForm, splitValidator } from "~/modules/inventory";
 import { getDocumentType } from "~/modules/shared/shared.service";
 import type { action as receiptLinesUpdateAction } from "~/routes/x+/receipt+/lines.update";
 import { useItems } from "~/stores";
@@ -195,7 +196,7 @@ const ReceiptLines = () => {
         }
       | {
           lineId: string;
-          field: "shelfId";
+          field: "storageUnitId";
           value: string;
         }) => {
       const formData = new FormData();
@@ -218,7 +219,9 @@ const ReceiptLines = () => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Receipt Lines</CardTitle>
+          <CardTitle>
+            <Trans>Receipt Lines</Trans>
+          </CardTitle>
         </CardHeader>
 
         <CardContent>
@@ -305,12 +308,13 @@ function ReceiptLineItem({
       }
     | {
         lineId: string;
-        field: "shelfId";
+        field: "storageUnitId";
         value: string;
       }) => Promise<void>;
   upload: (files: File[]) => Promise<void>;
   deleteFile: (file: StorageItem) => Promise<void>;
 }) {
+  const { t } = useLingui();
   const [items] = useItems();
   const item = items.find((p) => p.id === line.itemId);
   const unitsOfMeasure = useUnitOfMeasure();
@@ -323,7 +327,7 @@ function ReceiptLineItem({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <IconButton
-              aria-label="Line options"
+              aria-label={t`Line options`}
               variant="secondary"
               icon={<LuEllipsisVertical />}
               size="sm"
@@ -335,7 +339,7 @@ function ReceiptLineItem({
               onClick={splitDisclosure.onOpen}
             >
               <DropdownMenuIcon icon={<LuSplit />} />
-              Split receipt line
+              {t`Split receipt line`}
             </DropdownMenuItem>
             <DropdownMenuItem
               destructive
@@ -343,7 +347,7 @@ function ReceiptLineItem({
               onClick={deleteDisclosure.onOpen}
             >
               <DropdownMenuIcon icon={<LuTrash />} />
-              Delete receipt line
+              {t`Delete receipt line`}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -442,15 +446,15 @@ function ReceiptLineItem({
             </VStack>
           </HStack>
 
-          <Shelf
+          <StorageUnit
             locationId={line.locationId}
-            shelfId={line.shelfId}
+            storageUnitId={line.storageUnitId}
             isReadOnly={isReadOnly}
-            onChange={(shelf) => {
+            onChange={(storageUnit) => {
               onUpdate({
                 lineId: line.id!,
-                field: "shelfId",
-                value: shelf
+                field: "storageUnitId",
+                value: storageUnit
               });
             }}
           />
@@ -511,7 +515,7 @@ function ReceiptLineItem({
                           </span>
                           <IconButton
                             icon={<LuX />}
-                            aria-label="Delete file"
+                            aria-label={t`Delete file`}
                             variant="ghost"
                             onClick={() => deleteFile(file)}
                           />
@@ -964,6 +968,7 @@ function SplitReceiptLineModal({
   line: ReceiptLine;
   onClose: () => void;
 }) {
+  const { t } = useLingui();
   const fetcher = useFetcher<{ success: boolean }>();
   useEffect(() => {
     if (fetcher.data?.success) {
@@ -1001,7 +1006,7 @@ function SplitReceiptLineModal({
             />
             <Number
               name="quantity"
-              label="Quantity"
+              label={t`Quantity`}
               maxValue={line.orderQuantity ?? 0 - 0.0001}
               minValue={0.0001}
             />
@@ -1018,56 +1023,56 @@ function SplitReceiptLineModal({
   );
 }
 
-function Shelf({
+function StorageUnit({
   locationId,
-  shelfId,
+  storageUnitId,
   isReadOnly,
   onChange
 }: {
   locationId: string | null;
-  shelfId: string | null;
+  storageUnitId: string | null;
   isReadOnly: boolean;
-  onChange: (shelf: string) => void;
+  onChange: (storageUnit: string) => void;
 }) {
-  const { options } = useShelves(locationId ?? undefined);
-  const newShelfModal = useDisclosure();
+  const { options } = useStorageUnits(locationId ?? undefined);
+  const newStorageUnitModal = useDisclosure();
   const [created, setCreated] = useState<string>("");
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   if (!locationId) return null;
 
-  const ShelfPreview = (
+  const StorageUnitPreview = (
     value: string,
     options: { value: string; label: string | JSX.Element }[]
   ) => {
-    const shelf = options.find((o) => o.value === value);
-    if (!shelf) return null;
-    return shelf.label;
+    const storageUnit = options.find((o) => o.value === value);
+    if (!storageUnit) return null;
+    return storageUnit.label;
   };
 
   return (
     <div className="flex flex-col items-start gap-1 min-w-[140px] text-sm">
-      <label className="text-xs text-muted-foreground">Shelf</label>
+      <label className="text-xs text-muted-foreground">Storage Unit</label>
       <CreatableCombobox
         ref={triggerRef}
         options={options}
-        value={shelfId ?? undefined}
+        value={storageUnitId ?? undefined}
         onChange={onChange}
         disabled={isReadOnly}
         isReadOnly={isReadOnly}
-        inline={ShelfPreview}
+        inline={StorageUnitPreview}
         onCreateOption={(option) => {
-          newShelfModal.onOpen();
+          newStorageUnitModal.onOpen();
           setCreated(option);
         }}
       />
-      {newShelfModal.isOpen && (
-        <ShelfForm
+      {newStorageUnitModal.isOpen && (
+        <StorageUnitForm
           locationId={locationId}
           type="modal"
           onClose={() => {
             setCreated("");
-            newShelfModal.onClose();
+            newStorageUnitModal.onClose();
             triggerRef.current?.click();
           }}
           initialValues={{ name: created, locationId: locationId }}
@@ -1105,6 +1110,7 @@ const usePendingReceiptLines = () => {
 export default ReceiptLines;
 
 function useReceiptFiles(receiptId: string) {
+  const { t } = useLingui();
   const { company } = useUser();
   const { carbon } = useCarbon();
 
@@ -1122,7 +1128,7 @@ function useReceiptFiles(receiptId: string) {
   const upload = useCallback(
     async (files: File[], lineId: string) => {
       if (!carbon) {
-        toast.error("Carbon client not available");
+        toast.error(t`Carbon client not available`);
         return;
       }
 
@@ -1157,7 +1163,7 @@ function useReceiptFiles(receiptId: string) {
       }
       revalidator.revalidate();
     },
-    [carbon, revalidator, getPath, receiptId, submit]
+    [carbon, revalidator, getPath, receiptId, submit, t]
   );
 
   const deleteFile = useCallback(
