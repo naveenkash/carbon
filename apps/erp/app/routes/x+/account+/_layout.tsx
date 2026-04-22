@@ -22,7 +22,7 @@ export default function AccountRoute() {
   return (
     <VStack
       className="flex w-full h-full items-center justify-start bg-card"
-      spacing={4}
+      spacing={0}
     >
       <div className="flex bg-card border-b border-border py-8 px-2 w-full justify-center">
         <div className="w-full max-w-[60rem]">
@@ -32,13 +32,15 @@ export default function AccountRoute() {
         </div>
       </div>
 
-      <div className="max-w-[60rem] w-full">
-        <div className="grid grid-cols-1 h-full w-full gap-8">
+      {/* <div className="flex-1 min-h-0 w-full overflow-y-auto flex justify-center"> */}
+      <div className="max-w-[60rem] w-full flex-1 min-h-0 overflow-y-auto flex justify-center">
+        <div className="grid grid-cols-1 w-full gap-8">
           {/* <DetailSidebar links={links} /> */}
-          <VStack spacing={0} className="h-full">
+          <VStack spacing={0}>
             <Outlet />
           </VStack>
         </div>
+        {/* </div> */}
       </div>
     </VStack>
   );

@@ -247,7 +247,6 @@ export default function AccountProfile() {
   const [selectedPasskey, setSelectedPasskey] = useState<Passkey | null>(null);
   const [editedName, setEditedName] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
-  console.log({ passkeysEnabled });
 
   const onAddPasskey = async () => {
     if (!passkeysEnabled) {
@@ -323,7 +322,7 @@ export default function AccountProfile() {
   };
 
   return (
-    <VStack spacing={4}>
+    <VStack spacing={4} className="py-8">
       <Card>
         <CardHeader>
           <CardTitle>

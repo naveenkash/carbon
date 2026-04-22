@@ -9571,7 +9571,7 @@ msgstr "Quantidade de Produção"
 #: apps/erp/app/modules/account/ui/useAccountSubmodules.tsx:10
 #: apps/erp/app/modules/people/ui/Person/PersonSidebar/usePersonSidebar.tsx:18
 #: apps/erp/app/routes/x+/account+/profile.tsx:61
-#: apps/erp/app/routes/x+/account+/profile.tsx:330
+#: apps/erp/app/routes/x+/account+/profile.tsx:329
 #: apps/erp/app/routes/x+/person+/$personId.details.tsx:40
 msgid "Profile"
 msgstr "Perfil"
@@ -12776,7 +12776,7 @@ msgstr "Estes trabalhos têm operações atribuídas a este centro de trabalho:"
 msgid "This information will be used on document headers"
 msgstr "Esta informação será usada nos cabeçalhos de documentos"
 
-#: apps/erp/app/routes/x+/account+/profile.tsx:333
+#: apps/erp/app/routes/x+/account+/profile.tsx:332
 msgid "This information will be visible to all users, so be careful what you share."
 msgstr "Esta informação será visível para todos os usuários, portanto, tenha cuidado com o que você compartilha."
 
