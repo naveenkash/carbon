@@ -14,8 +14,11 @@ dist-ssr
 server/dist
 public/dist
 vite.config.ts.timestamp*
-
+.claude-flow
+.claude
+.mcp.json
 opencode.json
+.windsurf
 
 scripts/migrations/data
 scripts/paperless-test.ts
