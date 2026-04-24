@@ -20,13 +20,15 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     body = await request.json();
   } catch {
-    return data(error(null, "Invalid request body"), { status: 400 });
+    return data(error(null, "Sign-in failed. Please try again."), {
+      status: 400
+    });
   }
 
   const { credential: webAuthnResponse, challengeId, redirectTo } = body;
 
   if (!webAuthnResponse?.id || !challengeId) {
-    return data(error(null, "Missing credential or challengeId"), {
+    return data(error(null, "Sign-in failed. Please try again."), {
       status: 400
     });
   }
@@ -72,7 +74,9 @@ export async function action({ request }: ActionFunctionArgs) {
         new TextEncoder().encode(credRow.userId)
       ).toString("base64url");
       if (returnedHandle !== expectedHandle) {
-        return data(error(null, "userHandle mismatch"), { status: 401 });
+        return data(error(null, "Sign-in failed. Please try again."), {
+          status: 401
+        });
       }
     }
 
@@ -82,7 +86,7 @@ export async function action({ request }: ActionFunctionArgs) {
       .eq("id", credRow.id);
 
     if (counterError) {
-      return data(error(null, "Failed to persist credential state"), {
+      return data(error(null, "Sign-in failed. Please try again."), {
         status: 500
       });
     }
@@ -91,7 +95,9 @@ export async function action({ request }: ActionFunctionArgs) {
       credRow.userId
     );
     if (!authUser.user?.email) {
-      return data(error(null, "User not found"), { status: 404 });
+      return data(error(null, "Sign-in failed. Please try again."), {
+        status: 401
+      });
     }
 
     const authSession = await signInWithPasskey(
@@ -99,7 +105,9 @@ export async function action({ request }: ActionFunctionArgs) {
       authUser.user.email
     );
     if (!authSession) {
-      return data(error(null, "Failed to create session"), { status: 500 });
+      return data(error(null, "Sign-in failed. Please try again."), {
+        status: 500
+      });
     }
 
     const sessionCookie = await setAuthSession(request, { authSession });
@@ -116,8 +124,8 @@ export async function action({ request }: ActionFunctionArgs) {
         ["Set-Cookie", companyIdCookie]
       ]
     });
-  } catch (e: any) {
-    return data(error(null, e.message ?? "Authentication failed"), {
+  } catch {
+    return data(error(null, "Sign-in failed. Please try again."), {
       status: 401
     });
   }

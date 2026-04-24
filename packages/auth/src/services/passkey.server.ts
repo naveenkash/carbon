@@ -140,7 +140,7 @@ export async function getPasskeyRegistrationOptions(
       authenticatorAttachment: "platform",
       requireResidentKey: true,
       residentKey: "required",
-      userVerification: "preferred"
+      userVerification: "required"
     },
     // -7 = ECDSA P-256, -257 = RSA PKCS#1 v1.5 SHA-256
     supportedAlgorithmIDs: [-7, -257]
@@ -170,9 +170,7 @@ export async function verifyPasskeyRegistration(
     expectedChallenge: challenge,
     expectedOrigin: ORIGIN,
     expectedRPID: RP_ID,
-    // requireUserVerification false: we ask "preferred" in options, but don't
-    // hard-fail if the device skipped it (e.g. no biometrics enrolled).
-    requireUserVerification: false
+    requireUserVerification: true
   });
 
   if (!verification.verified || !verification.registrationInfo) {
@@ -217,7 +215,7 @@ export async function getPasskeyAuthenticationOptions(challengeId: string) {
   const options = await generateAuthenticationOptions({
     rpID: RP_ID,
     allowCredentials: [],
-    userVerification: "preferred"
+    userVerification: "required"
   });
 
   await storeAuthChallenge(challengeId, options.challenge);
@@ -244,7 +242,7 @@ export async function verifyPasskeyAuthentication(
     expectedChallenge: challenge,
     expectedOrigin: ORIGIN,
     expectedRPID: RP_ID,
-    requireUserVerification: false,
+    requireUserVerification: true,
     credential: {
       id: credential.id,
       publicKey: credential.publicKey,
