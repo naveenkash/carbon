@@ -829,13 +829,10 @@ async function uploadModelFile(
     }
 
     // Link model to sales order line
-    const [lineUpdate] = await Promise.all([
-      carbon
-        .from("salesOrderLine")
-        .update({ modelUploadId: modelId })
-        .eq("id", salesOrderLineId),
-      carbon.from("item").update({ modelUploadId: modelId }).eq("id", itemId)
-    ]);
+    const lineUpdate = await carbon
+      .from("salesOrderLine")
+      .update({ modelUploadId: modelId })
+      .eq("id", salesOrderLineId);
 
     if (lineUpdate.error) {
       console.error(
@@ -843,6 +840,21 @@ async function uploadModelFile(
         lineUpdate.error
       );
       return false;
+    }
+
+    // Only update item.modelUploadId if the item doesn't already have a model
+    // linked — replacing it would orphan the old modelUpload and its thumbnail
+    const existingItem = await carbon
+      .from("item")
+      .select("modelUploadId")
+      .eq("id", itemId)
+      .single();
+
+    if (!existingItem.data?.modelUploadId) {
+      await carbon
+        .from("item")
+        .update({ modelUploadId: modelId })
+        .eq("id", itemId);
     }
 
     console.log(
