@@ -1510,7 +1510,7 @@ msgstr "Batch items require a sales order"
 msgid "Batch number"
 msgstr "Batch number"
 
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:347
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:353
 msgid "Batch Number"
 msgstr "Batch Number"
 
@@ -1598,7 +1598,7 @@ msgstr "Bucket"
 msgid "Bulk Import"
 msgstr "Bulk Import"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:414
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:415
 msgid "Bulk Jobs"
 msgstr "Bulk Jobs"
 
@@ -1709,7 +1709,7 @@ msgstr "Can't disable the only active break. Add another break or toggle the ove
 #: apps/erp/app/modules/accounting/ui/Currencies/CurrencyForm.tsx:112
 #: apps/erp/app/modules/documents/ui/Documents/DocumentForm.tsx:82
 #: apps/erp/app/modules/inventory/ui/Batches/BatchPropertiesConfig.tsx:394
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:372
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:378
 #: apps/erp/app/modules/inventory/ui/Kanbans/KanbanForm.tsx:332
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptPostModal.tsx:195
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptVoidModal.tsx:85
@@ -2189,7 +2189,7 @@ msgstr "Columns"
 msgid "Coming soon"
 msgstr "Coming soon"
 
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:367
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:373
 msgid "Comment"
 msgstr "Comment"
 
@@ -3144,8 +3144,8 @@ msgstr "Custom Fields"
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoicesTable.tsx:82
 #: apps/erp/app/modules/items/ui/Item/CustomerPartForm.tsx:67
 #: apps/erp/app/modules/items/ui/Item/CustomerParts/CustomerParts.tsx:41
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:367
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:534
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:368
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:535
 #: apps/erp/app/modules/production/ui/Jobs/JobsTable.tsx:266
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderDeliveryForm.tsx:145
 #: apps/erp/app/modules/quality/ui/Issue/IssueAssociations.tsx:353
@@ -3478,8 +3478,8 @@ msgstr "Deactivate Users"
 msgid "Deactivate Work Center"
 msgstr "Deactivate Work Center"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:352
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:520
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:353
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:521
 #: apps/erp/app/modules/production/ui/Jobs/JobProperties.tsx:455
 #: apps/erp/app/modules/production/ui/Jobs/JobsTable.tsx:379
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderLineJobs.tsx:250
@@ -4243,7 +4243,7 @@ msgstr "Due {0}"
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoicesTable.tsx:185
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:241
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoicesTable.tsx:179
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:347
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:348
 #: apps/erp/app/modules/production/ui/Jobs/JobProperties.tsx:433
 #: apps/erp/app/modules/production/ui/Jobs/JobsTable.tsx:371
 #: apps/erp/app/modules/production/ui/Planning/ProductionPlanningOrderDrawer.tsx:390
@@ -4265,11 +4265,11 @@ msgstr "Due {0}"
 msgid "Due Date"
 msgstr "Due Date"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:508
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:509
 msgid "Due Date of First Job"
 msgstr "Due Date of First Job"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:514
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:515
 msgid "Due Date of Last Job"
 msgstr "Due Date of Last Job"
 
@@ -5034,7 +5034,7 @@ msgstr "Estimated Duration"
 msgid "Estimated Duration (minutes)"
 msgstr "Estimated Duration (minutes)"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:318
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:319
 #: apps/erp/app/modules/production/ui/Jobs/JobProperties.tsx:391
 msgid "Estimated Scrap Quantity"
 msgstr "Estimated Scrap Quantity"
@@ -7005,8 +7005,8 @@ msgstr "Loading..."
 #: apps/erp/app/modules/people/ui/Shifts/ShiftForm.tsx:72
 #: apps/erp/app/modules/people/ui/Shifts/ShiftsTable.tsx:84
 #: apps/erp/app/modules/people/ui/Timecards/TimecardsTable.tsx:166
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:343
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:504
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:344
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:505
 #: apps/erp/app/modules/production/ui/Jobs/JobHeader.tsx:1050
 #: apps/erp/app/modules/production/ui/Jobs/JobsTable.tsx:504
 #: apps/erp/app/modules/production/ui/Projection/DemandProjectionForm.tsx:116
@@ -7827,7 +7827,8 @@ msgstr "Navigate"
 msgid "NCRs by Type"
 msgstr "NCRs by Type"
 
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:336
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:324
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:342
 msgid "Negative Adjustment"
 msgstr "Negative Adjustment"
 
@@ -9292,7 +9293,7 @@ msgstr "Portal Link"
 msgid "Portals"
 msgstr "Portals"
 
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:332
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:338
 msgid "Positive Adjustment"
 msgstr "Positive Adjustment"
 
@@ -9901,7 +9902,7 @@ msgid "Quantities"
 msgstr "Quantities"
 
 #: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:180
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:353
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:359
 #: apps/erp/app/modules/inventory/ui/Kanbans/KanbanForm.tsx:215
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptLines.tsx:1009
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentLines.tsx:1161
@@ -9924,7 +9925,7 @@ msgstr "Quantities"
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:3040
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:3172
 #: apps/erp/app/modules/production/ui/Jobs/JobBoMExplorer.tsx:428
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:303
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:304
 #: apps/erp/app/modules/production/ui/Jobs/JobOperationsTable.tsx:155
 #: apps/erp/app/modules/production/ui/Jobs/JobProperties.tsx:369
 #: apps/erp/app/modules/production/ui/Jobs/JobsTable.tsx:239
@@ -9981,7 +9982,7 @@ msgstr "Quantity on Purchase Order"
 msgid "Quantity on Sales Order"
 msgstr "Quantity on Sales Order"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:468
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:469
 msgid "Quantity Per Job"
 msgstr "Quantity Per Job"
 
@@ -11125,7 +11126,7 @@ msgstr "Scrap Qty"
 msgid "Scrap Quantity"
 msgstr "Scrap Quantity"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:481
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:482
 msgid "Scrap Quantity Per Job"
 msgstr "Scrap Quantity Per Job"
 
@@ -11458,7 +11459,7 @@ msgstr "Serial"
 msgid "Serial items require a sales order"
 msgstr "Serial items require a sales order"
 
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:347
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:353
 #: apps/erp/app/modules/quality/ui/Gauge/GaugeForm.tsx:381
 #: apps/erp/app/modules/quality/ui/Gauge/GaugesTable.tsx:171
 msgid "Serial Number"
@@ -11506,7 +11507,7 @@ msgstr "Set default markup percentages for each cost category on new quote lines
 msgid "Set Pricing"
 msgstr "Set Pricing"
 
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:321
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:322
 msgid "Set Quantity"
 msgstr "Set Quantity"
 
@@ -11765,7 +11766,7 @@ msgstr "Shop Floor"
 #: apps/erp/app/modules/items/ui/Materials/MaterialForm.tsx:202
 #: apps/erp/app/modules/items/ui/Parts/PartForm.tsx:276
 #: apps/erp/app/modules/items/ui/Tools/ToolForm.tsx:270
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:295
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:296
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteLineForm.tsx:275
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteLineForm.tsx:386
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderLineForm.tsx:439
@@ -13061,7 +13062,7 @@ msgstr "Total Minutes"
 msgid "Total Price"
 msgstr "Total Price"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:455
+#: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:456
 msgid "Total Quantity"
 msgstr "Total Quantity"
 
@@ -13334,7 +13335,7 @@ msgstr "Unit"
 msgid "Unit Cost"
 msgstr "Unit Cost"
 
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:363
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:369
 #: apps/erp/app/modules/inventory/ui/Inventory/InventoryTable.tsx:288
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceLineForm.tsx:430
 #: apps/erp/app/modules/items/ui/Consumables/ConsumableForm.tsx:170
