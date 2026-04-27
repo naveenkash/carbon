@@ -841,8 +841,6 @@ function MaterialForm({
       <div className="grid w-full gap-x-8 gap-y-4 grid-cols-1 lg:grid-cols-3">
         <Item
           blacklist={[params.itemId!]}
-          growDropdownToContent
-          showHoverTitle
           isReadOnly={isDisabled}
           name="itemId"
           label={itemType}

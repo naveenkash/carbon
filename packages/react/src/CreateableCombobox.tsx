@@ -34,13 +34,11 @@ export type CreatableComboboxProps = Omit<
   isReadOnly?: boolean;
   label?: string;
   placeholder?: string;
-  growDropdownToContent?: boolean;
   inline?: (
     value: string,
     options: { value: string; label: string | JSX.Element; helper?: string }[]
   ) => React.ReactNode;
   inlineAddLabel?: string;
-  showHoverTitle?: boolean;
   onChange?: (selected: string) => void;
   onCreateOption?: (inputValue: string) => void;
   itemHeight?: number;
@@ -56,13 +54,11 @@ const CreatableCombobox = forwardRef<HTMLButtonElement, CreatableComboboxProps>(
       isClearable,
       isReadOnly,
       placeholder,
-      growDropdownToContent = false,
       onChange,
       label,
       itemHeight = 40,
       inline,
       inlineAddLabel,
-      showHoverTitle = false,
       onCreateOption,
       ...props
     },
@@ -86,7 +82,7 @@ const CreatableCombobox = forwardRef<HTMLButtonElement, CreatableComboboxProps>(
       return [labelText, selectedOption.helper].filter(Boolean).join(" - ");
     }, [selectedOption]);
     const dropdownContentWidthCh = useMemo(() => {
-      if (!growDropdownToContent || options.length === 0) return undefined;
+      if (options.length === 0) return undefined;
 
       const maxOptionChars = options.reduce((longest, option) => {
         const labelText =
@@ -101,7 +97,7 @@ const CreatableCombobox = forwardRef<HTMLButtonElement, CreatableComboboxProps>(
       }, 0);
 
       return Math.min(72, Math.max(36, maxOptionChars + 8));
-    }, [growDropdownToContent, options]);
+    }, [options]);
 
     return (
       <HStack
@@ -152,7 +148,6 @@ const CreatableCombobox = forwardRef<HTMLButtonElement, CreatableComboboxProps>(
                 {value ? (
                   <TruncatedTooltipText
                     className="block min-w-0 flex-1 truncate text-left"
-                    enabled={showHoverTitle}
                     tooltip={selectedOptionText}
                   >
                     {selectedOption?.label}
@@ -167,21 +162,12 @@ const CreatableCombobox = forwardRef<HTMLButtonElement, CreatableComboboxProps>(
           </PopoverTrigger>
           <PopoverContent
             align="start"
-            className={cn(
-              "min-w-[--radix-popover-trigger-width] p-1",
-              growDropdownToContent
-                ? "max-w-[min(560px,calc(100vw-2rem))]"
-                : "max-w-[400px]"
-            )}
-            style={
-              growDropdownToContent
-                ? {
-                    width: dropdownContentWidthCh
-                      ? `min(560px, max(var(--radix-popover-trigger-width), ${dropdownContentWidthCh}ch))`
-                      : "var(--radix-popover-trigger-width)"
-                  }
-                : undefined
-            }
+            className="min-w-[--radix-popover-trigger-width] max-w-[min(560px,calc(100vw-2rem))] p-1"
+            style={{
+              width: dropdownContentWidthCh
+                ? `min(560px, max(var(--radix-popover-trigger-width), ${dropdownContentWidthCh}ch))`
+                : "var(--radix-popover-trigger-width)"
+            }}
           >
             <VirtualizedCommand
               label={label}
@@ -190,7 +176,6 @@ const CreatableCombobox = forwardRef<HTMLButtonElement, CreatableComboboxProps>(
               value={value}
               itemHeight={itemHeight}
               search={search}
-              showHoverTitle={showHoverTitle}
               onChange={onChange}
               onCreateOption={onCreateOption}
               setOpen={setOpen}
@@ -222,7 +207,6 @@ type VirtualizedCommandProps = {
   label?: string;
   itemHeight: number;
   search: string;
-  showHoverTitle?: boolean;
   onChange?: (selected: string) => void;
   onCreateOption?: (inputValue: string) => void;
   setOpen: (open: boolean) => void;
@@ -236,7 +220,6 @@ function VirtualizedCommand({
   value,
   itemHeight,
   search,
-  showHoverTitle,
   setSearch,
   onChange,
   onCreateOption,
@@ -364,7 +347,6 @@ function VirtualizedCommand({
                     >
                       <TruncatedTooltipText
                         className="block w-full truncate"
-                        enabled={showHoverTitle}
                         tooltip={itemHoverText}
                       >
                         {item.label}
@@ -372,7 +354,6 @@ function VirtualizedCommand({
                       <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
                         <TruncatedTooltipText
                           className="truncate flex-1"
-                          enabled={showHoverTitle}
                           tooltip={itemHoverText}
                         >
                           {item.helper}
@@ -387,7 +368,6 @@ function VirtualizedCommand({
                   ) : (
                     <TruncatedTooltipText
                       className="truncate flex-1"
-                      enabled={showHoverTitle}
                       tooltip={itemHoverText}
                     >
                       {item.label}

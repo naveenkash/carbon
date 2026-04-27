@@ -2818,8 +2818,8 @@ msgstr "Erstellen"
 
 #. placeholder {0}: search.trim() === "" ? (createLabel ?? label) : search
 #. placeholder {0}: search.trim() === "" ? label : search
-#: packages/react/src/CreateableCombobox.tsx:291
-#: packages/react/src/CreateableMultiSelect.tsx:344
+#: packages/react/src/CreateableCombobox.tsx:338
+#: packages/react/src/CreateableMultiSelect.tsx:366
 msgid "Create {0}"
 msgstr "Erstelle {0}"
 
@@ -8024,8 +8024,8 @@ msgstr "Nie"
 #: apps/erp/app/modules/sales/ui/NoQuoteReasons/NoQuoteReasonForm.tsx:83
 #: apps/erp/app/modules/sales/ui/Opportunity/OpportunityDocuments.tsx:440
 #: apps/erp/app/modules/sales/ui/Opportunity/OpportunityLineDocuments.tsx:711
-#: packages/react/src/CreateableCombobox.tsx:217
-#: packages/react/src/CreateableMultiSelect.tsx:266
+#: packages/react/src/CreateableCombobox.tsx:258
+#: packages/react/src/CreateableMultiSelect.tsx:285
 msgid "New"
 msgstr "Neu"
 
@@ -8549,7 +8549,7 @@ msgid "No notes"
 msgstr "Keine Notizen"
 
 #: apps/erp/app/components/Assignee.tsx:169
-#: packages/react/src/CreateableMultiSelect.tsx:296
+#: packages/react/src/CreateableMultiSelect.tsx:315
 #: packages/react/src/MultiSelect.tsx:271
 msgid "No option found."
 msgstr "Keine Option gefunden."
@@ -11507,10 +11507,10 @@ msgstr "Im Web suchen"
 #: apps/erp/app/routes/x+/part+/$itemId.tsx:361
 #: apps/erp/app/routes/x+/tool+/$itemId.tsx:172
 #: apps/erp/app/routes/x+/tool+/$itemId.tsx:357
-#: packages/react/src/Combobox.tsx:193
-#: packages/react/src/CreateableCombobox.tsx:237
-#: packages/react/src/CreateableMultiSelect.tsx:165
-#: packages/react/src/CreateableMultiSelect.tsx:286
+#: packages/react/src/Combobox.tsx:234
+#: packages/react/src/CreateableCombobox.tsx:278
+#: packages/react/src/CreateableMultiSelect.tsx:179
+#: packages/react/src/CreateableMultiSelect.tsx:305
 #: packages/react/src/MultiSelect.tsx:268
 msgid "Search..."
 msgstr "Suchen..."
@@ -11527,8 +11527,8 @@ msgstr "Sekunden/Stück"
 #: apps/erp/app/modules/quality/ui/InboundInspections/ScanInspectionSample.tsx:204
 #: apps/erp/app/modules/resources/ui/Maintenance/MaintenanceAddPartModal.tsx:382
 #: apps/erp/app/modules/resources/ui/Maintenance/MaintenanceAddPartModal.tsx:502
-#: packages/react/src/Combobox.tsx:111
-#: packages/react/src/CreateableCombobox.tsx:121
+#: packages/react/src/Combobox.tsx:147
+#: packages/react/src/CreateableCombobox.tsx:157
 #: packages/react/src/MultiSelect.tsx:178
 msgid "Select"
 msgstr "Auswählen"
