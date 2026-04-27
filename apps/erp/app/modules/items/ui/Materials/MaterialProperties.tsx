@@ -141,7 +141,8 @@ const MaterialProperties = () => {
         | "dimensionId"
         | "finishId"
         | "materialTypeId"
-        | "materialId",
+        | "materialId"
+        | "requiresInspection",
       value: string | null
     ) => {
       const formData = new FormData();

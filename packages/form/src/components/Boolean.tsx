@@ -21,6 +21,7 @@ type FormBooleanProps = {
   helperText?: string;
   isDisabled?: boolean;
   bordered?: boolean;
+  className?: string;
   description?: string | JSX.Element;
   onChange?: (value: boolean) => void;
 };

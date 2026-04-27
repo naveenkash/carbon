@@ -178,7 +178,7 @@ export default function IssueRoute() {
                           nonConformanceId={id}
                           items={
                             resolvedAssociations.items?.map(
-                              (i) => i.documentId
+                              (i: any) => i.documentId
                             ) ?? undefined
                           }
                         />

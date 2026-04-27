@@ -266,7 +266,7 @@ export function AssociatedItemsList({
             </AlertDescription>
           </Alert>
         )}
-        <ul role="list" className="flex flex-col divide-y divide-border">
+        <ul className="flex flex-col divide-y divide-border">
           {dispositionableRows.map((r) => {
             const item = items.find((i) => i.id === r.child.documentId);
             if (!item) return null;
@@ -445,10 +445,7 @@ export function AssociatedItemsList({
                 </div>
 
                 {r.links.length > 0 && (
-                  <ul
-                    role="list"
-                    className="mt-3 flex flex-wrap gap-1.5 pl-0.5"
-                  >
+                  <ul className="mt-3 flex flex-wrap gap-1.5 pl-0.5">
                     {r.links.map((link) => {
                       const draggable = canEdit && sameItemSiblings.length > 0;
                       return (
@@ -605,10 +602,7 @@ function SplitLineModal({
                   <label className="text-sm font-medium">
                     <Trans>Entities to split off</Trans>
                   </label>
-                  <ul
-                    role="list"
-                    className="flex flex-col divide-y divide-border border border-border rounded-md max-h-64 overflow-y-auto"
-                  >
+                  <ul className="flex flex-col divide-y divide-border border border-border rounded-md max-h-64 overflow-y-auto">
                     {target.links.map((link) => (
                       <li
                         key={link.id}
@@ -751,10 +745,7 @@ function MoveEntitiesModal({
                 <label className="text-sm font-medium">
                   <Trans>Entities to move</Trans>
                 </label>
-                <ul
-                  role="list"
-                  className="flex flex-col divide-y divide-border border border-border rounded-md max-h-64 overflow-y-auto"
-                >
+                <ul className="flex flex-col divide-y divide-border border border-border rounded-md max-h-64 overflow-y-auto">
                   {target.links.map((link) => (
                     <li
                       key={link.id}

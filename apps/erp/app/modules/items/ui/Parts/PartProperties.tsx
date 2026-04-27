@@ -101,7 +101,8 @@ const PartProperties = () => {
         | "partId"
         | "name"
         | "replenishmentSystem"
-        | "unitOfMeasureCode",
+        | "unitOfMeasureCode"
+        | "requiresInspection",
       value: string | null
     ) => {
       const formData = new FormData();

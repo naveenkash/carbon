@@ -165,7 +165,7 @@ export default function SamplingPlanForm({
           type: initialType,
           sampleSize: initialSampleSize ?? undefined,
           percentage: initialPercentage ?? undefined,
-          aql: initialAqlString ?? "1",
+          aql: (initialAqlString ?? "1") as any,
           inspectionLevel: initialLevel,
           severity: initialSeverity
         }}

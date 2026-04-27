@@ -707,7 +707,7 @@ export async function getIssueAssociations(
 
   return {
     items:
-      items.data?.map((item) => ({
+      items.data?.map((item: any) => ({
         type: "items",
         id: item.id,
         documentId: item.itemId,

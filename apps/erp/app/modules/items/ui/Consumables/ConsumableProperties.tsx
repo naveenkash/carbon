@@ -96,7 +96,8 @@ const ConsumableProperties = () => {
         | "itemTrackingType"
         | "itemPostingGroupId"
         | "consumableId"
-        | "active",
+        | "active"
+        | "requiresInspection",
       value: string | null
     ) => {
       const formData = new FormData();
@@ -427,7 +428,7 @@ const ConsumableProperties = () => {
         <ValidatedForm
           defaultValues={{
             requiresInspection:
-              routeData?.consumableSummary?.requiresInspection ?? false
+              (routeData?.consumableSummary as any)?.requiresInspection ?? false
           }}
           validator={z.object({
             requiresInspection: zfd.checkbox()

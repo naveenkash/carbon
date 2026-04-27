@@ -480,6 +480,14 @@ export const itemSamplingPlanValidator = z
     }
   });
 
+export const inboundInspectionValidator = z.object({
+  id: z.string().min(1, { message: "Id is required" }),
+  status: z.enum(["Passed", "Failed"], {
+    errorMap: () => ({ message: "Status is required" })
+  }),
+  notes: zfd.text(z.string().optional())
+});
+
 export const inboundInspectionSampleValidator = z.object({
   inspectionId: z.string().min(1, { message: "Inspection is required" }),
   trackedEntityId: z.string().min(1, { message: "Tracked entity is required" }),

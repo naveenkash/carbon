@@ -89,7 +89,8 @@ const ToolProperties = () => {
         | "itemTrackingType"
         | "itemPostingGroupId"
         | "toolId"
-        | "active",
+        | "active"
+        | "requiresInspection",
       value: string | null
     ) => {
       const formData = new FormData();
@@ -522,7 +523,7 @@ const ToolProperties = () => {
         <ValidatedForm
           defaultValues={{
             requiresInspection:
-              routeData?.toolSummary?.requiresInspection ?? false
+              (routeData?.toolSummary as any)?.requiresInspection ?? false
           }}
           validator={z.object({
             requiresInspection: zfd.checkbox()

@@ -50,12 +50,14 @@ export default function ScanInspectionSample({
   const fetcher = useFetcher<{ error?: unknown; success?: boolean }>();
 
   const [serial, setSerial] = useState("");
-  const [selected, setSelected] = useState<LotTrackedEntity | null>(null);
+  const [selected, setSelected] = useState<InspectionTrackedEntity | null>(
+    null
+  );
   const [pendingStatus, setPendingStatus] = useState<"Passed" | "Failed">(
     "Passed"
   );
 
-  const findMatch = (value: string): LotTrackedEntity | null => {
+  const findMatch = (value: string): InspectionTrackedEntity | null => {
     if (!value) return null;
     const needle = value.toLowerCase();
     return (
