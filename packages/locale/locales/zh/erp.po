@@ -2006,7 +2006,7 @@ msgstr "Carbon 列"
 #: apps/erp/app/routes/_public+/magic-link.tsx:26
 #: apps/erp/app/routes/_public+/verify.tsx:147
 msgid "Carbon Logo"
-msgstr ""
+msgstr "Carbon 标志"
 
 #: apps/erp/app/components/ImportCSVModal/FieldMappings.tsx:454
 msgid "Carbon Value"
@@ -5065,7 +5065,7 @@ msgstr "实体为 {status}"
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:145
 #: apps/erp/app/modules/sales/ui/Customer/CustomerForm.tsx:160
 msgid "EORI"
-msgstr ""
+msgstr "EORI"
 
 #: apps/erp/app/routes/onboarding+/plan.tsx:35
 #: apps/erp/app/routes/onboarding+/plan.tsx:60
@@ -8631,7 +8631,7 @@ msgstr "没有可用的筛选器"
 
 #: apps/erp/app/modules/items/ui/Item/PickMethodForm.tsx:395
 msgid "No BOM input has a shelf-life policy"
-msgstr ""
+msgstr "没有物料清单输入具有保质期政策"
 
 #: apps/erp/app/modules/quality/ui/Gauge/GaugeForm.tsx:292
 msgid "No calibration records found"
@@ -13469,7 +13469,7 @@ msgstr "这是您的税务年度开始的月份。"
 
 #: apps/erp/app/modules/items/ui/Item/PickMethodForm.tsx:398
 msgid "This item's bill of materials has no inputs with shelf-life enabled, so no expiry will be calculated from the BOM."
-msgstr ""
+msgstr "此项目的物料清单没有启用保质期的输入，因此不会从物料清单计算过期日期。"
 
 #: apps/erp/app/modules/production/ui/Jobs/JobHeader.tsx:1024
 msgid "This job will be received to inventory. It will no longer be available on the shop floor."
