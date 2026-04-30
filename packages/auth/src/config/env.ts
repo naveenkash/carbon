@@ -64,6 +64,8 @@ declare global {
       STRIPE_WEBHOOK_SECRET: string;
       STRIPE_BYPASS_COMPANY_IDS: string;
       STRIPE_BYPASS_USER_IDS: string;
+      GTM_URL: string;
+      GTM_EVENTS_API_SECRET_KEY: string;
       SUPABASE_ANON_KEY: string;
       SUPABASE_URL: string;
       SUPABASE_DB_URL: string;
@@ -283,6 +285,13 @@ export const STRIPE_BYPASS_COMPANY_IDS = getEnv("STRIPE_BYPASS_COMPANY_IDS", {
   isRequired: false
 });
 export const STRIPE_BYPASS_USER_IDS = getEnv("STRIPE_BYPASS_USER_IDS", {
+  isRequired: false
+});
+export const GTM_URL = getEnv("GTM_URL", {
+  isRequired: false,
+  isSecret: false
+});
+export const GTM_EVENTS_API_SECRET_KEY = getEnv("GTM_EVENTS_API_SECRET_KEY", {
   isRequired: false
 });
 export const REDIS_URL = getEnv("REDIS_URL", {

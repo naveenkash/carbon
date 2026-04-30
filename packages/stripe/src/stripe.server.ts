@@ -9,13 +9,11 @@ import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import type { Database } from "@carbon/database";
 import { trigger } from "@carbon/jobs";
 import { redis } from "@carbon/kv";
-import { sendEmail } from "@carbon/lib/resend.server";
 import { Edition, Plan } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { Stripe } from "stripe";
 import { z } from "zod";
-
-const NOTIFICATION_EMAIL = process.env.STRIPE_NOTIFICATION_EMAIL;
+import { forwardToGtm } from "./gtm-events.server";
 
 export const stripe = STRIPE_SECRET_KEY
   ? new Stripe(STRIPE_SECRET_KEY, {
@@ -465,79 +463,9 @@ export async function processStripeEvent({
     eventType === "invoice.payment_succeeded" ||
     eventType === "invoice.payment_failed"
   ) {
-    const invoice = event.data.object as Stripe.Invoice;
-    try {
-      await sendInvoiceNotification(eventType, invoice);
-    } catch (error) {
-      console.error("Error sending invoice notification:", error);
-    }
-  }
-}
-
-function formatInvoiceAmount(invoice: Stripe.Invoice) {
-  const cents = invoice.amount_due ?? invoice.total ?? 0;
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: (invoice.currency ?? "usd").toUpperCase()
-  }).format(cents / 100);
-}
-
-async function sendInvoiceNotification(
-  eventType:
-    | "invoice.sent"
-    | "invoice.payment_succeeded"
-    | "invoice.payment_failed",
-  invoice: Stripe.Invoice
-) {
-  const amount = formatInvoiceAmount(invoice);
-  const number = invoice.number ?? invoice.id ?? "(no number)";
-  const customer =
-    invoice.customer_email ??
-    invoice.customer_name ??
-    (typeof invoice.customer === "string"
-      ? invoice.customer
-      : invoice.customer?.id) ??
-    "(unknown)";
-
-  const subjectMap = {
-    "invoice.sent": `Invoice sent: ${number} (${amount})`,
-    "invoice.payment_succeeded": `Payment received: ${number} (${amount})`,
-    "invoice.payment_failed": `Payment FAILED: ${number} (${amount})`
-  } as const;
-
-  const html = `
-    <h2 style="font-family:system-ui">${eventType}</h2>
-    <table style="font-family:system-ui;border-collapse:collapse">
-      <tr><td><strong>Customer</strong></td><td>${customer}</td></tr>
-      <tr><td><strong>Amount</strong></td><td>${amount}</td></tr>
-      <tr><td><strong>Status</strong></td><td>${invoice.status ?? ""}</td></tr>
-      <tr><td><strong>Invoice</strong></td><td><a href="${
-        invoice.hosted_invoice_url ?? "#"
-      }">${number}</a></td></tr>
-      <tr><td><strong>PDF</strong></td><td><a href="${
-        invoice.invoice_pdf ?? "#"
-      }">Download</a></td></tr>
-    </table>
-  `;
-
-  const text = [
-    eventType,
-    `Customer: ${customer}`,
-    `Amount: ${amount}`,
-    `Status: ${invoice.status ?? ""}`,
-    `Invoice: ${invoice.hosted_invoice_url ?? ""}`
-  ].join("\n");
-
-  const result = await sendEmail({
-    from: `Carbon Billing <no-reply@${process.env.RESEND_DOMAIN}>`,
-    to: NOTIFICATION_EMAIL,
-    subject: subjectMap[eventType],
-    html,
-    text
-  });
-
-  if (result.error) {
-    throw new Error(`Resend error: ${JSON.stringify(result.error)}`);
+    forwardToGtm(eventType, { invoice: event.data.object }).catch((err) => {
+      console.error("[gtm-events] forward failed:", err);
+    });
   }
 }
 
