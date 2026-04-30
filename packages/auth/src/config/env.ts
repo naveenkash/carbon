@@ -292,7 +292,8 @@ export const GTM_URL = getEnv("GTM_URL", {
   isSecret: false
 });
 export const GTM_EVENTS_API_SECRET_KEY = getEnv("GTM_EVENTS_API_SECRET_KEY", {
-  isRequired: false
+  isRequired: false,
+  isSecret: true
 });
 export const REDIS_URL = getEnv("REDIS_URL", {
   isRequired: true,
