@@ -155,7 +155,7 @@ msgstr "Una nuova dimensione verrà creata utilizzando una copia della dimension
 msgid "A part contains the information about a specific item that can be purchased or manufactured."
 msgstr "Una parte contiene le informazioni su un articolo specifico che può essere acquistato o prodotto."
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:168
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:172
 msgid "A purchase invoice is a document that specifies the products or services purchased by a customer and the corresponding cost."
 msgstr "Una fattura di acquisto è un documento che specifica i prodotti o i servizi acquistati da un cliente e il costo corrispondente."
 
@@ -245,8 +245,8 @@ msgstr "Categorie di Conti"
 msgid "Account Category"
 msgstr "Categoria di Conto"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:130
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:262
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:129
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:261
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:121
 #: apps/erp/app/modules/sales/ui/Customer/CustomerForm.tsx:131
 #: apps/erp/app/modules/sales/ui/Customer/CustomerHeader.tsx:148
@@ -282,7 +282,7 @@ msgstr "Contabilità"
 msgid "Accounts"
 msgstr "Account"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:491
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:450
 msgid "Accounts Payable Billing Address"
 msgstr "Indirizzo di Fatturazione Contabilità Fornitori"
 
@@ -641,13 +641,13 @@ msgid "Address"
 msgstr "Indirizzo"
 
 #: apps/erp/app/components/Form/AddressAutocomplete.tsx:152
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:541
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:500
 #: apps/erp/app/routes/x+/settings+/sales.tsx:445
 msgid "Address Line 1"
 msgstr "Indirizzo Riga 1"
 
 #: apps/erp/app/components/Form/AddressAutocomplete.tsx:199
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:542
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:501
 #: apps/erp/app/routes/x+/settings+/sales.tsx:446
 msgid "Address Line 2"
 msgstr "Indirizzo Linea 2"
@@ -776,7 +776,7 @@ msgstr "Applica regole di prezzo"
 msgid "Apply To"
 msgstr "Applica a"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:289
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:288
 msgid "Approval Date"
 msgstr "Data di approvazione"
 
@@ -793,13 +793,13 @@ msgstr "Requisiti di Approvazione"
 msgid "Approval Rules"
 msgstr "Regole di Approvazione"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:328
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:219
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:329
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:218
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentHeader.tsx:196
 msgid "Approve"
 msgstr "Approva"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:279
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:278
 #: apps/erp/app/modules/quality/ui/Calibrations/GaugeCalibrationRecordForm.tsx:365
 #: apps/erp/app/modules/quality/ui/Calibrations/GaugeCalibrationRecordsTable.tsx:263
 msgid "Approved By"
@@ -870,7 +870,7 @@ msgid "Are you sure you want to create jobs for this sales order? This will crea
 msgstr "Sei sicuro di voler creare job per questo ordine di vendita? Questo creerà job per tutte le righe che non hanno già job."
 
 #. placeholder {0}: routeData?.supplier?.name
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:371
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:370
 msgid "Are you sure you want to deactivate {0}?"
 msgstr "Sei sicuro di voler disattivare {0}?"
 
@@ -932,7 +932,7 @@ msgstr "Sei sicuro di voler eliminare {0}?"
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:395
 #: apps/erp/app/modules/inventory/ui/StockTransfers/StockTransferHeader.tsx:226
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:315
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:400
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:405
 #: apps/erp/app/modules/items/ui/Consumables/ConsumableHeader.tsx:97
 #: apps/erp/app/modules/items/ui/Consumables/ConsumablesTable.tsx:517
 #: apps/erp/app/modules/items/ui/Materials/MaterialHeader.tsx:99
@@ -942,10 +942,10 @@ msgstr "Sei sicuro di voler eliminare {0}?"
 #: apps/erp/app/modules/items/ui/Tools/ToolHeader.tsx:91
 #: apps/erp/app/modules/items/ui/Tools/ToolsTable.tsx:586
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureHeader.tsx:190
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:558
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:559
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:341
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:351
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:354
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:350
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:358
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentHeader.tsx:296
 #: apps/erp/app/modules/quality/ui/Issue/IssueHeader.tsx:190
 #: apps/erp/app/modules/resources/ui/Training/TrainingHeader.tsx:96
@@ -1244,7 +1244,7 @@ msgstr "Sei sicuro di voler eliminare questo foglio presenze? Questa azione non 
 msgid "Are you sure you want to finalize the quote?"
 msgstr "Sei sicuro di voler finalizzare l'offerta?"
 
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:457
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:461
 msgid "Are you sure you want to finalize the supplier quote?"
 msgstr "Sei sicuro di voler finalizzare l'offerta del fornitore?"
 
@@ -1492,7 +1492,7 @@ msgstr "Indietro"
 msgid "Back to home"
 msgstr "Torna alla home"
 
-#: apps/erp/app/routes/x+/traceability+/graph.tsx:228
+#: apps/erp/app/routes/x+/traceability+/graph.tsx:278
 msgid "Back to traceability"
 msgstr "Torna alla tracciabilità"
 
@@ -1606,7 +1606,7 @@ msgstr "Fattura a"
 msgid "Billing"
 msgstr "Fatturazione"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:534
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:493
 #: apps/erp/app/routes/x+/settings+/sales.tsx:438
 msgid "Billing Address"
 msgstr "Indirizzo di Fatturazione"
@@ -1810,18 +1810,18 @@ msgstr "Non è possibile disabilitare l'unico break attivo. Aggiungi un altro br
 #: apps/erp/app/modules/production/ui/Jobs/JobMakeMethodTools.tsx:619
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderApprovalModal.tsx:129
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderFinalizeModal.tsx:116
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:508
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:509
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/FinalizeRFQModal.tsx:153
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:265
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierApprovalModal.tsx:79
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierContactForm.tsx:120
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:377
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:376
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierLocationForm.tsx:105
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierProcessForm.tsx:142
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteCompareDrawer.tsx:288
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteFinalizeModal.tsx:102
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:303
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:484
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:307
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:488
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteSendModal.tsx:183
 #: apps/erp/app/modules/purchasing/ui/SupplierTypes/SupplierTypeForm.tsx:100
 #: apps/erp/app/modules/quality/ui/Calibrations/GaugeCalibrationRecordForm.tsx:393
@@ -1986,9 +1986,9 @@ msgstr "Client Carbon non disponibile"
 
 #: apps/erp/app/components/ItemThumnailUpload.tsx:35
 #: apps/erp/app/components/ItemThumnailUpload.tsx:73
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:94
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:98
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:92
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:73
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:77
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteForm.tsx:80
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteForm.tsx:80
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderForm.tsx:81
@@ -2106,6 +2106,10 @@ msgstr "Cinese"
 msgid "Choose another file"
 msgstr "Scegli un altro file"
 
+#: apps/erp/app/modules/sales/ui/Pricing/PriceListScopeEmpty.tsx:35
+msgid "Choose scope to continue"
+msgstr "Scegli ambito per continuare"
+
 #: apps/erp/app/modules/account/ui/Profile/ProfileLanguageForm.tsx:53
 msgid "Choose your preferred language for the interface."
 msgstr "Scegli la tua lingua preferita per l'interfaccia."
@@ -2116,7 +2120,7 @@ msgstr "Scegli il tuo stile"
 
 #: apps/erp/app/components/Form/AddressAutocomplete.tsx:203
 #: apps/erp/app/modules/resources/ui/Locations/LocationsTable.tsx:66
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:543
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:502
 #: apps/erp/app/routes/x+/settings+/sales.tsx:447
 msgid "City"
 msgstr "Città"
@@ -2179,7 +2183,7 @@ msgstr "Registrato dal {0}"
 #: apps/erp/app/modules/inventory/ui/StockTransfers/StockTransferWizard.tsx:1300
 #: apps/erp/app/modules/production/ui/Jobs/JobMaterialsTable.tsx:616
 #: apps/erp/app/modules/purchasing/ui/Planning/PurchasingPlanningOrderDrawer.tsx:760
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:550
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:554
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteSendModal.tsx:87
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteSendModal.tsx:178
 #: apps/erp/app/modules/quality/ui/InboundInspections/ScanInspectionSample.tsx:230
@@ -2305,7 +2309,7 @@ msgstr "Nome Azienda"
 msgid "Company policy asks for a different person to inspect inbound items than the one who received them."
 msgstr "La politica aziendale richiede che una persona diversa ispezionare gli articoli in entrata rispetto a quella che li ha ricevuti."
 
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:266
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:270
 msgid "Compare and Order"
 msgstr "Confronta e Ordina"
 
@@ -2446,11 +2450,11 @@ msgstr "Configura il contenuto visualizzato nei PDF del foglio di viaggio del la
 msgid "Configure the default accounts used for various transaction types across your system"
 msgstr "Configura gli account predefiniti utilizzati per vari tipi di transazioni nel tuo sistema"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:588
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:547
 msgid "Configure when purchased item prices should be updated from supplier transactions."
 msgstr "Configura quando i prezzi degli articoli acquistati devono essere aggiornati dalle transazioni dei fornitori."
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:682
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:620
 msgid "Configure who should receive notifications when a supplier submits a quote."
 msgstr "Configura chi dovrebbe ricevere notifiche quando un fornitore invia un preventivo."
 
@@ -2636,7 +2640,8 @@ msgstr "Collegamento copiato negli appunti"
 msgid "Copied!"
 msgstr "Copiato!"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:155
+#: apps/erp/app/modules/inventory/ui/Traceability/TraceabilityGraph.tsx:407
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:160
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:154
 #: apps/erp/app/modules/items/ui/Consumables/ConsumableProperties.tsx:196
 #: apps/erp/app/modules/items/ui/Materials/MaterialProperties.tsx:294
@@ -2648,7 +2653,7 @@ msgstr "Copiato!"
 #: apps/erp/app/modules/production/ui/Jobs/JobProperties.tsx:204
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureProperties.tsx:112
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureProperties.tsx:132
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:168
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:173
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQProperties.tsx:183
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteProperties.tsx:152
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentProperties.tsx:141
@@ -2689,10 +2694,6 @@ msgstr "Copia nome documento"
 msgid "Copy document unique identifier"
 msgstr "Copia identificatore univoco documento"
 
-#: apps/erp/app/modules/inventory/ui/Traceability/TraceabilitySidebar.tsx:234
-msgid "Copy ID"
-msgstr ""
-
 #: apps/erp/app/modules/quality/ui/Issue/IssueProperties.tsx:227
 msgid "Copy issue number"
 msgstr "Copia numero segnalazione"
@@ -2704,10 +2705,6 @@ msgstr "Copia identificatore univoco del problema"
 #: apps/erp/app/modules/production/ui/Jobs/JobProperties.tsx:214
 msgid "Copy Job number"
 msgstr "Copia numero lavoro"
-
-#: apps/erp/app/modules/inventory/ui/Traceability/TraceabilitySidebar.tsx:220
-msgid "Copy link"
-msgstr ""
 
 #: apps/erp/app/modules/items/ui/Consumables/ConsumableProperties.tsx:187
 msgid "Copy link to consumable"
@@ -2811,7 +2808,7 @@ msgstr "Copia il prezzo di questo articolo in un altro ambito."
 msgid "Copy this link to share the quote with a customer"
 msgstr "Copia questo link per condividere l'offerta con un cliente"
 
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:537
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:541
 msgid "Copy this link to share the quote with a supplier"
 msgstr "Copia questo link per condividere l'offerta con un fornitore"
 
@@ -3184,13 +3181,13 @@ msgstr "Il file CSV deve avere almeno 2 righe."
 msgid "Currencies"
 msgstr "Valute"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:259
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:411
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:263
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:416
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:259
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:405
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:174
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:429
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:141
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:178
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:434
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:140
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:162
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteForm.tsx:184
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteProperties.tsx:313
@@ -3481,19 +3478,19 @@ msgstr "Data di acquisizione"
 msgid "Date Calibrated"
 msgstr "Data Calibrata"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:327
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:332
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:323
 msgid "Date Due"
 msgstr "Data di scadenza"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:242
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:307
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:246
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:312
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:242
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:304
 msgid "Date Issued"
 msgstr "Data di emissione"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:347
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:352
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:342
 msgid "Date Paid"
 msgstr "Data Pagamento"
@@ -3533,7 +3530,7 @@ msgstr "Giorni liberi"
 msgid "Days Remaining"
 msgstr "Giorni rimanenti"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:387
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:386
 #: apps/erp/app/modules/quality/ui/Gauge/GaugesTable.tsx:451
 #: apps/erp/app/modules/resources/ui/WorkCenters/WorkCentersTable.tsx:485
 #: apps/erp/app/modules/users/ui/components/DeactivateUsersModal.tsx:80
@@ -3570,7 +3567,7 @@ msgstr "Disattiva Dipendenti"
 msgid "Deactivate Process"
 msgstr "Disattiva Processo"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:367
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:366
 msgid "Deactivate Supplier"
 msgstr "Disattiva Fornitore"
 
@@ -3610,7 +3607,7 @@ msgstr "Conti Predefiniti"
 msgid "Default Approver"
 msgstr "Approvatore Predefinito"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:741
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:679
 #: apps/erp/app/routes/x+/settings+/sales.tsx:611
 msgid "Default CC Recipients"
 msgstr "Destinatari CC predefiniti"
@@ -3676,7 +3673,7 @@ msgstr "Impostazioni predefinite"
 msgid "Define the default size of the product label. Used for tracking items in inventory."
 msgstr "Definisci la dimensione predefinita dell'etichetta del prodotto. Utilizzato per il tracciamento degli articoli nell'inventario."
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:454
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:413
 msgid "Define the terms and conditions for purchase orders"
 msgstr "Definire i termini e le condizioni per gli ordini di acquisto"
 
@@ -3904,11 +3901,11 @@ msgstr "Elimina Procedura"
 msgid "Delete Process"
 msgstr "Elimina Processo"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:226
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:231
 msgid "Delete Purchase Invoice"
 msgstr "Elimina Fattura di Acquisto"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:173
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:174
 msgid "Delete Purchase Order"
 msgstr "Elimina Ordine di Acquisto"
 
@@ -4010,12 +4007,12 @@ msgstr "Elimina Sostanza"
 msgid "Delete Suggestion"
 msgstr "Elimina Suggerimento"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:174
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:173
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:263
 msgid "Delete Supplier"
 msgstr "Elimina Fornitore"
 
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:164
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:168
 msgid "Delete Supplier Quote"
 msgstr "Elimina Offerta Fornitore"
 
@@ -4058,7 +4055,7 @@ msgid "Delete Webhook"
 msgstr "Elimina Webhook"
 
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderDeliveryForm.tsx:148
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:389
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:394
 msgid "Delivery Date"
 msgstr "Data di consegna"
 
@@ -4169,7 +4166,7 @@ msgstr "Dettagli"
 msgid "Details"
 msgstr "Dettagli"
 
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:201
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:205
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteHeader.tsx:209
 msgid "Digital Quote"
 msgstr "Preventivo Digitale"
@@ -4317,7 +4314,7 @@ msgstr "Scarica CSV"
 #: apps/erp/app/modules/inventory/ui/StockTransfers/StockTransferStatus.tsx:14
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferStatus.tsx:14
 #: apps/erp/app/modules/items/ui/Item/MakeMethodVersionStatus.tsx:18
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:462
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:421
 #: apps/erp/app/routes/x+/settings+/sales.tsx:365
 msgid "Draft"
 msgstr "Bozza"
@@ -4361,7 +4358,7 @@ msgstr "Rilascia il tuo file qui, oppure fai clic per sfogliare."
 msgid "Due {0}"
 msgstr "Scadenza {0}"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:241
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:245
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoicesTable.tsx:190
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:241
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoicesTable.tsx:184
@@ -4870,7 +4867,7 @@ msgstr "Modifica Centro di Lavoro"
 #: apps/erp/app/modules/users/ui/Employees/EmployeesTable.tsx:115
 #: apps/erp/app/modules/users/ui/Suppliers/CreateSupplierModal/CreateSupplierModal.tsx:90
 #: apps/erp/app/modules/users/ui/Suppliers/SupplierAccountsTable/SuppliersAccountsTable.tsx:118
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:540
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:499
 #: apps/erp/app/routes/x+/settings+/sales.tsx:444
 msgid "Email"
 msgstr "Email"
@@ -4884,7 +4881,7 @@ msgstr "Indirizzo Email"
 msgid "Email notifications not configured"
 msgstr "Notifiche email non configurate"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:728
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:666
 #: apps/erp/app/routes/x+/settings+/sales.tsx:598
 msgid "Emails"
 msgstr "Email"
@@ -4975,7 +4972,7 @@ msgstr "Abilita per generare ID e descrizioni per le materie prime."
 msgid "Enable to include work instructions on job traveler PDFs."
 msgstr "Abilita per includere le istruzioni di lavoro nei PDF del foglio di viaggio."
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:783
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:721
 msgid "Enable to show part thumbnails on purchase order PDFs."
 msgstr "Abilita per mostrare le miniature delle parti nei PDF degli ordini di acquisto."
 
@@ -5044,7 +5041,6 @@ msgid "Entered At Receipt"
 msgstr "Inserito al Ricevimento"
 
 #: apps/erp/app/modules/settings/ui/AuditLog/AuditLogTable.tsx:208
-#: apps/erp/app/routes/x+/traceability+/_index.tsx:174
 msgid "Entities"
 msgstr "Entità"
 
@@ -5066,7 +5062,7 @@ msgstr "Entità"
 msgid "Entity is {status}"
 msgstr "L'entità è {status}"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:145
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:144
 #: apps/erp/app/modules/sales/ui/Customer/CustomerForm.tsx:160
 msgid "EORI"
 msgstr "EORI"
@@ -5107,8 +5103,8 @@ msgstr "Errore durante il download del file"
 msgid "Error fetching customer data"
 msgstr "Errore nel recupero dei dati del cliente"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:126
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:93
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:130
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:97
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteForm.tsx:100
 msgid "Error fetching supplier data"
 msgstr "Errore nel recupero dei dati del fornitore"
@@ -5802,7 +5798,7 @@ msgstr "Preferito"
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:178
 #: apps/erp/app/modules/sales/ui/Customer/CustomerContactForm.tsx:105
 #: apps/erp/app/modules/sales/ui/Customers/CustomersTable.tsx:184
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:548
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:507
 #: apps/erp/app/routes/x+/settings+/sales.tsx:452
 msgid "Fax"
 msgstr "Fax"
@@ -5899,13 +5895,13 @@ msgid "Filtering"
 msgstr "Filtro"
 
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderFinalizeModal.tsx:119
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:249
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:250
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:202
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:236
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:251
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:239
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:454
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:496
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:243
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:458
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:500
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteFinalizeModal.tsx:225
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteHeader.tsx:241
 msgid "Finalize"
@@ -6496,6 +6492,10 @@ msgstr "Inv. Ratei Intermedi"
 msgid "Invalid Invite"
 msgstr "Invito Non Valido"
 
+#: apps/erp/app/routes/x+/traceability+/_index.tsx:45
+msgid "Invalid tracking number"
+msgstr "Numero di tracciamento non valido"
+
 #: apps/erp/app/components/Form/ConversionFactor.tsx:274
 #: apps/erp/app/components/Form/ConversionFactor.tsx:299
 #: apps/erp/app/hooks/useModules.tsx:52
@@ -6570,8 +6570,8 @@ msgstr "Invita"
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:228
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:271
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:318
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:429
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:482
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:430
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:483
 #: apps/erp/app/modules/purchasing/ui/SupplierInteraction/SupplierInteractionState.tsx:82
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderHeader.tsx:575
 msgid "Invoice"
@@ -6604,7 +6604,7 @@ msgstr "Contatto Cliente Fattura"
 msgid "Invoice Customer Location"
 msgstr "Ubicazione Cliente Fattura"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:190
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:194
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:192
 msgid "Invoice ID"
 msgstr "ID Fattura"
@@ -6622,21 +6622,21 @@ msgstr "Ubicazione Fattura"
 msgid "Invoice Number"
 msgstr "Numero Fattura"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:207
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:237
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:211
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:242
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoicesTable.tsx:110
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderPaymentForm.tsx:77
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierPaymentForm.tsx:55
 msgid "Invoice Supplier"
 msgstr "Fornitore Fattura"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:228
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:284
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:232
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:289
 msgid "Invoice Supplier Contact"
 msgstr "Contatto Fornitore Fattura"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:214
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:260
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:218
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:265
 msgid "Invoice Supplier Location"
 msgstr "Ubicazione Fornitore Fattura"
 
@@ -7122,7 +7122,7 @@ msgstr "Tempo di consegna"
 msgid "Lead Time (Days)"
 msgstr "Tempo di consegna (Giorni)"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:625
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:584
 msgid "Lead Time Updates"
 msgstr "Aggiornamenti Tempi di Consegna"
 
@@ -7208,12 +7208,13 @@ msgstr "Team Linear"
 msgid "Lines need internal part numbers"
 msgstr "Le righe necessitano di numeri di parte interni"
 
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:466
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:470
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteFinalizeModal.tsx:164
 msgid "Lines need prices or lead times"
 msgstr "Le righe necessitano di prezzi o tempi di consegna"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:134
+#: apps/erp/app/modules/inventory/ui/Traceability/TraceabilityGraph.tsx:391
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:139
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:133
 #: apps/erp/app/modules/items/ui/Consumables/ConsumableProperties.tsx:173
 #: apps/erp/app/modules/items/ui/Materials/MaterialProperties.tsx:272
@@ -7221,7 +7222,7 @@ msgstr "Le righe necessitano di prezzi o tempi di consegna"
 #: apps/erp/app/modules/items/ui/Tools/ToolProperties.tsx:165
 #: apps/erp/app/modules/production/ui/Jobs/JobProperties.tsx:182
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureProperties.tsx:90
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:147
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:152
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQProperties.tsx:162
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteProperties.tsx:132
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentProperties.tsx:119
@@ -7302,9 +7303,9 @@ msgstr "Caricamento..."
 #: apps/erp/app/modules/inventory/ui/StockTransfers/StockTransfersTable.tsx:73
 #: apps/erp/app/modules/inventory/ui/StorageUnits/StorageUnitForm.tsx:93
 #: apps/erp/app/modules/inventory/ui/StorageUnits/StorageUnitsTable.tsx:243
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:270
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:274
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceLineForm.tsx:514
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:364
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:369
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:270
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceLineForm.tsx:452
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:358
@@ -7320,7 +7321,7 @@ msgstr "Caricamento..."
 #: apps/erp/app/modules/production/ui/Jobs/JobsTable.tsx:509
 #: apps/erp/app/modules/production/ui/Projection/DemandProjectionForm.tsx:116
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderDeliveryForm.tsx:165
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:171
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:175
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderLineForm.tsx:575
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQsTable.tsx:172
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierContactForm.tsx:107
@@ -7503,7 +7504,7 @@ msgstr "Rendi Attivo"
 msgid "Make Default"
 msgstr "Imposta come predefinito"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:205
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:204
 msgid "Make Inactive"
 msgstr "Rendi Inattivo"
 
@@ -7605,7 +7606,7 @@ msgstr "Produttore"
 msgid "Manufacturing"
 msgstr "Produzione"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:237
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:238
 msgid "Mark as Planned"
 msgstr "Contrassegna come Pianificato"
 
@@ -8019,7 +8020,7 @@ msgstr "Altre azioni"
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:127
 #: apps/erp/app/modules/inventory/ui/StockTransfers/StockTransferHeader.tsx:101
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:80
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:205
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:210
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:194
 #: apps/erp/app/modules/items/ui/Consumables/ConsumableHeader.tsx:62
 #: apps/erp/app/modules/items/ui/Materials/MaterialHeader.tsx:65
@@ -8029,10 +8030,10 @@ msgstr "Altre azioni"
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureHeader.tsx:80
 #: apps/erp/app/modules/production/ui/Schedule/Kanban/components/ItemCard.tsx:183
 #: apps/erp/app/modules/production/ui/Schedule/Kanban/components/JobCard.tsx:288
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:153
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:154
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:109
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:159
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:147
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:158
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:151
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentHeader.tsx:140
 #: apps/erp/app/modules/quality/ui/Issue/IssueHeader.tsx:67
 #: apps/erp/app/modules/resources/ui/Maintenance/MaintenanceDispatchHeader.tsx:61
@@ -8136,7 +8137,7 @@ msgstr "La mia vista salvata"
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureExplorer.tsx:811
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureForm.tsx:81
 #: apps/erp/app/modules/production/ui/Procedures/ProceduresTable.tsx:56
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:116
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:115
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierLocationForm.tsx:94
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:68
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentExplorer.tsx:588
@@ -8165,7 +8166,7 @@ msgstr "La mia vista salvata"
 #: apps/erp/app/modules/settings/ui/Sequences/SequencesTable.tsx:35
 #: apps/erp/app/modules/settings/ui/Webhooks/WebhookForm.tsx:118
 #: apps/erp/app/modules/settings/ui/Webhooks/WebhooksTable.tsx:76
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:539
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:498
 #: apps/erp/app/routes/x+/settings+/sales.tsx:443
 msgid "Name"
 msgstr "Nome"
@@ -8314,7 +8315,7 @@ msgid "New Holiday"
 msgstr "Nuova Festività"
 
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:239
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:444
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:445
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderHeader.tsx:538
 msgid "New Invoice"
 msgstr "Nuova Fattura"
@@ -8428,7 +8429,7 @@ msgstr "Nuova Riga Preventivo"
 
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptForm/ReceiptForm.tsx:70
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:247
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:374
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:375
 msgid "New Receipt"
 msgstr "Nuova Ricevuta"
 
@@ -8476,7 +8477,7 @@ msgstr "Nuovo Turno"
 
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentForm/ShipmentForm.tsx:82
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:180
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:278
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:279
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderHeader.tsx:468
 msgid "New Shipment"
 msgstr "Nuova Spedizione"
@@ -8730,10 +8731,6 @@ msgstr "Nessun tipo di problema configurato"
 msgid "No logo uploaded"
 msgstr "Nessun logo caricato"
 
-#: apps/erp/app/routes/x+/traceability+/_index.tsx:187
-msgid "No matches"
-msgstr ""
-
 #: apps/erp/app/components/Layout/Topbar/Search/SearchEmptyState.tsx:46
 msgid "No matches for \"{query}\". Try a different search term."
 msgstr "Nessuna corrispondenza per \"{query}\". Prova un termine di ricerca diverso."
@@ -8961,7 +8958,7 @@ msgid "Notification"
 msgstr "Notifica"
 
 #: apps/erp/app/modules/settings/ui/Webhooks/WebhookForm.tsx:96
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:692
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:630
 #: apps/erp/app/routes/x+/settings+/sales.tsx:515
 #: apps/erp/app/routes/x+/settings+/sales.tsx:563
 msgid "Notifications"
@@ -9211,14 +9208,14 @@ msgstr "Opzioni"
 #: apps/erp/app/modules/production/ui/Jobs/JobMaterialsTable.tsx:663
 #: apps/erp/app/modules/purchasing/ui/Planning/PurchasingPlanningOrderDrawer.tsx:776
 #: apps/erp/app/modules/purchasing/ui/SupplierInteraction/SupplierInteractionState.tsx:81
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:256
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:262
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:280
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:260
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:266
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:284
 #: apps/erp/app/modules/sales/ui/Opportunity/OpportunityState.tsx:144
 msgid "Order"
 msgstr "Ordine"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:327
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:332
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrdersTable.tsx:157
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderProperties.tsx:312
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrdersTable.tsx:365
@@ -9428,7 +9425,7 @@ msgstr "ID Parte"
 msgid "Part is configured for manufacturing"
 msgstr "La parte è configurata per la produzione"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:779
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:717
 msgid "Part thumbnails are shown on purchase order PDFs."
 msgstr "Le miniature delle parti sono mostrate nei PDF degli ordini di acquisto."
 
@@ -9470,8 +9467,8 @@ msgstr "Percorso"
 msgid "Payables"
 msgstr "Debiti"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:342
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:355
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:347
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:360
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:336
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderPaymentForm.tsx:69
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierSidebar/useSupplierSidebar.tsx:53
@@ -9494,7 +9491,7 @@ msgid "Payment Method"
 msgstr "Metodo di Pagamento"
 
 #: apps/erp/app/modules/accounting/ui/PaymentTerms/PaymentTermsTable.tsx:128
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:388
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:393
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:382
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierPaymentForm.tsx:69
 #: apps/erp/app/modules/sales/ui/Customer/CustomerPaymentForm.tsx:69
@@ -9507,7 +9504,7 @@ msgstr "Condizione di Pagamento"
 
 #: apps/erp/app/modules/accounting/ui/PaymentTerms/PaymentTermsTable.tsx:132
 #: apps/erp/app/modules/accounting/ui/useAccountingSubmodules.tsx:28
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:246
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:250
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:246
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderPaymentForm.tsx:91
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierPaymentForm.tsx:47
@@ -9518,13 +9515,13 @@ msgid "Payment Terms"
 msgstr "Condizioni di Pagamento"
 
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:292
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:208
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:209
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteHeader.tsx:220
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderHeader.tsx:363
 msgid "PDF"
 msgstr "PDF"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:761
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:699
 #: apps/erp/app/routes/x+/settings+/sales.tsx:632
 msgid "PDFs"
 msgstr "PDF"
@@ -9574,7 +9571,7 @@ msgstr "Autorizzazioni"
 
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:170
 #: apps/erp/app/modules/sales/ui/Customers/CustomersTable.tsx:176
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:547
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:506
 #: apps/erp/app/routes/x+/settings+/sales.tsx:451
 msgid "Phone"
 msgstr "Telefono"
@@ -9599,13 +9596,13 @@ msgstr "Preleva"
 msgid "Pick a column to sort by"
 msgstr "Scegli una colonna per ordinare"
 
-#: apps/erp/app/modules/sales/ui/Pricing/PriceListScopeEmpty.tsx:23
-msgid "Pick a customer or customer type to view their pricing."
-msgstr ""
-
 #: apps/erp/app/modules/inventory/ui/Traceability/EditExpiryModal.tsx:78
 msgid "Pick a date or leave blank to clear it."
 msgstr "Scegli una data o lascia vuoto per cancellarla."
+
+#: apps/erp/app/modules/sales/ui/Pricing/PriceListScopeEmpty.tsx:27
+msgid "Pick a scope to view resolved prices and create price overrides."
+msgstr "Seleziona un ambito per visualizzare i prezzi risolti e creare override di prezzo."
 
 #: apps/erp/app/modules/inventory/ui/StockTransfers/StockTransferHeader.tsx:142
 msgid "Pick List"
@@ -9742,7 +9739,7 @@ msgstr "Feedback positivo"
 
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptHeader.tsx:156
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:372
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:313
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:318
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:313
 msgid "Post"
 msgstr "Registra"
@@ -9765,7 +9762,7 @@ msgid "Post Shipment"
 msgstr "Registra Spedizione"
 
 #: apps/erp/app/components/Form/AddressAutocomplete.tsx:214
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:545
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:504
 #: apps/erp/app/routes/x+/settings+/sales.tsx:449
 msgid "Postal Code"
 msgstr "Codice Postale"
@@ -9820,9 +9817,9 @@ msgid "Prev"
 msgstr "Prec"
 
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:281
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:197
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:198
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:137
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:188
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:192
 #: apps/erp/app/modules/quality/ui/SamplingPlan/SamplingPlanForm.tsx:267
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteHeader.tsx:195
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderHeader.tsx:352
@@ -9864,7 +9861,6 @@ msgstr "Scaglioni di Prezzo"
 msgid "Price List"
 msgstr "Listino Prezzi"
 
-#: apps/erp/app/modules/sales/ui/Pricing/PriceListScopeEmpty.tsx:22
 #: apps/erp/app/modules/sales/ui/useSalesSubmodules.tsx:73
 msgid "Price Lists"
 msgstr "Listini Prezzi"
@@ -10049,7 +10045,7 @@ msgstr "Proiezioni"
 msgid "Promised Date"
 msgstr "Data Promessa"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:127
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:132
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:126
 #: apps/erp/app/modules/items/ui/Consumables/ConsumableProperties.tsx:166
 #: apps/erp/app/modules/items/ui/Materials/MaterialProperties.tsx:265
@@ -10057,7 +10053,7 @@ msgstr "Data Promessa"
 #: apps/erp/app/modules/items/ui/Tools/ToolProperties.tsx:158
 #: apps/erp/app/modules/production/ui/Jobs/JobProperties.tsx:175
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureProperties.tsx:83
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:140
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:145
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQProperties.tsx:155
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteProperties.tsx:125
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentProperties.tsx:112
@@ -10149,7 +10145,7 @@ msgstr "Fatture di Acquisto"
 #: apps/erp/app/components/Layout/Topbar/CreateMenu.tsx:70
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptHeader.tsx:216
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:437
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:248
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:253
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrdersTable.tsx:457
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderSummary.tsx:413
 #: apps/erp/app/modules/quality/ui/Issue/IssueAssociations.tsx:529
@@ -10165,7 +10161,7 @@ msgstr "Importo Ordine di Acquisto"
 msgid "Purchase Order approval rule"
 msgstr "Regola di approvazione dell'ordine di acquisto"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:144
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:148
 msgid "Purchase Order ID"
 msgstr "ID Ordine di Acquisto"
 
@@ -10173,7 +10169,7 @@ msgstr "ID Ordine di Acquisto"
 msgid "Purchase Order Line"
 msgstr "Riga di Ordine di Acquisto"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:406
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:411
 msgid "Purchase Order Location"
 msgstr "Ubicazione Ordine di Acquisto"
 
@@ -10181,7 +10177,7 @@ msgstr "Ubicazione Ordine di Acquisto"
 msgid "Purchase order removed successfully"
 msgstr "Ordine di acquisto rimosso con successo"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:265
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:270
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrdersTable.tsx:462
 #: apps/erp/app/modules/settings/ui/Approvals/ApprovalRules.tsx:51
 #: apps/erp/app/routes/x+/issue+/$id.tsx:119
@@ -10199,7 +10195,7 @@ msgstr "Ordini di acquisto richiesti"
 msgid "Purchase Prepayment"
 msgstr "Pagamento anticipato acquisti"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:585
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:544
 msgid "Purchase Price Updates"
 msgstr "Aggiornamenti dei prezzi di acquisto"
 
@@ -10262,14 +10258,14 @@ msgstr "Acquistato"
 #: apps/erp/app/routes/x+/purchase-order+/_layout.tsx:12
 #: apps/erp/app/routes/x+/purchasing-rfq+/_layout.tsx:12
 #: apps/erp/app/routes/x+/purchasing+/_layout.tsx:16
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:58
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:444
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:57
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:403
 #: apps/erp/app/routes/x+/supplier-quote+/_layout.tsx:13
 #: apps/erp/app/routes/x+/supplier+/_layout.tsx:16
 msgid "Purchasing"
 msgstr "Acquisti"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:137
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:136
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteForm.tsx:174
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteProperties.tsx:258
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderForm.tsx:178
@@ -10287,7 +10283,7 @@ msgstr "Gruppi di Acquisto"
 msgid "Purchasing Posting Groups"
 msgstr "Gruppi di Registrazione Acquisti"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:451
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:410
 msgid "Purchasing Terms & Conditions"
 msgstr "Termini e Condizioni di Acquisto"
 
@@ -10585,7 +10581,7 @@ msgstr "Ricalcola Costo Unitario"
 
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptForm/ReceiptForm.tsx:70
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptsTable.tsx:347
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:256
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:261
 #: apps/erp/app/modules/quality/ui/InboundInspections/InboundInspectionForm.tsx:112
 #: apps/erp/app/modules/quality/ui/InboundInspections/InboundInspectionLotView.tsx:176
 #: apps/erp/app/modules/quality/ui/InboundInspections/InboundInspectionsTable.tsx:97
@@ -10607,19 +10603,19 @@ msgstr "Riga di Ricevimento"
 msgid "Receipt Lines"
 msgstr "Righe di ricezione"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:369
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:374
 msgid "Receipt Promised Date"
 msgstr "Data di Consegna Promessa"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:348
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:353
 msgid "Receipt Requested Date"
 msgstr "Data di ricezione richiesta"
 
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptsTable.tsx:351
 #: apps/erp/app/modules/inventory/ui/useInventorySubmodules.tsx:28
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:232
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:284
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:357
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:289
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:358
 #: apps/erp/app/routes/x+/inventory+/receipts.tsx:14
 #: apps/erp/app/routes/x+/issue+/$id.tsx:140
 #: apps/erp/app/routes/x+/part+/$itemId.tsx:286
@@ -10634,7 +10630,7 @@ msgid "Receivables"
 msgstr "Crediti"
 
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:282
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:409
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:410
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrdersTable.tsx:416
 msgid "Receive"
 msgstr "Ricevi"
@@ -10671,7 +10667,6 @@ msgstr "Ubicazione di ricezione"
 
 #: apps/erp/app/components/Layout/Topbar/Search.tsx:223
 #: apps/erp/app/modules/documents/ui/useDocumentsSubmodules.tsx:28
-#: apps/erp/app/routes/x+/traceability+/_index.tsx:193
 msgid "Recent"
 msgstr "Recenti"
 
@@ -10706,9 +10701,9 @@ msgid "Reference"
 msgstr "Riferimento"
 
 #: apps/erp/app/components/OnshapeSync.tsx:386
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:452
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:457
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceProperties.tsx:445
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:469
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:474
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteProperties.tsx:351
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteProperties.tsx:446
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderProperties.tsx:450
@@ -10720,8 +10715,8 @@ msgstr "Aggiorna"
 msgid "Refresh exchange rate"
 msgstr "Aggiorna tasso di cambio"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:340
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:230
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:341
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:229
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentHeader.tsx:204
 msgid "Reject"
 msgstr "Rifiuta"
@@ -10741,11 +10736,11 @@ msgstr "Rifiuta Preventivo"
 msgid "Rejected"
 msgstr "Rifiutato"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:302
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:301
 msgid "Rejected By"
 msgstr "Rifiutato da"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:312
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:311
 msgid "Rejected Date"
 msgstr "Data di Rifiuto"
 
@@ -10847,9 +10842,9 @@ msgstr "Rimuovi Trasferimento"
 
 #: apps/erp/app/modules/inventory/ui/StockTransfers/StockTransferHeader.tsx:211
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:304
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:531
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:532
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:297
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:327
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:331
 #: apps/erp/app/modules/quality/ui/Issue/IssueHeader.tsx:180
 #: apps/erp/app/modules/resources/ui/Maintenance/MaintenanceDispatchHeader.tsx:151
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteHeader.tsx:332
@@ -10936,7 +10931,7 @@ msgstr "Rapporto"
 msgid "Reports"
 msgstr "Rapporti"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:194
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:193
 msgid "Request Approval"
 msgstr "Richiedi Approvazione"
 
@@ -10951,7 +10946,6 @@ msgid "Requested Date"
 msgstr "Data Richiesta"
 
 #: apps/erp/app/modules/settings/ui/Approvals/ApprovalRules.tsx:141
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:649
 msgid "Require approval before suppliers can be set to Active"
 msgstr "Richiedi approvazione prima che i fornitori possano essere impostati su Attivo"
 
@@ -11450,7 +11444,7 @@ msgstr "Sabato"
 #: apps/erp/app/modules/inventory/ui/Traceability/EditExpiryModal.tsx:92
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferForm.tsx:96
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceDeliveryForm.tsx:142
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:283
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:287
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceLineForm.tsx:563
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceForm.tsx:283
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceLineForm.tsx:640
@@ -11493,13 +11487,13 @@ msgstr "Sabato"
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureExplorer.tsx:947
 #: apps/erp/app/modules/production/ui/ScrapReasons/ScrapReasonForm.tsx:97
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderDeliveryForm.tsx:175
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:205
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:209
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderLineForm.tsx:636
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderPaymentForm.tsx:99
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQForm.tsx:101
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQLineForm.tsx:289
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierContactForm.tsx:117
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:156
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:155
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierLocationForm.tsx:102
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierPaymentForm.tsx:76
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierProcessForm.tsx:139
@@ -11569,10 +11563,10 @@ msgstr "Sabato"
 #: apps/erp/app/routes/x+/settings+/inventory.tsx:262
 #: apps/erp/app/routes/x+/settings+/labels.tsx:146
 #: apps/erp/app/routes/x+/settings+/production.tsx:202
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:560
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:615
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:711
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:753
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:519
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:574
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:649
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:691
 #: apps/erp/app/routes/x+/settings+/quality.tsx:250
 #: apps/erp/app/routes/x+/settings+/quality.tsx:295
 #: apps/erp/app/routes/x+/settings+/quality.tsx:368
@@ -11613,17 +11607,13 @@ msgstr "Salva Vista"
 msgid "Scan"
 msgstr "Scansiona"
 
-#: apps/erp/app/routes/x+/traceability+/_index.tsx:153
-msgid "Scan a label or search by ID, serial number, or batch number."
-msgstr ""
+#: apps/erp/app/routes/x+/traceability+/_index.tsx:82
+msgid "Scan or enter a tracking number"
+msgstr "Scansiona o inserisci un numero di tracciamento"
 
 #: apps/erp/app/modules/quality/ui/InboundInspections/ScanInspectionSample.tsx:137
 msgid "Scan or enter tracked entity ID, serial, or batch"
 msgstr "Scansiona o inserisci ID entità tracciata, numero di serie o lotto"
-
-#: apps/erp/app/routes/x+/traceability+/_index.tsx:161
-msgid "Scan or search..."
-msgstr ""
 
 #: apps/erp/app/modules/quality/ui/InboundInspections/ScanInspectionSample.tsx:100
 msgid "Scan or select a tracked entity from this lot and record the inspection result."
@@ -11726,10 +11716,6 @@ msgstr "Cerca per titolo problema linear..."
 msgid "Search customers and types..."
 msgstr "Cerca clienti e tipi..."
 
-#: apps/erp/app/modules/sales/ui/Pricing/PriceListScopeEmpty.tsx:31
-msgid "Search customers or types..."
-msgstr ""
-
 #: apps/erp/app/modules/resources/ui/Training/TrainingAssignmentForm.tsx:210
 #: apps/erp/app/routes/x+/resources+/assignments.$trainingId.tsx:267
 msgid "Search employees..."
@@ -11808,6 +11794,10 @@ msgstr "Seleziona"
 #: apps/erp/app/modules/quality/ui/Issue/Linear/CreateIssue.tsx:85
 msgid "Select a assignee"
 msgstr "Seleziona un assegnatario"
+
+#: apps/erp/app/modules/sales/ui/Pricing/PriceListScopeEmpty.tsx:24
+msgid "Select a customer or customer type"
+msgstr "Seleziona un cliente o un tipo di cliente"
 
 #: apps/erp/app/modules/settings/ui/Approvals/ApprovalRuleForm.tsx:127
 msgid "Select a default approver"
@@ -11937,11 +11927,11 @@ msgstr "Seleziona Riga"
 msgid "Select scope"
 msgstr "Seleziona ambito"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:120
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:119
 msgid "Select Supplier Status"
 msgstr "Seleziona Stato Fornitore"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:126
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:125
 msgid "Select Supplier Type"
 msgstr "Seleziona Tipo Fornitore"
 
@@ -11973,7 +11963,7 @@ msgstr "Onboarding autonomo con Carbon Academy"
 #: apps/erp/app/components/Layout/Topbar/Suggestion.tsx:221
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:3411
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteFinalizeModal.tsx:105
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:220
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:224
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteSendModal.tsx:186
 #: apps/erp/app/modules/users/ui/components/ResendInviteModal.tsx:85
 msgid "Send"
@@ -12167,7 +12157,7 @@ msgstr "Condividi"
 msgid "Share Link"
 msgstr "Condividi Link"
 
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:534
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:538
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteHeader.tsx:558
 msgid "Share Quote"
 msgstr "Condividi Preventivo"
@@ -12205,7 +12195,7 @@ msgid "Shifts"
 msgstr "Turni"
 
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:215
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:313
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:314
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderHeader.tsx:506
 msgid "Ship"
 msgstr "Spedisci"
@@ -12255,7 +12245,7 @@ msgstr "Ubicazione della spedizione"
 #: apps/erp/app/modules/inventory/ui/useInventorySubmodules.tsx:34
 #: apps/erp/app/modules/inventory/ui/WarehouseTransfers/WarehouseTransferHeader.tsx:165
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:253
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:261
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:262
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderHeader.tsx:451
 #: apps/erp/app/modules/sales/ui/SalesOrder/SalesOrderLineShipments.tsx:65
 #: apps/erp/app/routes/x+/inventory+/shipments.tsx:15
@@ -12382,7 +12372,7 @@ msgstr "Mostra durate"
 msgid "Show parent items"
 msgstr "Mostra elementi padre"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:764
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:702
 msgid "Show part thumbnails on purchase orders."
 msgstr "Mostra miniature delle parti negli ordini di acquisto."
 
@@ -12664,7 +12654,7 @@ msgstr "Iniziato"
 
 #: apps/erp/app/components/Form/AddressAutocomplete.tsx:209
 #: apps/erp/app/modules/resources/ui/Locations/LocationsTable.tsx:74
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:544
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:503
 #: apps/erp/app/routes/x+/settings+/sales.tsx:448
 msgid "State / Province"
 msgstr "Stato / Provincia"
@@ -12690,7 +12680,7 @@ msgstr "L'accettazione statistica è fallita, quindi l'intero lotto è considera
 #: apps/erp/app/modules/purchasing/ui/Planning/PurchasingPlanningOrderDrawer.tsx:621
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrdersTable.tsx:129
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQsTable.tsx:102
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:240
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:239
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuotesTable.tsx:105
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentProperties.tsx:202
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentsTable.tsx:84
@@ -12978,7 +12968,7 @@ msgstr "Supabase fornisce funzionalità in tempo reale e trasmette le modifiche 
 #: apps/erp/app/modules/inventory/ui/Kanbans/KanbanForm.tsx:241
 #: apps/erp/app/modules/inventory/ui/Kanbans/KanbansTable.tsx:415
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptsTable.tsx:196
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:196
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:200
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoicesTable.tsx:93
 #: apps/erp/app/modules/items/ui/Item/BillOfProcess.tsx:1193
 #: apps/erp/app/modules/items/ui/Item/ItemCostHistoryChart.tsx:301
@@ -12987,7 +12977,7 @@ msgstr "Supabase fornisce funzionalità in tempo reale e trasmette le modifiche 
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:2358
 #: apps/erp/app/modules/purchasing/ui/Planning/PurchasingPlanningOrderDrawer.tsx:338
 #: apps/erp/app/modules/purchasing/ui/Planning/PurchasingPlanningTable.tsx:336
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:151
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:155
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrdersTable.tsx:112
 #: apps/erp/app/modules/purchasing/ui/Supplier/SupplierProcessForm.tsx:113
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:307
@@ -13016,12 +13006,8 @@ msgstr "Account Fornitori"
 msgid "Supplier added and selected"
 msgstr "Fornitore aggiunto e selezionato"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:646
-msgid "Supplier Approval Required"
-msgstr "Approvazione fornitore richiesta"
-
 #: apps/erp/app/components/Form/SupplierContact.tsx:91
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:166
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:170
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteForm.tsx:170
 #: apps/erp/app/modules/users/ui/Suppliers/CreateSupplierModal/CreateSupplierModal.tsx:201
 msgid "Supplier Contact"
@@ -13031,16 +13017,16 @@ msgstr "Contatto Fornitore"
 msgid "Supplier ID"
 msgstr "ID Fornitore"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:202
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceForm.tsx:206
 msgid "Supplier Invoice Number"
 msgstr "Numero Fattura Fornitore"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:161
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:165
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteForm.tsx:164
 msgid "Supplier Location"
 msgstr "Ubicazione Fornitore"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:157
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:161
 msgid "Supplier Order Number"
 msgstr "Numero Ordine Fornitore"
 
@@ -13064,7 +13050,7 @@ msgstr "Processi Fornitore"
 msgid "Supplier Quality"
 msgstr "Qualità dei Fornitori"
 
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:235
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:240
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuotesTable.tsx:257
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteSummary.tsx:324
 #: apps/erp/app/routes/x+/supplier-quote+/new.tsx:21
@@ -13075,7 +13061,7 @@ msgstr "Preventivo Fornitore"
 msgid "Supplier Quote ID"
 msgstr "ID Offerta Fornitore"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:679
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:617
 msgid "Supplier Quote Notifications"
 msgstr "Notifiche di quotazione fornitore"
 
@@ -13093,8 +13079,8 @@ msgstr "Preventivi Fornitori"
 msgid "Supplier Ref."
 msgstr "Rif. Fornitore"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:214
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:261
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceProperties.tsx:219
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderProperties.tsx:266
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteForm.tsx:160
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteProperties.tsx:207
 msgid "Supplier Ref. Number"
@@ -13104,13 +13090,13 @@ msgstr "Numero Rif. Fornitore"
 msgid "Supplier Reference"
 msgstr "Riferimento Fornitore"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:119
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:118
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:82
 msgid "Supplier Status"
 msgstr "Stato Fornitore"
 
 #: apps/erp/app/modules/accounting/ui/PostingGroups/PurchasingPostingGroupsTable.tsx:71
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:125
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:124
 #: apps/erp/app/modules/purchasing/ui/SupplierTypes/SupplierTypeForm.tsx:90
 #: apps/erp/app/modules/purchasing/ui/SupplierTypes/SupplierTypesTable.tsx:31
 #: apps/erp/app/modules/purchasing/ui/SupplierTypes/SupplierTypesTable.tsx:94
@@ -13211,7 +13197,7 @@ msgstr "Azioni tabella"
 #: apps/erp/app/modules/production/ui/Jobs/JobsTable.tsx:422
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureProperties.tsx:223
 #: apps/erp/app/modules/production/ui/Procedures/ProceduresTable.tsx:110
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:332
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:331
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:138
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentProperties.tsx:231
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentsTable.tsx:104
@@ -13301,7 +13287,7 @@ msgstr "Tasse e costi aggiuntivi"
 msgid "Tax Amount"
 msgstr "Importo Imposta"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:142
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:141
 #: apps/erp/app/modules/sales/ui/Customer/CustomerForm.tsx:157
 #: apps/erp/app/modules/settings/ui/Company/CompanyForm.tsx:29
 msgid "Tax ID"
@@ -13345,7 +13331,7 @@ msgstr "L'importo dei giorni dopo il metodo di calcolo in cui lo sconto in conta
 msgid "The amount of days after the calculation method that the payment is due"
 msgstr "L'importo dei giorni dopo il metodo di calcolo in cui il pagamento è dovuto"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:494
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:453
 msgid "The billing address used on purchase orders and other purchasing documents."
 msgstr "L'indirizzo di fatturazione utilizzato negli ordini di acquisto e in altri documenti di acquisto."
 
@@ -13362,7 +13348,7 @@ msgstr "La data in cui il cliente si aspetta di ricevere la merce"
 msgid "The endpoint that receives a POST request with the updated data when the table is updated"
 msgstr "L'endpoint che riceve una richiesta POST con i dati aggiornati quando la tabella viene aggiornata"
 
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:469
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:473
 msgid "The following line items are missing prices or lead times:"
 msgstr "I seguenti articoli di riga non hanno prezzi o tempi di consegna:"
 
@@ -13440,7 +13426,7 @@ msgstr "Ci sono operazioni esterne associate a questo lavoro che non hanno forni
 msgid "These custom fields will only be available for entities with the same tags"
 msgstr "Questi campi personalizzati saranno disponibili solo per le entità con gli stessi tag"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:731
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:669
 msgid "These email addresses will be automatically CC'd on all emails sent to suppliers (quotes, purchase orders, etc.)."
 msgstr "Questi indirizzi email verranno automaticamente messi in CC su tutte le email inviate ai fornitori (preventivi, ordini di acquisto, ecc.)."
 
@@ -13544,12 +13530,12 @@ msgstr "Miniatura rimossa"
 msgid "Thumbnail uploaded"
 msgstr "Miniatura caricata"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:772
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:710
 #: apps/erp/app/routes/x+/settings+/sales.tsx:646
 msgid "Thumbnails are included"
 msgstr "Le miniature sono incluse"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:774
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:712
 #: apps/erp/app/routes/x+/settings+/sales.tsx:648
 msgid "Thumbnails are not included"
 msgstr "Le miniature non sono incluse"
@@ -13649,13 +13635,13 @@ msgstr "Attiva/disattiva modalità scura/chiara"
 msgid "Toggle durations"
 msgstr "Attiva/disattiva durate"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:191
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:196
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:180
 #: apps/erp/app/modules/production/ui/Jobs/JobHeader.tsx:159
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureHeader.tsx:66
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:139
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:140
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:95
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:133
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:137
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentHeader.tsx:126
 #: apps/erp/app/modules/resources/ui/Training/TrainingHeader.tsx:47
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteHeader.tsx:112
@@ -13668,13 +13654,13 @@ msgstr "Attiva/Disattiva Esplora"
 msgid "Toggle level"
 msgstr "Attiva/disattiva livello"
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:375
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:380
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:358
 #: apps/erp/app/modules/production/ui/Jobs/JobHeader.tsx:403
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureHeader.tsx:165
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:536
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:537
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQHeader.tsx:302
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:333
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:337
 #: apps/erp/app/modules/quality/ui/Documents/QualityDocumentHeader.tsx:272
 #: apps/erp/app/modules/resources/ui/Training/TrainingHeader.tsx:85
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteHeader.tsx:357
@@ -13765,9 +13751,9 @@ msgid "Totaling"
 msgstr "Totalizzazione"
 
 #: apps/erp/app/modules/inventory/ui/useInventorySubmodules.tsx:76
-#: apps/erp/app/routes/x+/traceability+/_index.tsx:25
-#: apps/erp/app/routes/x+/traceability+/_index.tsx:152
-#: apps/erp/app/routes/x+/traceability+/graph.tsx:24
+#: apps/erp/app/routes/x+/traceability+/_index.tsx:13
+#: apps/erp/app/routes/x+/traceability+/graph.tsx:35
+#: apps/erp/app/routes/x+/traceability+/graph.tsx:268
 msgid "Traceability"
 msgstr "Tracciabilità"
 
@@ -13942,8 +13928,8 @@ msgstr "Martedì"
 #: apps/erp/app/modules/production/ui/Planning/ProductionPlanningTable.tsx:349
 #: apps/erp/app/modules/production/ui/Procedures/ProcedureExplorer.tsx:802
 #: apps/erp/app/modules/purchasing/ui/Planning/PurchasingPlanningTable.tsx:429
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:187
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:254
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderForm.tsx:191
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierHeader.tsx:253
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:100
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteForm.tsx:226
 #: apps/erp/app/modules/quality/ui/Calibrations/GaugeCalibrationRecordsTable.tsx:151
@@ -13993,9 +13979,9 @@ msgstr "Tipi"
 msgid "Un-sampled entities will remain On Hold so you can keep inspecting and disposition later. Sampled outcomes are preserved."
 msgstr "Le entità non campionate rimarranno In Sospeso in modo che tu possa continuare a ispezionare e disporre in seguito. I risultati campionati vengono conservati."
 
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:236
-#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:185
-#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:176
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:241
+#: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx:186
+#: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteHeader.tsx:180
 msgid "Unapproved Supplier"
 msgstr "Fornitore non approvato"
 
@@ -14153,7 +14139,7 @@ msgstr "Aggiorna Kanban"
 msgid "Update Linear issue"
 msgstr "Aggiorna problema Linear"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:628
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:587
 msgid "Update part lead times from posted purchase receipts."
 msgstr "Aggiorna i tempi di consegna delle parti dalle ricevute di acquisto registrate."
 
@@ -14166,7 +14152,7 @@ msgstr "Aggiorna Password"
 msgid "Update Permissions"
 msgstr "Aggiorna Autorizzazioni"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:598
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:557
 msgid "Update prices on"
 msgstr "Aggiorna i prezzi su"
 
@@ -14433,7 +14419,7 @@ msgstr "Convalida processo..."
 msgid "Value"
 msgstr "Valore"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:143
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:142
 #: apps/erp/app/modules/sales/ui/Customer/CustomerForm.tsx:158
 #: apps/erp/app/modules/settings/ui/Company/CompanyForm.tsx:30
 msgid "VAT Number"
@@ -14652,7 +14638,7 @@ msgstr "Voce"
 
 #: apps/erp/app/modules/inventory/ui/Receipts/ReceiptHeader.tsx:169
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentHeader.tsx:381
-#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:323
+#: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceHeader.tsx:328
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceHeader.tsx:322
 msgid "Void"
 msgstr "Annulla"
@@ -14774,7 +14760,7 @@ msgstr "Webhook"
 msgid "Webhooks Docs"
 msgstr "Documentazione Webhook"
 
-#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:147
+#: apps/erp/app/modules/purchasing/ui/Supplier/SupplierForm.tsx:146
 #: apps/erp/app/modules/purchasing/ui/Supplier/SuppliersTable.tsx:186
 #: apps/erp/app/modules/sales/ui/Customer/CustomerForm.tsx:162
 #: apps/erp/app/modules/sales/ui/Customers/CustomersTable.tsx:192
@@ -14857,7 +14843,7 @@ msgstr "Chi dovrebbe ricevere notifiche quando un RFQ è contrassegnato come pro
 msgid "Who should receive notifications when a sales job is completed?"
 msgstr "Chi dovrebbe ricevere notifiche quando un lavoro di vendita è completato?"
 
-#: apps/erp/app/routes/x+/settings+/purchasing.tsx:696
+#: apps/erp/app/routes/x+/settings+/purchasing.tsx:634
 msgid "Who should receive notifications when a supplier quote is submitted?"
 msgstr "Chi dovrebbe ricevere notifiche quando un'offerta di un fornitore viene inviata?"
 
