@@ -65737,9 +65737,6 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.quoteLineCategoryMarkups"
           },
           {
-            $ref: "#/parameters/rowFilter.companySettings.supplierApproval"
-          },
-          {
             $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget"
           },
           {
@@ -65913,9 +65910,6 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.quoteLineCategoryMarkups"
           },
           {
-            $ref: "#/parameters/rowFilter.companySettings.supplierApproval"
-          },
-          {
             $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget"
           },
           {
@@ -66041,9 +66035,6 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.companySettings.quoteLineCategoryMarkups"
-          },
-          {
-            $ref: "#/parameters/rowFilter.companySettings.supplierApproval"
           },
           {
             $ref: "#/parameters/rowFilter.companySettings.qualityIssueTarget"
@@ -106960,7 +106951,6 @@ export default {
         "includeThumbnailsOnSalesPdfs",
         "includeThumbnailsOnPurchasingPdfs",
         "jobTravelerIncludeWorkInstructions",
-        "supplierApproval",
         "qualityIssueTarget",
         "consoleEnabled",
         "timeCardEnabled",
@@ -107147,11 +107137,6 @@ export default {
         },
         quoteLineCategoryMarkups: {
           format: "jsonb"
-        },
-        supplierApproval: {
-          default: false,
-          format: "boolean",
-          type: "boolean"
         },
         qualityIssueTarget: {
           default: 20,
@@ -143159,12 +143144,6 @@ export default {
     },
     "rowFilter.companySettings.quoteLineCategoryMarkups": {
       name: "quoteLineCategoryMarkups",
-      required: false,
-      in: "query",
-      type: "string"
-    },
-    "rowFilter.companySettings.supplierApproval": {
-      name: "supplierApproval",
       required: false,
       in: "query",
       type: "string"
