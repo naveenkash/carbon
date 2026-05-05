@@ -500,7 +500,7 @@ msgid "Add Group"
 msgstr "Aggiungi Gruppo"
 
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:519
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:613
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:617
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:612
 msgid "Add Item"
 msgstr "Aggiungi Articolo"
@@ -732,7 +732,7 @@ msgid "Amount Type"
 msgstr "Tipo di Importo"
 
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:697
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:742
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:750
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:738
 msgid "An item cannot be added to itself."
 msgstr "Un articolo non può essere aggiunto a se stesso."
@@ -764,7 +764,7 @@ msgstr "Chiave API"
 
 #: apps/erp/app/modules/settings/ui/ApiKeys/ApiKeysTable.tsx:215
 #: apps/erp/app/modules/settings/ui/useSettingsSubmodules.tsx:124
-#: apps/erp/app/routes/x+/settings+/api-keys.tsx:13
+#: apps/erp/app/routes/x+/settings+/api-keys.tsx:17
 msgid "API Keys"
 msgstr "Chiavi API"
 
@@ -985,7 +985,7 @@ msgid "Are you sure you want to delete the account: {0} ({1})? This cannot be un
 msgstr "Sei sicuro di voler eliminare il conto: {0} ({1})? Questa azione non può essere annullata."
 
 #. placeholder {0}: apiKey.name
-#: apps/erp/app/routes/x+/settings+/api-keys.delete.$id.tsx:56
+#: apps/erp/app/routes/x+/settings+/api-keys.delete.$id.tsx:64
 msgid "Are you sure you want to delete the API key: {0}? This cannot be undone."
 msgstr "Sei sicuro di voler eliminare la chiave API: {0}? Questa azione non può essere annullata."
 
@@ -1181,7 +1181,7 @@ msgid "Are you sure you want to delete the view \"{0}\"?"
 msgstr "Sei sicuro di voler eliminare la vista \"{0}\"?"
 
 #. placeholder {0}: webhook.name
-#: apps/erp/app/routes/x+/settings+/webhooks.delete.$id.tsx:76
+#: apps/erp/app/routes/x+/settings+/webhooks.delete.$id.tsx:84
 msgid "Are you sure you want to delete the webhook: {0}? This cannot be undone."
 msgstr "Sei sicuro di voler eliminare il webhook: {0}? Questa azione non può essere annullata."
 
@@ -1496,7 +1496,7 @@ msgstr "Torna alla home"
 msgid "Back to traceability"
 msgstr "Torna alla tracciabilità"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:988
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1000
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:992
 msgid "Backflush"
 msgstr "Scarico automatico"
@@ -1568,7 +1568,7 @@ msgid "Batch Size"
 msgstr "Dimensione lotto"
 
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1253
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:166
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:170
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:177
 msgid "Batch Tracking"
 msgstr "Tracciamento Batch"
@@ -1580,7 +1580,7 @@ msgstr "Beta"
 
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:507
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:533
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:602
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:606
 #: apps/erp/app/modules/production/ui/Jobs/JobMakeMethodTools.tsx:721
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:601
 msgid "Bill of Material"
@@ -1653,6 +1653,10 @@ msgstr "Importazione in blocco"
 #: apps/erp/app/modules/production/ui/Jobs/JobForm.tsx:415
 msgid "Bulk Jobs"
 msgstr "Lavori in Blocco"
+
+#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:128
+msgid "Business plan"
+msgstr ""
 
 #: apps/erp/app/modules/inventory/ui/Inventory/InventoryTable.tsx:87
 #: apps/erp/app/modules/items/ui/Item/ItemForm.tsx:91
@@ -2262,7 +2266,7 @@ msgstr "Visibilità e ordine delle colonne"
 msgid "Columns"
 msgstr "Colonne"
 
-#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:84
+#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:93
 msgid "Coming soon"
 msgstr "Disponibile presto"
 
@@ -2527,7 +2531,7 @@ msgstr "Tasso Consolidato"
 #: apps/erp/app/components/Form/Items.tsx:37
 #: apps/erp/app/modules/items/ui/Consumables/ConsumablesTable.tsx:501
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1297
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:208
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:212
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:210
 msgid "Consumable"
 msgstr "Consumabile"
@@ -3652,7 +3656,7 @@ msgstr "Fonte Predefinita"
 
 #: apps/erp/app/modules/items/ui/Item/ItemStorageFields.tsx:18
 #: apps/erp/app/modules/items/ui/Item/PickMethodForm.tsx:134
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:929
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:937
 #: apps/erp/app/modules/production/ui/Jobs/JobMaterialsTable.tsx:245
 msgid "Default Storage Unit"
 msgstr "Unità di Archiviazione Predefinita"
@@ -4110,7 +4114,7 @@ msgstr "Reparti"
 #: apps/erp/app/modules/items/ui/Methods/MethodOperationsTable.tsx:28
 #: apps/erp/app/modules/items/ui/Parts/PartsTable.tsx:142
 #: apps/erp/app/modules/items/ui/Tools/ToolsTable.tsx:142
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:863
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:871
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:1245
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:1526
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:2346
@@ -4161,7 +4165,8 @@ msgstr "Dettagli"
 #: apps/erp/app/modules/resources/ui/Training/TrainingAssignmentForm.tsx:375
 #: apps/erp/app/modules/sales/ui/Customer/CustomerSidebar/useCustomerSidebar.tsx:32
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfProcess.tsx:546
-#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:101
+#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:115
+#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:119
 msgid "Details"
 msgstr "Dettagli"
 
@@ -5584,7 +5589,7 @@ msgstr "Impossibile caricare i dati dell'elemento"
 
 #: apps/erp/app/modules/inventory/ui/Kanbans/KanbanForm.tsx:93
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:711
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:766
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:774
 #: apps/erp/app/modules/production/ui/Jobs/JobMaterialForm.tsx:112
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQLineForm.tsx:111
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteLineForm.tsx:138
@@ -5918,7 +5923,7 @@ msgstr "Finanza"
 msgid "Finish"
 msgstr "Finitura"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:894
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:902
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:905
 msgid "Finish To"
 msgstr "Finisci a"
@@ -5944,7 +5949,7 @@ msgstr "Finiture"
 msgid "First Name"
 msgstr "Nome"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:999
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1011
 msgid "First Operation"
 msgstr "Prima Operazione"
 
@@ -6424,12 +6429,12 @@ msgstr "Ispezioni"
 msgid "Inspector"
 msgstr "Ispettore"
 
-#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:125
+#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:159
 #: apps/erp/app/modules/settings/ui/Integrations/IntegrationForm.tsx:715
 msgid "Install"
 msgstr "Installa"
 
-#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:79
+#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:88
 msgid "Installed"
 msgstr "Installato"
 
@@ -6450,6 +6455,10 @@ msgstr "Integrazione non trovata"
 #: apps/erp/app/modules/settings/ui/useSettingsSubmodules.tsx:148
 msgid "Integrations"
 msgstr "Integrazioni"
+
+#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:133
+msgid "Integrations are available on the Business plan and above."
+msgstr ""
 
 #: apps/erp/app/modules/inventory/ui/Shipments/ShipmentNotes.tsx:117
 #: apps/erp/app/modules/purchasing/ui/SupplierInteraction/SupplierInteractionLineNotes.tsx:135
@@ -6982,8 +6991,8 @@ msgstr "Chiave"
 
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1117
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1134
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1068
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1085
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1081
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1098
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:1072
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:1089
 msgid "Kit"
@@ -7513,8 +7522,8 @@ msgstr "Rendere la dimensione {0} predefinita?"
 #: apps/erp/app/modules/items/ui/Tools/ToolProperties.tsx:416
 #: apps/erp/app/modules/items/ui/Tools/ToolProperties.tsx:436
 #: apps/erp/app/modules/items/ui/Tools/ToolsTable.tsx:92
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:194
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:913
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:198
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:921
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:195
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:924
 msgid "Make to Order"
@@ -7625,7 +7634,7 @@ msgstr "Coppie di corrispondenza"
 #: apps/erp/app/components/Form/Items.tsx:33
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1299
 #: apps/erp/app/modules/items/ui/Materials/MaterialsTable.tsx:653
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:210
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:214
 #: apps/erp/app/modules/production/ui/Jobs/JobEstimatesVsActuals.tsx:270
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:212
 msgid "Material"
@@ -7799,7 +7808,7 @@ msgstr "Operazioni Metodo"
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:975
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:988
 #: apps/erp/app/modules/items/ui/Methods/MethodMaterialsTable.tsx:69
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:954
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:962
 #: apps/erp/app/modules/production/ui/Jobs/JobMaterialForm.tsx:213
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:966
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteMaterialForm.tsx:247
@@ -9097,7 +9106,7 @@ msgid "Open task details"
 msgstr "Apri dettagli attività"
 
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1076
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1027
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1039
 #: apps/erp/app/modules/production/ui/Jobs/JobMaterialForm.tsx:203
 #: apps/erp/app/modules/production/ui/Jobs/JobOperationStepRecordsTable.tsx:70
 #: apps/erp/app/modules/production/ui/Jobs/ProductionEventForm.tsx:93
@@ -9375,7 +9384,7 @@ msgstr "Pareto per Tipo"
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:776
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1301
 #: apps/erp/app/modules/items/ui/Parts/PartsTable.tsx:582
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:212
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:216
 #: apps/erp/app/modules/production/ui/Projection/DemandProjectionTable.tsx:194
 #: apps/erp/app/modules/purchasing/ui/PurchasingRfq/PurchasingRFQLineForm.tsx:215
 #: apps/erp/app/modules/purchasing/ui/SupplierQuote/SupplierQuoteLineForm.tsx:251
@@ -9697,7 +9706,7 @@ msgstr "Collegamento Portale"
 msgid "Portals"
 msgstr "Portali"
 
-#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:338
+#: apps/erp/app/modules/inventory/ui/Inventory/InventoryStorageUnits.tsx:377
 msgid "Positive Adjustment"
 msgstr "Rettifica Positiva"
 
@@ -10052,7 +10061,7 @@ msgstr "Pubblica"
 msgid "Published by Carbon"
 msgstr "Pubblicato da Carbon"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:901
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:909
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:912
 msgid "Pull From"
 msgstr "Preleva da"
@@ -10070,8 +10079,8 @@ msgstr "Preleva da"
 #: apps/erp/app/modules/items/ui/Tools/ToolProperties.tsx:415
 #: apps/erp/app/modules/items/ui/Tools/ToolProperties.tsx:435
 #: apps/erp/app/modules/items/ui/Tools/ToolsTable.tsx:91
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:192
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:912
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:196
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:920
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:193
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:923
 msgid "Pull from Inventory"
@@ -10190,8 +10199,8 @@ msgstr "Imposta Acquisti Pagabile"
 #: apps/erp/app/modules/items/ui/Tools/ToolProperties.tsx:413
 #: apps/erp/app/modules/items/ui/Tools/ToolProperties.tsx:433
 #: apps/erp/app/modules/items/ui/Tools/ToolsTable.tsx:89
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:190
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:910
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:194
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:918
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:191
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:921
 msgid "Purchase to Order"
@@ -10336,7 +10345,7 @@ msgstr "Quantità"
 #: apps/erp/app/modules/items/ui/Item/BoMExplorer.tsx:568
 #: apps/erp/app/modules/items/ui/Item/ItemCostHistoryChart.tsx:298
 #: apps/erp/app/modules/items/ui/Item/SupplierPartForm.tsx:385
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:850
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:858
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:3048
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:3180
 #: apps/erp/app/modules/production/ui/Jobs/JobBoMExplorer.tsx:428
@@ -11446,7 +11455,7 @@ msgstr "Sabato"
 #: apps/erp/app/modules/people/ui/Person/PersonJob.tsx:59
 #: apps/erp/app/modules/people/ui/Shifts/ShiftForm.tsx:96
 #: apps/erp/app/modules/people/ui/Timecards/TimecardForm.tsx:114
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1098
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1111
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:2861
 #: apps/erp/app/modules/production/ui/Jobs/ProductionEventForm.tsx:129
 #: apps/erp/app/modules/production/ui/Jobs/ProductionQuantityForm.tsx:111
@@ -11914,7 +11923,7 @@ msgstr "Seleziona i gruppi che devono completare questo training"
 msgid "Selected"
 msgstr "Selezionato"
 
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:998
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1010
 msgid "Selected Operation"
 msgstr "Operazione selezionata"
 
@@ -12010,7 +12019,7 @@ msgid "Serial or Batch Tracking Required"
 msgstr "Tracciamento Seriale o Batch Richiesto"
 
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1251
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:177
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:181
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:175
 msgid "Serial Tracking"
 msgstr "Tracciamento Seriale"
@@ -12772,7 +12781,7 @@ msgstr "Tipi di Archiviazione"
 #: apps/erp/app/modules/invoicing/ui/PurchaseInvoice/PurchaseInvoiceLineForm.tsx:520
 #: apps/erp/app/modules/invoicing/ui/SalesInvoice/SalesInvoiceLineForm.tsx:458
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1011
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:966
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:974
 #: apps/erp/app/modules/production/ui/Jobs/JobHeader.tsx:1056
 #: apps/erp/app/modules/purchasing/ui/PurchaseOrder/PurchaseOrderLineForm.tsx:592
 #: apps/erp/app/modules/quality/ui/Gauge/GaugeForm.tsx:439
@@ -12814,8 +12823,8 @@ msgstr "Sotto-Dipartimenti"
 
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1117
 #: apps/erp/app/modules/items/ui/Item/BillOfMaterial.tsx:1131
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1068
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1082
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1081
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:1095
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:1072
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:1086
 msgid "Subassembly"
@@ -13960,7 +13969,7 @@ msgstr "Fornitore non approvato"
 msgid "Unassigned"
 msgstr "Non assegnato"
 
-#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:116
+#: apps/erp/app/modules/settings/ui/Integrations/IntegrationCard.tsx:150
 msgid "Uninstall"
 msgstr "Disinstalla"
 
@@ -13982,7 +13991,7 @@ msgstr "Unità"
 #: apps/erp/app/modules/items/ui/Materials/MaterialForm.tsx:310
 #: apps/erp/app/modules/items/ui/Parts/PartForm.tsx:322
 #: apps/erp/app/modules/items/ui/Tools/ToolForm.tsx:314
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:873
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:881
 #: apps/erp/app/modules/production/ui/Jobs/JobBillOfProcess.tsx:2385
 #: apps/erp/app/modules/production/ui/Jobs/JobMaterialForm.tsx:231
 #: apps/erp/app/modules/sales/ui/Quotes/QuoteBillOfMaterial.tsx:885
@@ -14719,7 +14728,7 @@ msgstr "URL Webhook"
 
 #: apps/erp/app/modules/settings/ui/useSettingsSubmodules.tsx:160
 #: apps/erp/app/modules/settings/ui/Webhooks/WebhooksTable.tsx:227
-#: apps/erp/app/routes/x+/settings+/webhooks.tsx:14
+#: apps/erp/app/routes/x+/settings+/webhooks.tsx:18
 msgid "Webhooks"
 msgstr "Webhook"
 
@@ -14823,7 +14832,7 @@ msgid "Why is the expiration being changed?"
 msgstr "Perché la data di scadenza viene modificata?"
 
 #: apps/erp/app/modules/accounting/ui/PostingGroups/InventoryPostingGroupsTable.tsx:122
-#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:928
+#: apps/erp/app/modules/production/ui/Jobs/JobBillOfMaterial.tsx:936
 #: apps/erp/app/modules/production/ui/Jobs/JobMaterialsTable.tsx:244
 msgid "WIP"
 msgstr "WIP"
