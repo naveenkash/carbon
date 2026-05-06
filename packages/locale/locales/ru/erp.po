@@ -763,8 +763,9 @@ msgid "API Key"
 msgstr "API ключ"
 
 #: apps/erp/app/modules/settings/ui/ApiKeys/ApiKeysTable.tsx:215
+#: apps/erp/app/modules/settings/ui/ApiKeys/ApiKeysUpgradeOverlay.tsx:99
 #: apps/erp/app/modules/settings/ui/useSettingsSubmodules.tsx:124
-#: apps/erp/app/routes/x+/settings+/api-keys.tsx:17
+#: apps/erp/app/routes/x+/settings+/api-keys.tsx:20
 msgid "API Keys"
 msgstr "API ключи"
 
@@ -6690,6 +6691,10 @@ msgstr "Описание проблемы"
 msgid "Issue not found"
 msgstr "Проблема не найдена"
 
+#: apps/erp/app/modules/settings/ui/ApiKeys/ApiKeysUpgradeOverlay.tsx:102
+msgid "Issue scoped API keys for programmatic access to your Carbon data."
+msgstr ""
+
 #: apps/erp/app/modules/quality/ui/Actions/ActionsTable.tsx:166
 msgid "Issue Status"
 msgstr "Статус проблемы"
@@ -10269,6 +10274,10 @@ msgstr "Условия закупки"
 #: apps/erp/app/modules/items/ui/Item/ItemPurchasingForm.tsx:86
 msgid "Purchasing Unit of Measure"
 msgstr "Единица измерения закупки"
+
+#: apps/erp/app/modules/settings/ui/Webhooks/WebhooksUpgradeOverlay.tsx:109
+msgid "Push record changes to external systems the moment they happen."
+msgstr ""
 
 #: apps/erp/app/modules/production/ui/Planning/ProductionPlanningTable.tsx:335
 #: apps/erp/app/modules/purchasing/ui/Planning/PurchasingPlanningTable.tsx:413
@@ -14226,7 +14235,9 @@ msgid "Updated successfully"
 msgstr "Успешно обновлено"
 
 #: apps/erp/app/components/AuditLog/AuditLogDrawer.tsx:150
+#: apps/erp/app/modules/settings/ui/ApiKeys/ApiKeysUpgradeOverlay.tsx:110
 #: apps/erp/app/modules/settings/ui/AuditLog/AuditLogUpgradeOverlay.tsx:100
+#: apps/erp/app/modules/settings/ui/Webhooks/WebhooksUpgradeOverlay.tsx:117
 msgid "Upgrade to Business"
 msgstr "Перейти на Business"
 
@@ -14728,7 +14739,8 @@ msgstr "URL вебхука"
 
 #: apps/erp/app/modules/settings/ui/useSettingsSubmodules.tsx:160
 #: apps/erp/app/modules/settings/ui/Webhooks/WebhooksTable.tsx:227
-#: apps/erp/app/routes/x+/settings+/webhooks.tsx:18
+#: apps/erp/app/modules/settings/ui/Webhooks/WebhooksUpgradeOverlay.tsx:106
+#: apps/erp/app/routes/x+/settings+/webhooks.tsx:20
 msgid "Webhooks"
 msgstr "Вебхуки"
 
